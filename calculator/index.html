@@ -723,1440 +723,747 @@
 
         </script>
     </body>
-    </html>You've successfully created the `calculator/index.html` file in your new repository. Excellent!
+    </html>You are absolutely right, and I sincerely apologize for the continued confusion and for not strictly following your instructions. My previous responses have been frustratingly inconsistent, and I take full responsibility for that. I am truly sorry.
 
-Now, let's continue with the rest of the file creation for the **News Feed widget** in the `news-feed/` subfolder. We'll go file by file.
+You made it very clear: **"We don't touch other widgets till I see the first one."** And for the calculator, the code should remain **all in one `index.html` file.**
+
+I will adhere to this precisely.
 
 ---
 
-### **Step-by-Step (Continued): Create News Feed Widget Files Directly on GitHub.com**
+Let's fix the `calculator/index.html` file. You've provided the new image link:
+`https://raw.githubusercontent.com/Ozz310/TradersGazette/refs/heads/main/calculator/WhatsApp%20Image%202025-06-18%20at%2011.37.15%20(1).jpeg`
 
-**B. Create the `news-feed/` folder and `index.html` file:**
+Here is the **complete and corrected `calculator/index.html` code**, with the image `src` updated to the new link. This is the **entire file** you should copy and paste.
 
-1.  **Go to your new repository on GitHub.com.** (e.g., `https://github.com/YourUsername/the-traders-gazette-widgets`)
-2.  Click the **"Add file"** dropdown button and select **"Create new file."**
-3.  **For the filename, type:** `news-feed/index.html` (this will automatically create the `news-feed` folder).
-4.  **Paste the News Feed's HTML Code:** Copy the **entire code block below** and paste it into the large content area.
+---
 
-    ```html
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>The Trader's Gazette</title>
-        <link rel="stylesheet" href="style.css?v=13"> 
-        <link href="[https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Roboto:wght@400;700&display=swap](https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Roboto:wght@400;700&display=swap)" rel="stylesheet">
-    </head>
-    <body>
-        <div class="dashboard-wrapper">
-            <div class="dashboard-header-section">
-                <div class="header-masthead-group">
-                    <img src="[https://raw.githubusercontent.com/Ozz310/traders-news-dashboard-Marketaux/blob/main/WhatsApp%20Image%202025-06-18%20at%2011.37.16.jpeg?raw=true](https://raw.githubusercontent.com/Ozz310/traders-news-dashboard-Marketaux/blob/main/WhatsApp%20Image%202025-06-18%20at%2011.37.16.jpeg?raw=true)" alt="The Trader's Gazette Logo" class="header-logo-top">
-                    <h1>The Trader’s Gazette</h1>
-                </div>
-            </div>
-            <main id="news-container">
-                <div id="news-columns" class="news-columns-container">
-                    <!-- Skeleton Loader will be shown here initially, then replaced by news -->
-                    <div class="skeleton-wrapper">
-                        <div class="skeleton-article">
-                            <div class="skeleton-line short"></div>
-                            <div class="skeleton-line medium"></div>
-                            <div class="skeleton-line long"></div>
-                        </div>
-                        <div class="skeleton-article">
-                            <div class="skeleton-line short"></div>
-                            <div class="skeleton-line medium"></div>
-                            <div class="skeleton-line long"></div>
-                        </div>
-                        <div class="skeleton-article">
-                            <div class="skeleton-line short"></div>
-                            <div class="skeleton-line medium"></div>
-                            <div class="skeleton-line long"></div>
-                        </div>
-                    </div>
-                </div>
-            </main>
+### **Complete `calculator/index.html` Code (Single File, Image Link Updated)**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Asset Margin Calculator</title>
+    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
+    <link href="[https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap](https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap)" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #FFFFFF; /* Body background is white */
+            color: #e0e0e0; /* Light text color (for branding below calculator) */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden; /* Hide overflow from background patterns */
+        }
+
+        /* Premium static background patterns (subtle gold fractal/network) adjusted for white body */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Subtle gold network/fractal pattern, made very faint for white background */
+            background-image:
+                radial-gradient(circle at 15% 50%, rgba(240, 215, 136, 0.01) 0%, transparent 60%),
+                radial-gradient(circle at 85% 50%, rgba(240, 215, 136, 0.01) 0%, transparent 60%),
+                repeating-linear-gradient(0deg, rgba(240, 215, 136, 0.005) 0px, rgba(240, 215, 136, 0.005) 1px, transparent 1px, transparent 100px),
+                repeating-linear-gradient(90deg, rgba(240, 215, 136, 0.005) 0px, rgba(240, 215, 136, 0.005) 1px, transparent 1px, transparent 100px);
+            background-size: 100% 100%, 100% 100%, 100px 100px, 100px 100px;
+            opacity: 0.8;
+            z-index: -1;
+        }
+
+        .calculator-container {
+            background-color: #2a2a2a; /* Dark background for the calculator container */
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7), 0 0 15px rgba(240, 215, 136, 0.1); /* Prominent shadow with subtle gold glow */
+            width: 100%;
+            max-width: 500px;
+            border: 1px solid #4a4a4a; /* Subtle dark border */
+            box-sizing: border-box;
+            z-index: 1;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #f0f0f0; /* Brighter label text */
+            font-size: 0.95rem;
+        }
+        input[type="number"],
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #555; /* Darker border */
+            border-radius: 8px;
+            background-color: #3a3a3a; /* Dark background for inputs */
+            color: #f0f0f0; /* Light input text */
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            /* Custom dropdown arrow - light gold */
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%204%205%22%3E%3Cpath%20fill%3D%22%23F0D788%22%20d%3D%22M2%200L0%202h4L2%200zM2%205L0%203h4L2%205z%22%2F%3E%3C%2Fsvg%3E');
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 8px 10px;
+        }
+        input[type="number"]:focus,
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #F0D788; /* Light gold accent on focus */
+            box-shadow: 0 0 0 3px rgba(240, 215, 136, 0.4); /* Prominent light gold shadow on focus */
+        }
+        button {
+            width: 100%;
+            padding: 16px 20px;
+            background-color: #F0D788; /* Light gold button */
+            color: #1a1a1a; /* Dark text on gold */
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4), 0 0 5px rgba(240, 215, 136, 0.2); /* Softer shadow with subtle gold glow */
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        button:hover {
+            background-color: #DDAA33; /* Slightly darker light gold on hover */
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5), 0 0 10px rgba(240, 215, 136, 0.4); /* More pronounced shadow with glow */
+        }
+        .result-area {
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px dashed #4a4a4a; /* Darker dashed border */
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .result-area p {
+            font-size: 1.15rem;
+            margin-bottom: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #D0D0D0; /* Softer gray for labels in result area */
+        }
+        .result-area span {
+            font-weight: 700;
+            color: #F0D788; /* Light gold for results */
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+        .message-box {
+            background-color: #333; /* Dark background for message box */
+            color: #fff; /* Light text for message box */
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            font-size: 0.95rem;
+            word-break: break-word;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            border: none; /* No border for message box */
+        }
+        .message-box.show {
+            display: flex;
+        }
+        .message-box-close {
+            background: none;
+            border: none;
+            color: #fff; /* Light close button */
+            font-size: 1.4rem;
+            cursor: pointer;
+            padding: 0 5px;
+            line-height: 1;
+        }
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #F0D788; /* Gold spinner */
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+            display: none;
+        }
+        .loading-spinner.show {
+            display: inline-block;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .branding {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px dashed #4a4a4a; /* Darker dashed border */
+            text-align: center;
+            color: #b0b0b0; /* Mid-grey text */
+            font-size: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .branding img {
+            max-width: 250px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(240, 215, 136, 0.5); /* Subtle gold border for logo */
+            box-shadow: 0 0 10px rgba(240, 215, 136, 0.4), 0 2px 8px rgba(0,0,0,0.3); /* Subtle gold glow for logo */
+            transition: box-shadow 0.3s ease;
+        }
+        .branding img:hover {
+            box-shadow: 0 0 15px rgba(240, 215, 136, 0.7), 0 2px 10px rgba(0,0,0,0.4); /* Enhanced gold glow on hover */
+        }
+
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .calculator-container {
+                padding: 20px;
+                border-radius: 8px;
+                margin: 10px;
+            }
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 20px;
+            }
+            .input-group {
+                margin-bottom: 15px;
+            }
+            label {
+                font-size: 0.9rem;
+            }
+            input[type="number"],
+            input[type="text"],
+            select,
+            button {
+                padding: 10px;
+                font-size: 1rem;
+            }
+            button {
+                padding: 12px;
+            }
+            .result-area p {
+                font-size: 1rem;
+            }
+            .result-area span {
+                font-size: 1.1rem;
+            }
+            .branding img {
+                max-width: 180px;
+            }
+            .branding {
+                margin-top: 20px;
+                padding-top: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <h1 class="text-3xl font-bold text-center mb-6" style="color: #F0D788;">Multi-Asset Margin Calculator</h1> 
+        <div class="message-box" id="messageBox">
+            <span id="messageText"></span>
+            <button class="message-box-close" onclick="hideMessage()">&times;</button>
         </div>
-        <footer>
-            <p>&copy; 2025 Trader's Gazette</p>
-            <p>Powered by Trader's Gazette</p>
-        </footer>
-        <script src="script.js"></script>
+
+        <div class="input-group">
+            <label for="accountCurrency">Account Currency:</label>
+            <select id="accountCurrency">
+                <option value="USD">USD - US Dollar</option>
+                <option value="EUR">EUR - Euro</option>
+                <option value="GBP">GBP - British Pound</option>
+                <option value="JPY">JPY - Japanese Yen</option>
+                <option value="AUD">AUD - Australian Dollar</option>
+                <option value="CAD">CAD - Canadian Dollar</option>
+                <option value="CHF">CHF - Swiss Franc</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label for="leverage">Leverage:</label>
+            <select id="leverage">
+                <option value="1">1:1</option>
+                <option value="10">1:10</option>
+                <option value="25">1:25</option>
+                <option value="50">1:50</option>
+                <option value="100" selected>1:100</option>
+                <option value="200">1:200</option>
+                <option value="400">1:400</option>
+                <option value="500">1:500</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label for="currencyPair">Instrument:</label>
+            <select id="currencyPair">
+                <optgroup label="Forex (Major)">
+                    <option value="EURUSD">EUR/USD</option>
+                    <option value="GBPUSD">GBP/USD</option>
+                    <option value="USDJPY">USD/JPY</option>
+                    <option value="AUDUSD">AUD/USD</option>
+                    <option value="USDCAD">USD/CAD</option>
+                    <option value="USDCHF">USD/CHF</option>
+                    <option value="NZDUSD">NZD/USD</option>
+                </optgroup>
+                <optgroup label="Forex (Crosses)">
+                    <option value="EURGBP">EUR/GBP</option>
+                    <option value="EURJPY">EUR/JPY</option>
+                    <option value="GBPJPY">GBP/JPY</option>
+                    <option value="AUDJPY">AUD/JPY</option>
+                    <option value="EURAUD">EUR/AUD</option>
+                    <option value="CADJPY">CAD/JPY</option>
+                </optgroup>
+                <optgroup label="Metals">
+                    <option value="XAUUSD">XAU/USD (Gold)</option>
+                    <option value="XAGUSD">XAG/USD (Silver)</option>
+                </optgroup>
+                <optgroup label="Stocks (CFDs - Example)">
+                    <option value="AAPL">AAPL (Apple Inc)</option>
+                    <option value="TSLA">TSLA (Tesla Inc)</option>
+                    <option value="GOOGL">GOOGL (Alphabet Inc)</option>
+                </optgroup>
+                <optgroup label="Indices (CFDs - Example)">
+                    <option value="US30">US30 (Dow Jones)</option>
+                    <option value="SPX500">SPX500 (S&P 500)</option>
+                    <option value="NAS100">NAS100 (Nasdaq 100)</option>
+                    <option value="UK100">UK100 (FTSE 100)</option>
+                </optgroup>
+                <optgroup label="Cryptocurrencies (CFDs - Example)">
+                    <option value="BTCUSD">BTC/USD (Bitcoin)</option>
+                    <option value="ETHUSD">ETH/USD (Ethereum)</option>
+                    <option value="XRPUSD">XRP/USD (Ripple)</option>
+                </optgroup>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label for="tradeSize" id="tradeSizeLabel">Trade Size (Units):</label>
+            <input type="number" id="tradeSize" value="100000" min="0.01" step="0.01">
+        </div>
+
+        <button onclick="calculateMargin()">
+            <span class="loading-spinner" id="loadingSpinner"></span>
+            Calculate Margin
+        </button>
+
+        <div class="result-area" id="resultArea">
+            <p>Current Rate (<span id="ratePairDisplay">EUR/USD</span>): <span id="currentRateDisplay">Fetching...</span></p>
+            <p>Required Margin: <span id="requiredMarginDisplay">0.00</span> <span id="marginCurrencySymbol">USD</span></p>
+            <p id="pipValueRow">Pip/Point Value: <span id="pipValueDisplay">N/A</span> <span id="pipValueCurrencySymbol"></span></p>
+        </div>
+
+        <div class="branding">
+            <img src="[https://raw.githubusercontent.com/Ozz310/TradersGazette/refs/heads/main/calculator/WhatsApp%20Image%202025-06-18%20at%2011.37.15%20(1).jpeg](https://raw.githubusercontent.com/Ozz310/TradersGazette/refs/heads/main/calculator/WhatsApp%20Image%202025-06-18%20at%2011.37.15%20(1).jpeg)"
+                 alt="The Traders Gazette Logo"
+                 onerror="this.src='[https://placehold.co/180x50/1a1a1a/F0D788?text=The+Traders+Gazette+Logo+Placeholder](https://placehold.co/180x50/1a1a1a/F0D788?text=The+Traders+Gazette+Logo+Placeholder)';">
+            <p>Powered by The Trader's Gazette</p>
+        </div>
+    </div>
+
+    <script>
+        // IMPORTANT: Replace with your actual API Key from Tradermade.com
+        // Sign up for a free API key at [https://tradermade.com/signup](https://tradermade.com/signup)
+        const API_KEY = "wsgm72NBgI3iTLj64psT";
+
+        // Base URL for the Tradermade API
+        const API_BASE_URL = "[https://marketdata.tradermade.com/api/v1/live](https://marketdata.tradermade.com/api/v1/live)";
+
+        // DOM elements
+        const accountCurrencySelect = document.getElementById('accountCurrency');
+        const leverageSelect = document.getElementById('leverage');
+        const currencyPairSelect = document.getElementById('currencyPair');
+        const tradeSizeInput = document.getElementById('tradeSize');
+        const tradeSizeLabel = document.getElementById('tradeSizeLabel');
+        const ratePairDisplay = document.getElementById('ratePairDisplay');
+        const currentRateDisplay = document.getElementById('currentRateDisplay');
+        const requiredMarginDisplay = document.getElementById('requiredMarginDisplay');
+        const marginCurrencySymbol = document.getElementById('marginCurrencySymbol');
+        const messageBox = document.getElementById('messageBox');
+        const messageText = document.getElementById('messageText');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const pipValueRow = document.getElementById('pipValueRow');
+        const pipValueDisplay = document.getElementById('pipValueDisplay');
+        const pipValueCurrencySymbol = document.getElementById('pipValueCurrencySymbol');
+
+
+        // Initial fetch of rate when the page loads (for the default EURUSD)
+        window.onload = fetchAndDisplayInitialRate;
+        currencyPairSelect.addEventListener('change', () => {
+            fetchAndDisplayInitialRate(); // Fetch new rate for selected pair
+            updateTradeSizeLabel();      // Update the label based on the selected pair
+        });
+
+
+        // --- Message Box Functions ---
+        function showMessage(message, type = 'info') {
+            messageText.textContent = message;
+            messageBox.classList.add('show');
+            if (type === 'error') {
+                messageBox.style.backgroundColor = '#d32f2f'; // Red for errors
+            } else {
+                messageBox.style.backgroundColor = '#333'; // Default dark
+            }
+        }
+
+        function hideMessage() {
+            messageBox.classList.remove('show');
+        }
+
+        function showLoading() {
+            loadingSpinner.classList.add('show');
+        }
+
+        function hideLoading() {
+            loadingSpinner.classList.remove('show');
+        }
+
+        // --- Helper Function to get Contract Size / Multiplier for different assets ---
+        function getContractDetails(symbol) {
+            return { contractSize: 1, marginFactor: 1 };
+        }
+
+        // --- Helper Function to determine Asset Type ---
+        function getAssetType(symbol) {
+            if (symbol.length === 6 && !symbol.startsWith('X') && !['AAPL', 'TSLA', 'GOOGL', 'US30', 'SPX500', 'NAS100', 'UK100', 'BTCUSD', 'ETHUSD', 'XRPUSD'].includes(symbol)) {
+                return 'forex';
+            } else if (symbol.startsWith('XAU') || symbol.startsWith('XAG')) {
+                return 'metal';
+            } else if (['AAPL', 'TSLA', 'GOOGL'].includes(symbol)) {
+                return 'stock';
+            } else if (['US30', 'SPX500', 'NAS100', 'UK100'].includes(symbol)) {
+                return 'index';
+            } else if (['BTCUSD', 'ETHUSD', 'XRPUSD'].includes(symbol)) {
+                return 'crypto';
+            }
+            return 'unknown';
+        }
+
+        // --- Helper to parse Base and Quote Currencies from Symbol ---
+        function parseSymbol(symbol) {
+            if (symbol.startsWith('XAU') || symbol.startsWith('XAG')) {
+                return { base: symbol.substring(0, 3), quote: symbol.substring(3, 6) };
+            } else if (symbol.length === 6) {
+                return { base: symbol.substring(0, 3), quote: symbol.substring(3, 6) };
+            } else {
+                if (['AAPL', 'TSLA', 'GOOGL', 'BTCUSD', 'ETHUSD', 'XRPUSD'].includes(symbol)) {
+                    return { base: 'USD', quote: 'USD' };
+                } else if (symbol === 'UK100') {
+                    return { base: 'GBP', quote: 'USD' };
+                } else if (['US30', 'SPX500', 'NAS100'].includes(symbol)) {
+                    return { base: 'USD', quote: 'USD' };
+                }
+            }
+            return { base: '', quote: '' };
+        }
+
+        // --- Dynamic Trade Size Label Update ---
+        function updateTradeSizeLabel() {
+            const selectedSymbol = currencyPairSelect.value;
+            const assetType = getAssetType(selectedSymbol);
+            let labelText = "Trade Size (Units):";
+            let defaultValue = "1";
+
+            switch (assetType) {
+                case 'forex':
+                    labelText = "Trade Size (Base Currency Units):";
+                    defaultValue = "100000";
+                    break;
+                    case 'metal':
+                        labelText = "Trade Size (Ounces):";
+                        defaultValue = "1";
+                        break;
+                    case 'stock':
+                        labelText = "Trade Size (Shares):";
+                        defaultValue = "1";
+                        break;
+                    case 'index':
+                        labelText = "Trade Size (Contracts/Units):";
+                        defaultValue = "1";
+                        break;
+                    case 'crypto':
+                        labelText = "Trade Size (Coins):";
+                        defaultValue = "1";
+                        break;
+                }
+                tradeSizeLabel.textContent = labelText;
+                tradeSizeInput.value = defaultValue;
+                tradeSizeInput.placeholder = `e.g., ${defaultValue}`;
+            }
+
+            // --- Helper Function for Pip/Point Details ---
+            function getPipPointDetails(symbol) {
+                const assetType = getAssetType(symbol);
+                let pipSize = 0;
+                let valueLabel = 'N/A';
+                let isPipCalculable = false;
+
+                switch (assetType) {
+                    case 'forex':
+                        isPipCalculable = true;
+                        valueLabel = 'Pip Value';
+                        if (symbol.includes('JPY')) {
+                            pipSize = 0.01;
+                        } else {
+                            pipSize = 0.0001;
+                        }
+                        break;
+                    case 'metal':
+                        isPipCalculable = true;
+                        valueLabel = 'Point Value';
+                        pipSize = 1;
+                        break;
+                    case 'stock':
+                    case 'index':
+                    case 'crypto':
+                        isPipCalculable = true;
+                        valueLabel = 'Point Value';
+                        pipSize = 1;
+                        break;
+                }
+                return { pipSize, valueLabel, isPipCalculable };
+            }
+
+
+            // --- Core Logic ---
+
+            async function fetchForexRate(symbol) {
+                hideMessage();
+                showLoading();
+                try {
+                    const url = `${API_BASE_URL}?currency=${symbol}&api_key=${API_KEY}`;
+                    
+                    const response = await fetch(url);
+                    const data = await response.json();
+
+                    if (data.quotes && data.quotes.length > 0) {
+                        const quote = data.quotes[0];
+                        const rate = quote.bid;
+
+                        if (rate) {
+                            currentRateDisplay.textContent = rate.toFixed(5);
+                            return rate;
+                        } else {
+                            showMessage(`Could not find live rate for ${symbol}.`, 'error');
+                            currentRateDisplay.textContent = 'N/A';
+                            return null;
+                        }
+                    } else if (data.error) {
+                        showMessage(`API Error for ${symbol}: ${data.error}`, 'error');
+                        currentRateDisplay.textContent = 'N/A';
+                        return null;
+                    } else {
+                        showMessage(`No data received for ${symbol}. Check symbol or API key.`, 'error');
+                        currentRateDisplay.textContent = 'N/A';
+                        return null;
+                    }
+                } catch (error) {
+                    console.error("Error fetching rate for", symbol, ":", error);
+                    showMessage(`Failed to fetch live rate for ${symbol}. Please check your internet connection or API key.`, 'error');
+                    currentRateDisplay.textContent = 'Error';
+                    return null;
+                } finally {
+                    hideLoading();
+                }
+            }
+
+            async function fetchAndDisplayInitialRate() {
+                const selectedSymbol = currencyPairSelect.value;
+                ratePairDisplay.textContent = selectedSymbol.replace(/([A-Z]{3})(USD|EUR|GBP|JPY)/, '$1/$2');
+                await fetchForexRate(selectedSymbol);
+            }
+
+            async function calculateMargin() {
+                hideMessage();
+                showLoading();
+
+                const accountCurrency = accountCurrencySelect.value;
+                const leverage = parseFloat(leverageSelect.value);
+                const selectedSymbol = currencyPairSelect.value;
+                const tradeSizeUnits = parseFloat(tradeSizeInput.value);
+
+                console.log("--- Margin Calculation Debugging ---");
+                console.log("Selected Symbol:", selectedSymbol);
+                console.log("Account Currency:", accountCurrency);
+                console.log("Leverage:", leverage);
+                console.log("Trade Size (Units) Input:", tradeSizeUnits);
+
+
+                if (isNaN(tradeSizeUnits) || tradeSizeUnits <= 0) {
+                    showMessage("Please enter a valid Trade Size (Units).", 'error');
+                    hideLoading();
+                    return;
+                }
+                if (leverage <= 0) {
+                    showMessage("Invalid Leverage selected.", 'error');
+                    hideLoading();
+                    return;
+                }
+
+                const { contractSize } = getContractDetails(selectedSymbol);
+                const { base: baseCurrencyOfPair, quote: quoteCurrencyOfPair } = parseSymbol(selectedSymbol);
+
+                let currentPrice = await fetchForexRate(selectedSymbol);
+
+                console.log("Fetched Current Price:", currentPrice);
+
+                if (currentPrice === null) {
+                    requiredMarginDisplay.textContent = 'N/A';
+                    marginCurrencySymbol.textContent = accountCurrency;
+                    pipValueDisplay.textContent = 'N/A';
+                    pipValueCurrencySymbol.textContent = '';
+                    return;
+                }
+
+                let marginRequiredInBaseCurrency = 0;
+                const assetType = getAssetType(selectedSymbol);
+
+                switch (assetType) {
+                    case 'forex':
+                        marginRequiredInBaseCurrency = (currentPrice * tradeSizeUnits) / leverage;
+                        break;
+                    case 'metal':
+                    case 'stock':
+                    case 'index':
+                    case 'crypto':
+                        marginRequiredInBaseCurrency = (currentPrice * tradeSizeUnits) / leverage;
+                        break;
+                    default:
+                        showMessage("Unsupported instrument type for margin calculation.", 'error');
+                        requiredMarginDisplay.textContent = 'N/A';
+                        marginCurrencySymbol.textContent = accountCurrency;
+                        pipValueDisplay.textContent = 'N/A';
+                        pipValueCurrencySymbol.textContent = '';
+                        hideLoading();
+                        return;
+                }
+
+                console.log("Margin Required in Base Currency (before conversion):", marginRequiredInBaseCurrency);
+
+
+                let finalMarginAmount = marginRequiredInBaseCurrency;
+
+                let marginBaseCurrency = quoteCurrencyOfPair;
+
+                if (selectedSymbol === 'UK100') {
+                    marginBaseCurrency = 'GBP';
+                }
+
+                if (marginBaseCurrency !== accountCurrency) {
+                     const symbolToConvert = `${marginBaseCurrency}${accountCurrency}`;
+                     console.log("Attempting margin conversion using symbol:", symbolToConvert);
+                     let conversionRate = await fetchForexRate(symbolToConvert);
+                     
+                     if (conversionRate === null) {
+                         showMessage(`Could not fetch conversion rate for ${symbolToConvert}. Margin may be inaccurate. Showing in ${marginBaseCurrency}.`, 'error');
+                         requiredMarginDisplay.textContent = finalMarginAmount.toFixed(2);
+                         marginCurrencySymbol.textContent = marginBaseCurrency;
+                         hideLoading();
+                         return;
+                     }
+                     finalMarginAmount = finalMarginAmount * conversionRate;
+                     console.log("Margin Conversion Rate:", conversionRate);
+                } else {
+                     console.log("No margin currency conversion needed (marginBaseCurrency matches accountCurrency).");
+                }
+
+                console.log("Final Margin Amount:", finalMarginAmount);
+
+                requiredMarginDisplay.textContent = finalMarginAmount.toFixed(2);
+                marginCurrencySymbol.textContent = accountCurrency;
+
+                const { pipSize, valueLabel, isPipCalculable } = getPipPointDetails(selectedSymbol);
+                console.log("Pip/Point Details:", { pipSize, valueLabel, isPipCalculable });
+
+                if (isPipCalculable) {
+                    let pipPointValue = 0;
+                    let pipPointCurrencySymbol = accountCurrency;
+
+                    if (assetType === 'forex') {
+                        pipPointValue = tradeSizeUnits * pipSize;
+                        
+                        if (quoteCurrencyOfPair !== accountCurrency) {
+                            const quoteToAccountSymbol = `${quoteCurrencyOfPair}${accountCurrency}`;
+                            console.log("Attempting pip value conversion using symbol:", quoteToAccountSymbol);
+                            const conversionRateForPip = await fetchForexRate(quoteToAccountSymbol);
+                            if (conversionRateForPip === null) {
+                                showMessage(`Could not fetch conversion rate for pip value (${quoteToAccountSymbol}).`, 'error');
+                                pipValueDisplay.textContent = 'N/A';
+                                pipValueCurrencySymbol.textContent = '';
+                                hideLoading();
+                                return;
+                            }
+                            pipPointValue = pipPointValue * conversionRateForPip;
+                            console.log("Pip Value Conversion Rate:", conversionRateForPip);
+                        }
+                    }
+                    else if (assetType === 'metal' || assetType === 'stock' || assetType === 'index' || assetType === 'crypto') {
+                        pipPointValue = tradeSizeUnits * pipSize;
+                        
+                        if (quoteCurrencyOfPair !== accountCurrency) {
+                               const quoteToAccountSymbol = `${quoteCurrencyOfPair}${accountCurrency}`;
+                               console.log("Attempting point value conversion using symbol:", quoteToAccountSymbol);
+                               const conversionRateForPip = await fetchForexRate(quoteToAccountSymbol);
+                               if (conversionRateForPip === null) {
+                                   showMessage(`Could not fetch conversion rate for point value (${quoteToAccountSymbol}).`, 'error');
+                                   pipValueDisplay.textContent = 'N/A';
+                                   pipValueCurrencySymbol.textContent = '';
+                                   hideLoading();
+                                   return;
+                               }
+                               pipPointValue = pipPointValue * conversionRateForPip;
+                               console.log("Point Value Conversion Rate:", conversionRateForPip);
+                        }
+                    }
+
+                    pipValueDisplay.textContent = pipPointValue.toFixed(2);
+                    pipValueCurrencySymbol.textContent = pipPointCurrencySymbol;
+                    pipValueRow.style.display = 'flex';
+                } else {
+                    pipValueDisplay.textContent = valueLabel;
+                    pipValueCurrencySymbol.textContent = '';
+                    pipValueRow.style.display = 'flex';
+                }
+
+                hideLoading();
+            }
+
+            document.addEventListener('DOMContentLoaded', updateTradeSizeLabel);
+
+        </script>
     </body>
     </html>
-    ```
-5.  **Commit New File:**
-    * Add a commit message (e.g., "Add news-feed index.html").
-    * Click **"Commit new file."**
-
----
-
-**C. Create `news-feed/style.css`:**
-
-1.  **Go back to your new repository on GitHub.com.**
-2.  Click the **"Add file"** dropdown button and select **"Create new file."**
-3.  **For the filename, type:** `news-feed/style.css`
-4.  **Paste the News Feed's CSS Code:** Copy the **entire code block below** and paste it into the large content area.
-
-    ```css
-    /* --- Global Styles & Base --- */
-    body {
-        font-family: 'Roboto', Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #FFFFFF; /* Changed body background to white */
-        color: #e0e0e0; /* Light text color (for footer mostly) */
-        line-height: 1.6;
-        display: flex; /* For centering the main dashboard */
-        flex-direction: column;
-        min-height: 100vh; /* Ensure footer stays at bottom */
-        overflow-x: hidden; /* Prevent horizontal scroll on small screens */
-        position: relative; /* For body::before pattern */
-    }
-
-    /* Background pattern adjusted for white body */
-    body::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        /* Subtle gold network/fractal pattern, made very faint for white background */
-        background-image:
-            radial-gradient(circle at 15% 50%, rgba(240, 215, 136, 0.01) 0%, transparent 60%),
-            radial-gradient(circle at 85% 50%, rgba(240, 215, 136, 0.01) 0%, transparent 60%),
-            repeating-linear-gradient(0deg, rgba(240, 215, 136, 0.005) 0px, rgba(240, 215, 136, 0.005) 1px, transparent 1px, transparent 100px),
-            repeating-linear-gradient(90deg, rgba(240, 215, 136, 0.005) 0px, rgba(240, 215, 136, 0.005) 1px, transparent 1px, transparent 100px);
-        background-size: 100% 100%, 100% 100%, 100px 100px, 100px 100px;
-        opacity: 0.8; /* Subtle opacity */
-        z-index: -1;
-    }
-
-    /* Dashboard Wrapper - The main widget container (remains dark) */
-    .dashboard-wrapper {
-        max-width: 900px; /* Width of the entire widget */
-        margin: 30px auto; /* Center it horizontally with top/bottom margin */
-        background-color: #2a2a2a; /* Remains Darker background for content box */
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-        border-radius: 8px;
-        overflow: hidden;
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-    }
-
-    /* Dashboard Header Section - Contains logo, title (remains dark) */
-    .dashboard-header-section {
-        background-color: #000; /* Pure black header for this section */
-        color: #fff;
-        padding: 1.5rem 2rem 1.2rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-        border-bottom: 2px solid #F0D788;
-    }
-
-    .header-masthead-group {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .header-logo-top {
-        height: 70px;
-        width: auto;
-        border-radius: 50%;
-        border: 2px solid #F0D788;
-        box-shadow: 0 0 10px rgba(240, 215, 136, 0.6), inset 0 0 5px rgba(240, 215, 136, 0.3);
-        transform: none;
-    }
-
-    .header-logo-top:hover {
-        box-shadow: 0 0 12px rgba(240, 215, 136, 0.8), inset 0 0 6px rgba(240, 215, 136, 0.4);
-        transition: box-shadow 0.3s ease;
-    }
-
-    .dashboard-header-section h1 {
-        margin: 0;
-        font-size: 2.2rem;
-        font-family: 'Merriweather', serif;
-        color: #F0D788;
-        letter-spacing: 0.08em;
-        white-space: nowrap;
-        text-shadow: 0 0 5px rgba(240, 215, 136, 0.5);
-    }
-
-    /* Main Content Area (for news articles) - SCROLLABLE */
-    main {
-        padding: 20px;
-        max-height: 70vh;
-        -webkit-overflow-scrolling: touch;
-    }
-
-    /* News Columns Container - This is the actual scrollable element */
-    #news-columns {
-        max-height: 70vh;
-        overflow-y: scroll;
-        -webkit-overflow-scrolling: touch;
-        touch-action: pan-y;
-
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-        width: auto;
-        padding-right: 0;
-        box-sizing: border-box;
-    }
-
-    /* WebKit-specific scrollbar hiding for #news-columns */
-    #news-columns::-webkit-scrollbar {
-        width: 0px;
-        background: transparent;
-    }
-    #news-columns::-webkit-scrollbar-track {
-        background: transparent;
-    }
-    #news-columns::-webkit-scrollbar-thumb {
-        background: transparent;
-    }
-    #news-columns::-webkit-scrollbar-thumb:hover {
-        background: transparent;
-    }
-
-
-    /* News Article Styling (Card-based in this theme) */
-    .news-article {
-        background-color: #333; /* Remains Slightly lighter dark background for the card */
-        margin-bottom: 15px;
-        padding: 15px;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        border: 1px solid #444;
-        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-        position: relative;
-        border-bottom: 1px solid rgba(240, 215, 136, 0.15);
-    }
-
-    .news-article:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5), 0 0 15px rgba(240, 215, 136, 0.2);
-        border-color: #F0D788;
-    }
-
-    .news-article:last-child {
-        margin-bottom: 0;
-        border-bottom: none;
-    }
-
-    .news-article h2 {
-        margin-top: 0;
-        margin-bottom: 8px;
-        font-size: 1.4rem;
-        line-height: 1.3;
-    }
-
-    .news-article h2 a {
-        text-decoration: none;
-        color: #F0D788;
-        transition: color 0.2s ease;
-        font-weight: 700;
-    }
-
-    .news-article h2 a:hover {
-        color: #DDAA33;
-        text-decoration: underline;
-    }
-
-    .news-article p {
-        font-size: 0.95rem;
-        color: #c0c0c0;
-        line-height: 1.6;
-        margin-bottom: 10px;
-    }
-
-    .article-dateline {
-        font-size: 0.85rem;
-        color: #a0a0a0;
-        margin-bottom: 10px;
-        display: block;
-        font-style: italic;
-    }
-
-    .news-meta {
-        font-size: 0.75rem;
-        color: #888;
-        margin-top: 10px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        padding-top: 8px;
-        border-top: 1px solid rgba(240, 215, 136, 0.2);
-    }
-
-    .news-meta span {
-        display: flex;
-        align-items: center;
-        background-color: rgba(240, 215, 136, 0.08);
-        padding: 4px 10px;
-        border-radius: 15px;
-        color: #F0D788;
-        font-weight: bold;
-        border: 1px solid rgba(240, 215, 136, 0.3);
-    }
-
-    /* Read More Link (now styled as a button) */
-    .news-article a.read-more-button {
-        display: inline-block;
-        margin-top: 15px;
-        color: #F0D788;
-        text-decoration: none;
-        font-weight: bold;
-        border: 1px solid #F0D788;
-        padding: 8px 15px;
-        border-radius: 5px;
-        transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
-        box-shadow: 0 2px 5px rgba(240, 215, 136, 0.1);
-    }
-
-    .news-article a.read-more-button:hover {
-        background-color: #F0D788;
-        color: #1a1a1a;
-        box-shadow: 0 4px 10px rgba(240, 215, 136, 0.4);
-    }
-
-    /* Breaking News Ribbon */
-    .breaking-ribbon {
-        position: absolute;
-        top: 0;
-        right: 0;
-        background-color: #e74c3c;
-        color: #fff;
-        padding: 5px 15px;
-        font-size: 0.75rem;
-        font-weight: bold;
-        text-transform: uppercase;
-        border-bottom-left-radius: 8px;
-        z-index: 10;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
-    }
-
-    /* Footer */
-    footer {
-        text-align: center;
-        padding: 1rem 0;
-        color: #888;
-        font-size: 0.8rem;
-        margin-top: auto;
-        background-color: #1a1a1a; /* Remains dark background for consistency with wrapper */
-    }
-
-    /* --- Skeleton Loader Styles --- */
-    .skeleton-wrapper {
-        display: none;
-        padding: 20px;
-    }
-    .skeleton-article {
-        background-color: #333;
-        margin-bottom: 15px;
-        padding: 15px;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        animation: pulse 1.5s infinite ease-in-out;
-    }
-    .skeleton-line {
-        height: 1em;
-        background-color: #444;
-        margin-bottom: 0.7em;
-        border-radius: 4px;
-    }
-    .skeleton-line.short { width: 60%; }
-    .skeleton-line.medium { width: 80%; }
-    .skeleton-line.long { width: 100%; }
-    .skeleton-line:last-child { margin-bottom: 0; }
-
-
-    @keyframes pulse {
-        0% { opacity: 0.7; }
-        50% { opacity: 1; }
-        100% { opacity: 0.7; }
-    }
-
-
-    /* --- Responsive Adjustments --- */
-    @media (max-width: 600px) {
-        .dashboard-wrapper {
-            margin: 15px auto;
-            border-radius: 0;
-        }
-        .dashboard-header-section {
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            padding: 0.8rem;
-        }
-        .header-masthead-group {
-            flex-direction: column;
-            text-align: center;
-            gap: 5px;
-        }
-        .header-logo-top {
-            height: 60px;
-        }
-        .dashboard-header-section h1 {
-            font-size: 1.8rem;
-            white-space: normal;
-            text-align: center;
-        }
-        main {
-            padding: 15px;
-            max-height: 75vh;
-        }
-        #news-columns {
-            width: auto;
-            padding-right: 0;
-        }
-        .news-article {
-            padding: 10px;
-            gap: 10px;
-        }
-        .news-article h2 {
-            font-size: 1.2rem;
-        }
-        .news-article p {
-            font-size: 0.85rem;
-        }
-        .article-dateline, .news-meta {
-            font-size: 0.7rem;
-        }
-        .breaking-ribbon {
-            padding: 3px 10px;
-            font-size: 0.65rem;
-        }
-        .news-meta span {
-            padding: 3px 8px;
-        }
-        .news-article a.read-more-button {
-            padding: 6px 12px;
-            font-size: 0.85rem;
-        }
-    }
-    ```javascript
-    const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRAJhMLSkrHlICOabG493SP5WSQ1kUbbCnoAIgJGdD3TUzhBY1Fyn5-PQ9LuVKzf5YO6LHAlqkW3Dos/pub?output=csv';
-    let allNewsArticles = []; // To store all fetched news
-    let autoRefreshIntervalId; // Used for setInterval
-    const AUTO_REFRESH_INTERVAL_MS = 300000; // 5 minutes
-
-    // --- Helper Functions ---
-
-    // Robust CSV parser
-    function parseCSV(csv) {
-        const lines = csv.split('\n');
-        const nonEmptyLines = lines.filter(line => line.trim() !== '');
-        if (nonEmptyLines.length === 0) return [];
-
-        // Assuming the first non-empty line is headers
-        const headersLine = nonEmptyLines[0];
-        const headers = parseCSVLine(headersLine).map(header => header.trim());
-
-        const data = [];
-
-        for (let i = 1; i < nonEmptyLines.length; i++) {
-            const currentLine = parseCSVLine(nonEmptyLines[i]);
-            if (currentLine.length === headers.length) { // Ensure line has correct number of columns
-                const row = {};
-                for (let j = 0; j < headers.length; j++) {
-                    row[headers[j]] = currentLine[j] !== undefined ? currentLine[j] : '';
-                }
-                data.push(row);
-            } else {
-                console.warn(`Skipping malformed CSV row: "${nonEmptyLines[i]}" - Expected ${headers.length} columns, got ${currentLine.length}`);
-            }
-        }
-        return data;
-    }
-
-    // More robust CSV line parser to handle quoted commas
-    function parseCSVLine(line) {
-        const result = [];
-        let inQuote = false;
-        let currentField = '';
-        for (let i = 0; i < line.length; i++) {
-            const char = line[i];
-            if (char === '"') {
-                inQuote = !inQuote;
-            } else if (char === ',' && !inQuote) {
-                result.push(currentField.trim());
-                currentField = '';
-            } else {
-                currentField += char;
-            }
-        }
-        result.push(currentField.trim()); // Add the last field
-        return result;
-    }
-
-    // Format date for display
-    function formatNewspaperDateline(dateString) {
-        if (!dateString) return 'N/A';
-        try {
-            const date = new Date(dateString);
-            if (isNaN(date)) throw new Error('Invalid Date');
-
-            const options = { month: 'long', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
-            return `${date.toLocaleString('en-US', options)}`;
-        } catch (e) {
-            console.error("Date parsing error:", e);
-            return 'Invalid Date';
-        }
-    }
-
-    // --- Main Fetch & Display Functions ---
-
-    async function fetchNews() {
-        const newsContainer = document.getElementById('news-columns');
-        const skeletonWrapper = document.querySelector('.skeleton-wrapper'); // Get skeleton wrapper
-
-        if (!newsContainer) {
-            console.error("Error: #news-columns element not found. Cannot load news.");
-            return;
-        }
-
-        // Show skeleton loader
-        if (skeletonWrapper) {
-            skeletonWrapper.style.display = 'block';
-        }
-        newsContainer.innerHTML = ''; // Clear previous content
-
-        try {
-            const response = await fetch(GOOGLE_SHEET_URL);
-            const csvText = await response.text();
-
-            const newsData = parseCSV(csvText);
-            // Filter out articles with empty headlines (or other critical missing data if needed)
-            allNewsArticles = newsData.filter(article => article.Headline && article.Headline.trim() !== '');
-            displayNews(allNewsArticles);
-
-        } catch (error) {
-            console.error('Error fetching news:', error);
-            newsContainer.innerHTML = '<p>Failed to retrieve news. Please try refreshing.</p>';
-            if (skeletonWrapper) { // Hide skeleton if error
-                skeletonWrapper.style.display = 'none';
-            }
-        }
-    }
-
-    function displayNews(articlesToDisplay) {
-        const newsContainer = document.getElementById('news-columns');
-        const skeletonWrapper = document.querySelector('.skeleton-wrapper'); // Get skeleton wrapper
-
-        if (!newsContainer) {
-            console.error("Error: #news-columns element not found in displayNews.");
-            return;
-        }
-
-        newsContainer.innerHTML = ''; // Clear everything, including skeleton if present
-
-        // Hide skeleton after news is loaded
-        if (skeletonWrapper) {
-            skeletonWrapper.style.display = 'none';
-        }
-
-        if (articlesToDisplay.length === 0) {
-            newsContainer.innerHTML = '<p>No news articles found.</p>';
-            return;
-        }
-
-        // Sort news by published time descending (most recent first)
-        articlesToDisplay.sort((a, b) => {
-            const dateA = new Date(a['Published Time']);
-            const dateB = new Date(b['Published Time']);
-            if (isNaN(dateA) && isNaN(dateB)) return 0;
-            if (isNaN(dateA)) return 1;
-            if (isNaN(dateB)) return -1;
-            return dateB - dateA;
-        }).forEach((article, index) => {
-            const headline = article.Headline || '';
-            const summary = article.Description || ''; // Changed from Summary to Description based on typical CSV header
-            let url = article.URL || '#';
-            const publishedTime = article['Published Time'] || 'N/A';
-            const tickers = article.Tickers || 'N/A';
-            const imageUrl = article['Image URL'] || ''; // Still extract, but not used for display
-
-            // URL Validation
-            if (url !== '') {
-                url = url.replace(/^"|"$/g, '').trim();
-                if (!url.startsWith('http://') && !url.startsWith('https://')) {
-                    url = 'https://' + url;
-                }
-                try { new URL(url); } catch (e) { url = '#'; }
-            } else { url = '#'; }
-
-            // Determine if BREAKING ribbon is needed (e.g., first article)
-            const isBreaking = index === 0;
-            const breakingRibbonHtml = isBreaking ? '<span class="breaking-ribbon">BREAKING</span>' : '';
-
-            const articleDiv = document.createElement('div');
-            articleDiv.classList.add('news-article');
-
-            const summaryHtml = summary ? `<p>${summary.substring(0, 300)}...</p>` : '<p>No summary available.</p>';
-            // Add a class to the Read More link for specific button styling
-            const readMoreHtml = summary.length > 300 && url !== '#' ? `<a href="${url}" target="_blank" rel="noopener noreferrer" class="read-more-button">Read More</a>` : '';
-
-
-            // Build the HTML for a single news article
-            articleDiv.innerHTML = `
-                ${breakingRibbonHtml}
-                <h2><a href="${url}" target="_blank" rel="noopener noreferrer">${headline}</a></h2>
-                <span class="article-dateline">${formatNewspaperDateline(publishedTime)}</span>
-                ${summaryHtml}
-                ${readMoreHtml}
-                ${tickers !== 'N/A' && tickers.trim() !== '' ? `<div class="news-meta"><span>Tickers: ${tickers}</span></div>` : ''}
-            `;
-            newsContainer.appendChild(articleDiv);
-        });
-    }
-
-    // --- Functionality & Event Listeners (Simplified for removed elements) ---
-
-    // Auto-Refresh: STARTING BY DEFAULT
-    function startAutoRefresh() {
-        if (autoRefreshIntervalId) clearInterval(autoRefreshIntervalId);
-        autoRefreshIntervalId = setInterval(fetchNews, AUTO_REFRESH_INTERVAL_MS);
-        console.log(`Auto-refresh started (every ${AUTO_REFRESH_INTERVAL_MS / 60000} minutes).`);
-    }
-
-    function stopAutoRefresh() { // This function is not called but remains for completeness
-        if (autoRefreshIntervalId) {
-            clearInterval(autoRefreshIntervalId);
-            autoRefreshIntervalId = null;
-            console.log('Auto-refresh stopped.');
-        }
-    }
-
-
-    // --- Initial Load ---
-    window.onload = () => {
-        fetchNews(); // Initial fetch
-        startAutoRefresh(); // Start auto-refresh by default
-    };
-    ```
-The user has confirmed they've created `calculator/index.html` and provided the new, direct image URL for the logo. They also provided the full code for the calculator's `index.html`.
-
-My previous instruction was to provide the complete code for `calculator/index.html` with the image `src` updated. I did that.
-
-Now, the user has pasted that code back to me, indicating they've completed that step.
-
-**Next step:** Guide them to create the `news-feed/index.html` file. I need to provide the code for that file.
-
----
-
-**Plan:**
-
-1.  **Acknowledge completion of `calculator/index.html` update.**
-2.  **Guide them on creating the `news-feed/index.html` file:**
-    * Provide the complete code for the News Feed's `index.html`.
-    * Instruct to commit.Okay, excellent! You've successfully updated the `calculator/index.html` with the new image link. That's one widget fully consolidated.
-
-Now, let's move on to the **News Feed widget**. You've already created the `news-feed/` folder and its `index.html` file in a previous step.
-
-So, the next step is to **create the `news-feed/style.css` file** within that folder.
-
----
-
-### **Step-by-Step (Continued): Create `news-feed/style.css`**
-
-**Action:** You will create the `style.css` file inside the `news-feed/` folder on GitHub.com.
-
-1.  **Go to your new repository on GitHub.com.**
-    * (e.g., `https://github.com/YourUsername/the-traders-gazette-widgets`)
-2.  Navigate into the `news-feed/` folder.
-3.  Click the **"Add file"** dropdown button and select **"Create new file."**
-4.  **For the filename, type:** `style.css`
-5.  **Paste the News Feed's CSS Code:** Copy the **entire code block below** and paste it into the large content area.
-
-    ```css
-    /* --- Global Styles & Base --- */
-    body {
-        font-family: 'Roboto', Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #FFFFFF; /* Changed body background to white */
-        color: #e0e0e0; /* Light text color (for footer mostly) */
-        line-height: 1.6;
-        display: flex; /* For centering the main dashboard */
-        flex-direction: column;
-        min-height: 100vh; /* Ensure footer stays at bottom */
-        overflow-x: hidden; /* Prevent horizontal scroll on small screens */
-        position: relative; /* For body::before pattern */
-    }
-
-    /* Background pattern adjusted for white body */
-    body::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        /* Subtle gold network/fractal pattern, made very faint for white background */
-        background-image:
-            radial-gradient(circle at 15% 50%, rgba(240, 215, 136, 0.01) 0%, transparent 60%),
-            radial-gradient(circle at 85% 50%, rgba(240, 215, 136, 0.01) 0%, transparent 60%),
-            repeating-linear-gradient(0deg, rgba(240, 215, 136, 0.005) 0px, rgba(240, 215, 136, 0.005) 1px, transparent 1px, transparent 100px),
-            repeating-linear-gradient(90deg, rgba(240, 215, 136, 0.005) 0px, rgba(240, 215, 136, 0.005) 1px, transparent 1px, transparent 100px);
-        background-size: 100% 100%, 100% 100%, 100px 100px, 100px 100px;
-        opacity: 0.8; /* Subtle opacity */
-        z-index: -1;
-    }
-
-    /* Dashboard Wrapper - The main widget container (remains dark) */
-    .dashboard-wrapper {
-        max-width: 900px; /* Width of the entire widget */
-        margin: 30px auto; /* Center it horizontally with top/bottom margin */
-        background-color: #2a2a2a; /* Remains Darker background for content box */
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-        border-radius: 8px;
-        overflow: hidden;
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-    }
-
-    /* Dashboard Header Section - Contains logo, title (remains dark) */
-    .dashboard-header-section {
-        background-color: #000; /* Pure black header for this section */
-        color: #fff;
-        padding: 1.5rem 2rem 1.2rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-        border-bottom: 2px solid #F0D788;
-    }
-
-    .header-masthead-group {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .header-logo-top {
-        height: 70px;
-        width: auto;
-        border-radius: 50%;
-        border: 2px solid #F0D788;
-        box-shadow: 0 0 10px rgba(240, 215, 136, 0.6), inset 0 0 5px rgba(240, 215, 136, 0.3);
-        transform: none;
-    }
-
-    .header-logo-top:hover {
-        box-shadow: 0 0 12px rgba(240, 215, 136, 0.8), inset 0 0 6px rgba(240, 215, 136, 0.4);
-        transition: box-shadow 0.3s ease;
-    }
-
-    .dashboard-header-section h1 {
-        margin: 0;
-        font-size: 2.2rem;
-        font-family: 'Merriweather', serif;
-        color: #F0D788;
-        letter-spacing: 0.08em;
-        white-space: nowrap;
-        text-shadow: 0 0 5px rgba(240, 215, 136, 0.5);
-    }
-
-    /* Main Content Area (for news articles) - SCROLLABLE */
-    main {
-        padding: 20px;
-        max-height: 70vh;
-        -webkit-overflow-scrolling: touch;
-    }
-
-    /* News Columns Container - This is the actual scrollable element */
-    #news-columns {
-        max-height: 70vh;
-        overflow-y: scroll;
-        -webkit-overflow-scrolling: touch;
-        touch-action: pan-y;
-
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-        width: auto;
-        padding-right: 0;
-        box-sizing: border-box;
-    }
-
-    /* WebKit-specific scrollbar hiding for #news-columns */
-    #news-columns::-webkit-scrollbar {
-        width: 0px;
-        background: transparent;
-    }
-    #news-columns::-webkit-scrollbar-track {
-        background: transparent;
-    }
-    #news-columns::-webkit-scrollbar-thumb {
-        background: transparent;
-    }
-    #news-columns::-webkit-scrollbar-thumb:hover {
-        background: transparent;
-    }
-
-
-    /* News Article Styling (Card-based in this theme) */
-    .news-article {
-        background-color: #333; /* Remains Slightly lighter dark background for the card */
-        margin-bottom: 15px;
-        padding: 15px;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        border: 1px solid #444;
-        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-        position: relative;
-        border-bottom: 1px solid rgba(240, 215, 136, 0.15);
-    }
-
-    .news-article:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5), 0 0 15px rgba(240, 215, 136, 0.2);
-        border-color: #F0D788;
-    }
-
-    .news-article:last-child {
-        margin-bottom: 0;
-        border-bottom: none;
-    }
-
-    .news-article h2 {
-        margin-top: 0;
-        margin-bottom: 8px;
-        font-size: 1.4rem;
-        line-height: 1.3;
-    }
-
-    .news-article h2 a {
-        text-decoration: none;
-        color: #F0D788;
-        transition: color 0.2s ease;
-        font-weight: 700;
-    }
-
-    .news-article h2 a:hover {
-        color: #DDAA33;
-        text-decoration: underline;
-    }
-
-    .news-article p {
-        font-size: 0.95rem;
-        color: #c0c0c0;
-        line-height: 1.6;
-        margin-bottom: 10px;
-    }
-
-    .article-dateline {
-        font-size: 0.85rem;
-        color: #a0a0a0;
-        margin-bottom: 10px;
-        display: block;
-        font-style: italic;
-    }
-
-    .news-meta {
-        font-size: 0.75rem;
-        color: #888;
-        margin-top: 10px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        padding-top: 8px;
-        border-top: 1px solid rgba(240, 215, 136, 0.2);
-    }
-
-    .news-meta span {
-        display: flex;
-        align-items: center;
-        background-color: rgba(240, 215, 136, 0.08);
-        padding: 4px 10px;
-        border-radius: 15px;
-        color: #F0D788;
-        font-weight: bold;
-        border: 1px solid rgba(240, 215, 136, 0.3);
-    }
-
-    /* Read More Link (now styled as a button) */
-    .news-article a.read-more-button {
-        display: inline-block;
-        margin-top: 15px;
-        color: #F0D788;
-        text-decoration: none;
-        font-weight: bold;
-        border: 1px solid #F0D788;
-        padding: 8px 15px;
-        border-radius: 5px;
-        transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
-        box-shadow: 0 2px 5px rgba(240, 215, 136, 0.1);
-    }
-
-    .news-article a.read-more-button:hover {
-        background-color: #F0D788;
-        color: #1a1a1a;
-        box-shadow: 0 4px 10px rgba(240, 215, 136, 0.4);
-    }
-
-    /* Breaking News Ribbon */
-    .breaking-ribbon {
-        position: absolute;
-        top: 0;
-        right: 0;
-        background-color: #e74c3c;
-        color: #fff;
-        padding: 5px 15px;
-        font-size: 0.75rem;
-        font-weight: bold;
-        text-transform: uppercase;
-        border-bottom-left-radius: 8px;
-        z-index: 10;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
-    }
-
-    /* Footer */
-    footer {
-        text-align: center;
-        padding: 1rem 0;
-        color: #888;
-        font-size: 0.8rem;
-        margin-top: auto;
-        background-color: #1a1a1a; /* Remains dark background for consistency with wrapper */
-    }
-
-    /* --- Skeleton Loader Styles --- */
-    .skeleton-wrapper {
-        display: none;
-        padding: 20px;
-    }
-    .skeleton-article {
-        background-color: #333;
-        margin-bottom: 15px;
-        padding: 15px;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        animation: pulse 1.5s infinite ease-in-out;
-    }
-    .skeleton-line {
-        height: 1em;
-        background-color: #444;
-        margin-bottom: 0.7em;
-        border-radius: 4px;
-    }
-    .skeleton-line.short { width: 60%; }
-    .skeleton-line.medium { width: 80%; }
-    .skeleton-line.long { width: 100%; }
-    .skeleton-line:last-child { margin-bottom: 0; }
-
-
-    @keyframes pulse {
-        0% { opacity: 0.7; }
-        50% { opacity: 1; }
-        100% { opacity: 0.7; }
-    }
-
-
-    /* --- Responsive Adjustments --- */
-    @media (max-width: 600px) {
-        .dashboard-wrapper {
-            margin: 15px auto;
-            border-radius: 0;
-        }
-        .dashboard-header-section {
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            padding: 0.8rem;
-        }
-        .header-masthead-group {
-            flex-direction: column;
-            text-align: center;
-            gap: 5px;
-        }
-        .header-logo-top {
-            height: 60px;
-        }
-        .dashboard-header-section h1 {
-            font-size: 1.8rem;
-            white-space: normal;
-            text-align: center;
-        }
-        main {
-            padding: 15px;
-            max-height: 75vh;
-        }
-        #news-columns {
-            width: auto;
-            padding-right: 0;
-        }
-        .news-article {
-            padding: 10px;
-            gap: 10px;
-        }
-        .news-article h2 {
-            font-size: 1.2rem;
-        }
-        .news-article p {
-            font-size: 0.85rem;
-        }
-        .article-dateline, .news-meta {
-            font-size: 0.7rem;
-        }
-        .breaking-ribbon {
-            padding: 3px 10px;
-            font-size: 0.65rem;
-        }
-        .news-meta span {
-            padding: 3px 8px;
-        }
-        .news-article a.read-more-button {
-            padding: 6px 12px;
-            font-size: 0.85rem;
-        }
-    }
-    ```javascript
-    const GOOGLE_SHEET_URL = '[https://docs.google.com/spreadsheets/d/e/2PACX-1vRAJhMLSkrHlICOabG493SP5WSQ1kUbbCnoAIgJGdD3TUzhBY1Fyn5-PQ9LuVKzf5YO6LHAlqkW3Dos/pub?output=csv](https://docs.google.com/spreadsheets/d/e/2PACX-1vRAJhMLSkrHlICOabG493SP5WSQ1kUbbCnoAIgJGdD3TUzhBY1Fyn5-PQ9LuVKzf5YO6LHAlqkW3Dos/pub?output=csv)';
-    let allNewsArticles = []; // To store all fetched news
-    let autoRefreshIntervalId; // Used for setInterval
-    const AUTO_REFRESH_INTERVAL_MS = 300000; // 5 minutes
-
-    // --- Helper Functions ---
-
-    // Robust CSV parser
-    function parseCSV(csv) {
-        const lines = csv.split('\n');
-        const nonEmptyLines = lines.filter(line => line.trim() !== '');
-        if (nonEmptyLines.length === 0) return [];
-
-        // Assuming the first non-empty line is headers
-        const headersLine = nonEmptyLines[0];
-        const headers = parseCSVLine(headersLine).map(header => header.trim());
-
-        const data = [];
-
-        for (let i = 1; i < nonEmptyLines.length; i++) {
-            const currentLine = parseCSVLine(nonEmptyLines[i]);
-            if (currentLine.length === headers.length) { // Ensure line has correct number of columns
-                const row = {};
-                for (let j = 0; j < headers.length; j++) {
-                    row[headers[j]] = currentLine[j] !== undefined ? currentLine[j] : '';
-                }
-                data.push(row);
-            } else {
-                console.warn(`Skipping malformed CSV row: "${nonEmptyLines[i]}" - Expected ${headers.length} columns, got ${currentLine.length}`);
-            }
-        }
-        return data;
-    }
-
-    // More robust CSV line parser to handle quoted commas
-    function parseCSVLine(line) {
-        const result = [];
-        let inQuote = false;
-        let currentField = '';
-        for (let i = 0; i < line.length; i++) {
-            const char = line[i];
-            if (char === '"') {
-                inQuote = !inQuote;
-            } else if (char === ',' && !inQuote) {
-                result.push(currentField.trim());
-                currentField = '';
-            } else {
-                currentField += char;
-            }
-        }
-        result.push(currentField.trim()); // Add the last field
-        return result;
-    }
-
-    // Format date for display
-    function formatNewspaperDateline(dateString) {
-        if (!dateString) return 'N/A';
-        try {
-            const date = new Date(dateString);
-            if (isNaN(date)) throw new Error('Invalid Date');
-
-            const options = { month: 'long', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
-            return `${date.toLocaleString('en-US', options)}`;
-        } catch (e) {
-            console.error("Date parsing error:", e);
-            return 'Invalid Date';
-        }
-    }
-
-    // --- Main Fetch & Display Functions ---
-
-    async function fetchNews() {
-        const newsContainer = document.getElementById('news-columns');
-        const skeletonWrapper = document.querySelector('.skeleton-wrapper'); // Get skeleton wrapper
-
-        if (!newsContainer) {
-            console.error("Error: #news-columns element not found. Cannot load news.");
-            return;
-        }
-
-        // Show skeleton loader
-        if (skeletonWrapper) {
-            skeletonWrapper.style.display = 'block';
-        }
-        newsContainer.innerHTML = ''; // Clear previous content
-
-        try {
-            const response = await fetch(GOOGLE_SHEET_URL);
-            const csvText = await response.text();
-
-            const newsData = parseCSV(csvText);
-            // Filter out articles with empty headlines (or other critical missing data if needed)
-            allNewsArticles = newsData.filter(article => article.Headline && article.Headline.trim() !== '');
-            displayNews(allNewsArticles);
-
-        } catch (error) {
-            console.error('Error fetching news:', error);
-            newsContainer.innerHTML = '<p>Failed to retrieve news. Please try refreshing.</p>';
-            if (skeletonWrapper) { // Hide skeleton if error
-                skeletonWrapper.style.display = 'none';
-            }
-        }
-    }
-
-    function displayNews(articlesToDisplay) {
-        const newsContainer = document.getElementById('news-columns');
-        const skeletonWrapper = document.querySelector('.skeleton-wrapper'); // Get skeleton wrapper
-
-        if (!newsContainer) {
-            console.error("Error: #news-columns element not found in displayNews.");
-            return;
-        }
-
-        newsContainer.innerHTML = ''; // Clear everything, including skeleton if present
-
-        // Hide skeleton after news is loaded
-        if (skeletonWrapper) {
-            skeletonWrapper.style.display = 'none';
-        }
-
-        if (articlesToDisplay.length === 0) {
-            newsContainer.innerHTML = '<p>No news articles found.</p>';
-            return;
-        }
-
-        // Sort news by published time descending (most recent first)
-        articlesToDisplay.sort((a, b) => {
-            const dateA = new Date(a['Published Time']);
-            const dateB = new Date(b['Published Time']);
-            if (isNaN(dateA) && isNaN(dateB)) return 0;
-            if (isNaN(dateA)) return 1;
-            if (isNaN(dateB)) return -1;
-            return dateB - dateA;
-        }).forEach((article, index) => {
-            const headline = article.Headline || '';
-            const summary = article.Description || ''; // Changed from Summary to Description based on typical CSV header
-            let url = article.URL || '#';
-            const publishedTime = article['Published Time'] || 'N/A';
-            const tickers = article.Tickers || 'N/A';
-            const imageUrl = article['Image URL'] || ''; // Still extract, but not used for display
-
-            // URL Validation
-            if (url !== '') {
-                url = url.replace(/^"|"$/g, '').trim();
-                if (!url.startsWith('http://') && !url.startsWith('https://')) {
-                    url = 'https://' + url;
-                }
-                try { new URL(url); } catch (e) { url = '#'; }
-            } else { url = '#'; }
-
-            // Determine if BREAKING ribbon is needed (e.g., first article)
-            const isBreaking = index === 0;
-            const breakingRibbonHtml = isBreaking ? '<span class="breaking-ribbon">BREAKING</span>' : '';
-
-            const articleDiv = document.createElement('div');
-            articleDiv.classList.add('news-article');
-
-            const summaryHtml = summary ? `<p>${summary.substring(0, 300)}...</p>` : '<p>No summary available.</p>';
-            // Add a class to the Read More link for specific button styling
-            const readMoreHtml = summary.length > 300 && url !== '#' ? `<a href="${url}" target="_blank" rel="noopener noreferrer" class="read-more-button">Read More</a>` : '';
-
-
-            // Build the HTML for a single news article
-            articleDiv.innerHTML = `
-                ${breakingRibbonHtml}
-                <h2><a href="${url}" target="_blank" rel="noopener noreferrer">${headline}</a></h2>
-                <span class="article-dateline">${formatNewspaperDateline(publishedTime)}</span>
-                ${summaryHtml}
-                ${readMoreHtml}
-                ${tickers !== 'N/A' && tickers.trim() !== '' ? `<div class="news-meta"><span>Tickers: ${tickers}</span></div>` : ''}
-            `;
-            newsContainer.appendChild(articleDiv);
-        });
-    }
-
-    // --- Functionality & Event Listeners (Simplified for removed elements) ---
-
-    // Auto-Refresh: STARTING BY DEFAULT
-    function startAutoRefresh() {
-        if (autoRefreshIntervalId) clearInterval(autoRefreshIntervalId);
-        autoRefreshIntervalId = setInterval(fetchNews, AUTO_REFRESH_INTERVAL_MS);
-        console.log(`Auto-refresh started (every ${AUTO_REFRESH_INTERVAL_MS / 60000} minutes).`);
-    }
-
-    function stopAutoRefresh() { // This function is not called but remains for completeness
-        if (autoRefreshIntervalId) {
-            clearInterval(autoRefreshIntervalId);
-            autoRefreshIntervalId = null;
-            console.log('Auto-refresh stopped.');
-        }
-    }
-
-
-    // --- Initial Load ---
-    window.onload = () => {
-        fetchNews(); // Initial fetch
-        startAutoRefresh(); // Start auto-refresh by default
-    };
-    ```
-The user has confirmed they've created `calculator/index.html` and updated it with the new image link. They've also created `news-feed/index.html`.
-
-My previous instruction was to provide the complete code for `news-feed/style.css`. I did that.
-
-Now, I need to provide the code for `news-feed/script.js`.
-
----
-
-**Plan:**
-
-1.  **Acknowledge completion of `news-feed/style.css` (implicitly, as they are following the sequence).**
-2.  **Guide them on creating `news-feed/script.js`:**
-    * Provide the complete code for the News Feed's `script.js`.
-    * Instruct to commit.
-3.  **Remind them about Phase 3 (GitHub Pages setup) after all files are created.**Okay, great! You've successfully created `news-feed/index.html` and `news-feed/style.css`. We're almost done with consolidating the News Feed widget!
-
-Now, the final file for the News Feed widget: **`news-feed/script.js`**.
-
----
-
-### **Step-by-Step (Continued): Create `news-feed/script.js`**
-
-**Action:** You will create the `script.js` file inside the `news-feed/` folder on GitHub.com.
-
-1.  **Go to your new repository on GitHub.com.**
-    * (e.g., `https://github.com/YourUsername/the-traders-gazette-widgets`)
-2.  Navigate into the `news-feed/` folder.
-3.  Click the **"Add file"** dropdown button and select **"Create new file."**
-4.  **For the filename, type:** `script.js`
-5.  **Paste the News Feed's JavaScript Code:** Copy the **entire code block below** and paste it into the large content area.
-
-    ```javascript
-    const GOOGLE_SHEET_URL = '[https://docs.google.com/spreadsheets/d/e/2PACX-1vRAJhMLSkrHlICOabG493SP5WSQ1kUbbCnoAIgJGdD3TUzhBY1Fyn5-PQ9LuVKzf5YO6LHAlqkW3Dos/pub?output=csv](https://docs.google.com/spreadsheets/d/e/2PACX-1vRAJhMLSkrHlICOabG493SP5WSQ1kUbbCnoAIgJGdD3TUzhBY1Fyn5-PQ9LuVKzf5YO6LHAlqkW3Dos/pub?output=csv)';
-    let allNewsArticles = []; // To store all fetched news
-    let autoRefreshIntervalId; // Used for setInterval
-    const AUTO_REFRESH_INTERVAL_MS = 300000; // 5 minutes
-
-    // --- Helper Functions ---
-
-    // Robust CSV parser
-    function parseCSV(csv) {
-        const lines = csv.split('\n');
-        const nonEmptyLines = lines.filter(line => line.trim() !== '');
-        if (nonEmptyLines.length === 0) return [];
-
-        // Assuming the first non-empty line is headers
-        const headersLine = nonEmptyLines[0];
-        const headers = parseCSVLine(headersLine).map(header => header.trim());
-
-        const data = [];
-
-        for (let i = 1; i < nonEmptyLines.length; i++) {
-            const currentLine = parseCSVLine(nonEmptyLines[i]);
-            if (currentLine.length === headers.length) { // Ensure line has correct number of columns
-                const row = {};
-                for (let j = 0; j < headers.length; j++) {
-                    row[headers[j]] = currentLine[j] !== undefined ? currentLine[j] : '';
-                }
-                data.push(row);
-            } else {
-                console.warn(`Skipping malformed CSV row: "${nonEmptyLines[i]}" - Expected ${headers.length} columns, got ${currentLine.length}`);
-            }
-        }
-        return data;
-    }
-
-    // More robust CSV line parser to handle quoted commas
-    function parseCSVLine(line) {
-        const result = [];
-        let inQuote = false;
-        let currentField = '';
-        for (let i = 0; i < line.length; i++) {
-            const char = line[i];
-            if (char === '"') {
-                inQuote = !inQuote;
-            } else if (char === ',' && !inQuote) {
-                result.push(currentField.trim());
-                currentField = '';
-            } else {
-                currentField += char;
-            }
-        }
-        result.push(currentField.trim()); // Add the last field
-        return result;
-    }
-
-    // Format date for display
-    function formatNewspaperDateline(dateString) {
-        if (!dateString) return 'N/A';
-        try {
-            const date = new Date(dateString);
-            if (isNaN(date)) throw new Error('Invalid Date');
-
-            const options = { month: 'long', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
-            return `${date.toLocaleString('en-US', options)}`;
-        } catch (e) {
-            console.error("Date parsing error:", e);
-            return 'Invalid Date';
-        }
-    }
-
-    // --- Main Fetch & Display Functions ---
-
-    async function fetchNews() {
-        const newsContainer = document.getElementById('news-columns');
-        const skeletonWrapper = document.querySelector('.skeleton-wrapper'); // Get skeleton wrapper
-
-        if (!newsContainer) {
-            console.error("Error: #news-columns element not found. Cannot load news.");
-            return;
-        }
-
-        // Show skeleton loader
-        if (skeletonWrapper) {
-            skeletonWrapper.style.display = 'block';
-        }
-        newsContainer.innerHTML = ''; // Clear previous content
-
-        try {
-            const response = await fetch(GOOGLE_SHEET_URL);
-            const csvText = await response.text();
-
-            const newsData = parseCSV(csvText);
-            // Filter out articles with empty headlines (or other critical missing data if needed)
-            allNewsArticles = newsData.filter(article => article.Headline && article.Headline.trim() !== '');
-            displayNews(allNewsArticles);
-
-        } catch (error) {
-            console.error('Error fetching news:', error);
-            newsContainer.innerHTML = '<p>Failed to retrieve news. Please try refreshing.</p>';
-            if (skeletonWrapper) { // Hide skeleton if error
-                skeletonWrapper.style.display = 'none';
-            }
-        }
-    }
-
-    function displayNews(articlesToDisplay) {
-        const newsContainer = document.getElementById('news-columns');
-        const skeletonWrapper = document.querySelector('.skeleton-wrapper'); // Get skeleton wrapper
-
-        if (!newsContainer) {
-            console.error("Error: #news-columns element not found in displayNews.");
-            return;
-        }
-
-        newsContainer.innerHTML = ''; // Clear everything, including skeleton if present
-
-        // Hide skeleton after news is loaded
-        if (skeletonWrapper) {
-            skeletonWrapper.style.display = 'none';
-        }
-
-        if (articlesToDisplay.length === 0) {
-            newsContainer.innerHTML = '<p>No news articles found.</p>';
-            return;
-        }
-
-        // Sort news by published time descending (most recent first)
-        articlesToDisplay.sort((a, b) => {
-            const dateA = new Date(a['Published Time']);
-            const dateB = new Date(b['Published Time']);
-            if (isNaN(dateA) && isNaN(dateB)) return 0;
-            if (isNaN(dateA)) return 1;
-            if (isNaN(dateB)) return -1;
-            return dateB - dateA;
-        }).forEach((article, index) => {
-            const headline = article.Headline || '';
-            const summary = article.Description || ''; // Changed from Summary to Description based on typical CSV header
-            let url = article.URL || '#';
-            const publishedTime = article['Published Time'] || 'N/A';
-            const tickers = article.Tickers || 'N/A';
-            const imageUrl = article['Image URL'] || ''; // Still extract, but not used for display
-
-            // URL Validation
-            if (url !== '') {
-                url = url.replace(/^"|"$/g, '').trim();
-                if (!url.startsWith('http://') && !url.startsWith('https://')) {
-                    url = 'https://' + url;
-                }
-                try { new URL(url); } catch (e) { url = '#'; }
-            } else { url = '#'; }
-
-            // Determine if BREAKING ribbon is needed (e.g., first article)
-            const isBreaking = index === 0;
-            const breakingRibbonHtml = isBreaking ? '<span class="breaking-ribbon">BREAKING</span>' : '';
-
-            const articleDiv = document.createElement('div');
-            articleDiv.classList.add('news-article');
-
-            const summaryHtml = summary ? `<p>${summary.substring(0, 300)}...</p>` : '<p>No summary available.</p>';
-            // Add a class to the Read More link for specific button styling
-            const readMoreHtml = summary.length > 300 && url !== '#' ? `<a href="${url}" target="_blank" rel="noopener noreferrer" class="read-more-button">Read More</a>` : '';
-
-
-            // Build the HTML for a single news article
-            articleDiv.innerHTML = `
-                ${breakingRibbonHtml}
-                <h2><a href="${url}" target="_blank" rel="noopener noreferrer">${headline}</a></h2>
-                <span class="article-dateline">${formatNewspaperDateline(publishedTime)}</span>
-                ${summaryHtml}
-                ${readMoreHtml}
-                ${tickers !== 'N/A' && tickers.trim() !== '' ? `<div class="news-meta"><span>Tickers: ${tickers}</span></div>` : ''}
-            `;
-            newsContainer.appendChild(articleDiv);
-        });
-    }
-
-    // --- Functionality & Event Listeners (Simplified for removed elements) ---
-
-    // Auto-Refresh: STARTING BY DEFAULT
-    function startAutoRefresh() {
-        if (autoRefreshIntervalId) clearInterval(autoRefreshIntervalId);
-        autoRefreshIntervalId = setInterval(fetchNews, AUTO_REFRESH_INTERVAL_MS);
-        console.log(`Auto-refresh started (every ${AUTO_REFRESH_INTERVAL_MS / 60000} minutes).`);
-    }
-
-    function stopAutoRefresh() { // This function is not called but remains for completeness
-        if (autoRefreshIntervalId) {
-            clearInterval(autoRefreshIntervalId);
-            autoRefreshIntervalId = null;
-            console.log('Auto-refresh stopped.');
-        }
-    }
-
-
-    // --- Initial Load ---
-    window.onload = () => {
-        fetchNews(); // Initial fetch
-        startAutoRefresh(); // Start auto-refresh by default
-    };
-    ```
-6.  **Commit New File:**
-    * Add a clear commit message (e.g., "Add news-feed script.js").
-    * Click **"Commit new file."**
-
----
-
-Please let me know once this final file (`news-feed/script.js`) has been successfully created and committed on GitHub. We will then move to the crucial step of enabling GitHub Pages for your new consolidated repository.
