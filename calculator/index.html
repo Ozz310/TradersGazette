@@ -1,1 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Asset Margin Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #FFFFFF; /* NEW: Body background is now white */
+            color: #e0e0e0; /* Reverted: Light text color (for branding below calculator) */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden; /* Hide overflow from background patterns */
+        }
 
+        /* Reverted: Premium static background patterns (subtle gold fractal/network) adjusted for white body */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Subtle gold network/fractal pattern, made very faint for white background */
+            background-image:
+                radial-gradient(circle at 15% 50%, rgba(240, 215, 136, 0.01) 0%, transparent 60%),
+                radial-gradient(circle at 85% 50%, rgba(240, 215, 136, 0.01) 0%, transparent 60%),
+                repeating-linear-gradient(0deg, rgba(240, 215, 136, 0.005) 0px, rgba(240, 215, 136, 0.005) 1px, transparent 1px, transparent 100px),
+                repeating-linear-gradient(90deg, rgba(240, 215, 136, 0.005) 0px, rgba(240, 215, 136, 0.005) 1px, transparent 1px, transparent 100px);
+            background-size: 100% 100%, 100% 100%, 100px 100px, 100px 100px;
+            opacity: 0.8; /* Subtle opacity */
+            z-index: -1;
+        }
+
+        .calculator-container {
+            background-color: #2a2a2a; /* Reverted: Dark background for the calculator container */
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7), 0 0 15px rgba(240, 215, 136, 0.1); /* Reverted: Prominent shadow with subtle gold glow */
+            width: 100%;
+            max-width: 500px;
+            border: 1px solid #4a4a4a; /* Reverted: Subtle dark border */
+            box-sizing: border-box;
+            z-index: 1;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #f0f0f0; /* Reverted: Brighter label text */
+            font-size: 0.95rem;
+        }
+        input[type="number"],
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #555; /* Reverted: Darker border */
+            border-radius: 8px;
+            background-color: #3a3a3a; /* Reverted: Dark background for inputs */
+            color: #f0f0f0; /* Reverted: Light input text */
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            /* Reverted: Custom dropdown arrow - light gold */
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%204%205%22%3E%3Cpath%20fill%3D%22%23F0D788%22%20d%3D%22M2%200L0%202h4L2%200zM2%205L0%203h4L2%205z%22%2F%3E%3C%2Fsvg%3E');
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 8px 10px;
+        }
+        input[type="number"]:focus,
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #F0D788; /* Reverted: Light gold accent on focus */
+            box-shadow: 0 0 0 3px rgba(240, 215, 136, 0.4); /* Reverted: Prominent light gold shadow on focus */
+        }
+        button {
+            width: 100%;
+            padding: 16px 20px;
+            background-color: #F0D788; /* Reverted: Light gold button */
+            color: #1a1a1a; /* Reverted: Dark text on gold */
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4), 0 0 5px rgba(240, 215, 136, 0.2); /* Reverted: Softer shadow with subtle gold glow */
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        button:hover {
+            background-color: #DDAA33; /* Reverted: Slightly darker light gold on hover */
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5), 0 0 10px rgba(240, 215, 136, 0.4); /* Reverted: More pronounced shadow with glow */
+        }
+        .result-area {
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px dashed #4a4a4a; /* Reverted: Darker dashed border */
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .result-area p {
+            font-size: 1.15rem;
+            margin-bottom: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #D0D0D0; /* Reverted: Softer gray for labels in result area */
+        }
+        .result-area span {
+            font-weight: 700;
+            color: #F0D788; /* Reverted: Light gold for results */
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+        .message-box {
+            background-color: #333; /* Reverted: Dark background for message box */
+            color: #fff; /* Reverted: Light text for message box */
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            font-size: 0.95rem;
+            word-break: break-word;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            border: none; /* Reverted: No border for message box */
+        }
+        .message-box.show {
+            display: flex;
+        }
+        .message-box-close {
+            background: none;
+            border: none;
+            color: #fff; /* Reverted: Light close button */
+            font-size: 1.4rem;
+            cursor: pointer;
+            padding: 0 5px;
+            line-height: 1;
+        }
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #F0D788; /* Reverted: Gold spinner */
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+            display: none;
+        }
+        .loading-spinner.show {
+            display: inline-block;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .branding {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px dashed #4a4a4a; /* Reverted: Darker dashed border */
+            text-align: center;
+            color: #b0b0b0; /* Reverted: Mid-grey text */
+            font-size: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .branding img {
+            max-width: 250px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(240, 215, 136, 0.5); /* Reverted: Subtle gold border for logo */
+            box-shadow: 0 0 10px rgba(240, 215, 136, 0.4), 0 2px 8px rgba(0,0,0,0.3); /* Reverted: Subtle gold glow for logo */
+            transition: box-shadow 0.3s ease;
+        }
+        .branding img:hover {
+            box-shadow: 0 0 15px rgba(240, 215, 136, 0.7), 0 2px 10px rgba(0,0,0,0.4); /* Reverted: Enhanced gold glow on hover */
+        }
+
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .calculator-container {
+                padding: 20px;
+                border-radius: 8px;
+                margin: 10px;
+            }
+            h1 {
+                font-size: 2rem;
+                margin-bottom: 20px;
+            }
+            .input-group {
+                margin-bottom: 15px;
+            }
+            label {
+                font-size: 0.9rem;
+            }
+            input[type="number"],
+            input[type="text"],
+            select,
+            button {
+                padding: 10px;
+                font-size: 1rem;
+            }
+            button {
+                padding: 12px;
+            }
+            .result-area p {
+                font-size: 1rem;
+            }
+            .result-area span {
+                font-size: 1.1rem;
+            }
+            .branding img {
+                max-width: 180px;
+            }
+            .branding {
+                margin-top: 20px;
+                padding-top: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <h1 class="text-3xl font-bold text-center mb-6" style="color: #F0D788;">Multi-Asset Margin Calculator</h1> <div class="message-box" id="messageBox">
+            <span id="messageText"></span>
+            <button class="message-box-close" onclick="hideMessage()">&times;</button>
+        </div>
+
+        <div class="input-group">
+            <label for="accountCurrency">Account Currency:</label>
+            <select id="accountCurrency">
+                <option value="USD">USD - US Dollar</option>
+                <option value="EUR">EUR - Euro</option>
+                <option value="GBP">GBP - British Pound</option>
+                <option value="JPY">JPY - Japanese Yen</option>
+                <option value="AUD">AUD - Australian Dollar</option>
+                <option value="CAD">CAD - Canadian Dollar</option>
+                <option value="CHF">CHF - Swiss Franc</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label for="leverage">Leverage:</label>
+            <select id="leverage">
+                <option value="1">1:1</option>
+                <option value="10">1:10</option>
+                <option value="25">1:25</option>
+                <option value="50">1:50</option>
+                <option value="100" selected>1:100</option>
+                <option value="200">1:200</option>
+                <option value="400">1:400</option>
+                <option value="500">1:500</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label for="currencyPair">Instrument:</label>
+            <select id="currencyPair">
+                <optgroup label="Forex (Major)">
+                    <option value="EURUSD">EUR/USD</option>
+                    <option value="GBPUSD">GBP/USD</option>
+                    <option value="USDJPY">USD/JPY</option>
+                    <option value="AUDUSD">AUD/USD</option>
+                    <option value="USDCAD">USD/CAD</option>
+                    <option value="USDCHF">USD/CHF</option>
+                    <option value="NZDUSD">NZD/USD</option>
+                </optgroup>
+                <optgroup label="Forex (Crosses)">
+                    <option value="EURGBP">EUR/GBP</option>
+                    <option value="EURJPY">EUR/JPY</option>
+                    <option value="GBPJPY">GBP/JPY</option>
+                    <option value="AUDJPY">AUD/JPY</option>
+                    <option value="EURAUD">EUR/AUD</option>
+                    <option value="CADJPY">CAD/JPY</option>
+                </optgroup>
+                <optgroup label="Metals">
+                    <option value="XAUUSD">XAU/USD (Gold)</option>
+                    <option value="XAGUSD">XAG/USD (Silver)</option>
+                </optgroup>
+                <optgroup label="Stocks (CFDs - Example)">
+                    <option value="AAPL">AAPL (Apple Inc)</option>
+                    <option value="TSLA">TSLA (Tesla Inc)</option>
+                    <option value="GOOGL">GOOGL (Alphabet Inc)</option>
+                </optgroup>
+                <optgroup label="Indices (CFDs - Example)">
+                    <option value="US30">US30 (Dow Jones)</option>
+                    <option value="SPX500">SPX500 (S&P 500)</option>
+                    <option value="NAS100">NAS100 (Nasdaq 100)</option>
+                    <option value="UK100">UK100 (FTSE 100)</option>
+                </optgroup>
+                <optgroup label="Cryptocurrencies (CFDs - Example)">
+                    <option value="BTCUSD">BTC/USD (Bitcoin)</option>
+                    <option value="ETHUSD">ETH/USD (Ethereum)</option>
+                    <option value="XRPUSD">XRP/USD (Ripple)</option>
+                </optgroup>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label for="tradeSize" id="tradeSizeLabel">Trade Size (Units):</label>
+            <input type="number" id="tradeSize" value="100000" min="0.01" step="0.01">
+        </div>
+
+        <button onclick="calculateMargin()">
+            <span class="loading-spinner" id="loadingSpinner"></span>
+            Calculate Margin
+        </button>
+
+        <div class="result-area" id="resultArea">
+            <p>Current Rate (<span id="ratePairDisplay">EUR/USD</span>): <span id="currentRateDisplay">Fetching...</span></p>
+            <p>Required Margin: <span id="requiredMarginDisplay">0.00</span> <span id="marginCurrencySymbol">USD</span></p>
+            <p id="pipValueRow">Pip/Point Value: <span id="pipValueDisplay">N/A</span> <span id="pipValueCurrencySymbol"></span></p>
+        </div>
+
+        <div class="branding">
+            <img src="https://raw.githubusercontent.com/Ozz310/Logo-Traders-Gazzete/refs/heads/main/WhatsApp%20Image%202025-06-18%20at%2011.37.15.jpeg"
+                 alt="The Traders Gazette Logo"
+                 onerror="this.src='https://placehold.co/180x50/1a1a1a/F0D788?text=The+Traders+Gazette+Logo+Placeholder';">
+            <p>Powered by The Trader's Gazette</p>
+        </div>
+    </div>
+
+    <script>
+        // IMPORTANT: Replace with your actual API Key from Tradermade.com
+        // Sign up for a free API key at https://tradermade.com/signup
+        const API_KEY = "wsgm72NBgI3iTLj64psT";
+
+        // Base URL for the Tradermade API
+        const API_BASE_URL = "https://marketdata.tradermade.com/api/v1/live";
+
+        // DOM elements
+        const accountCurrencySelect = document.getElementById('accountCurrency');
+        const leverageSelect = document.getElementById('leverage');
+        const currencyPairSelect = document.getElementById('currencyPair');
+        const tradeSizeInput = document.getElementById('tradeSize');
+        const tradeSizeLabel = document.getElementById('tradeSizeLabel');
+        const ratePairDisplay = document.getElementById('ratePairDisplay');
+        const currentRateDisplay = document.getElementById('currentRateDisplay');
+        const requiredMarginDisplay = document.getElementById('requiredMarginDisplay');
+        const marginCurrencySymbol = document.getElementById('marginCurrencySymbol');
+        const messageBox = document.getElementById('messageBox');
+        const messageText = document.getElementById('messageText');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const pipValueRow = document.getElementById('pipValueRow');
+        const pipValueDisplay = document.getElementById('pipValueDisplay');
+        const pipValueCurrencySymbol = document.getElementById('pipValueCurrencySymbol');
+
+
+        // Initial fetch of rate when the page loads (for the default EURUSD)
+        window.onload = fetchAndDisplayInitialRate;
+        currencyPairSelect.addEventListener('change', () => {
+            fetchAndDisplayInitialRate(); // Fetch new rate for selected pair
+            updateTradeSizeLabel();      // Update the label based on the selected pair
+        });
+
+
+        // --- Message Box Functions ---
+        function showMessage(message, type = 'info') {
+            messageText.textContent = message;
+            messageBox.classList.add('show');
+            if (type === 'error') {
+                messageBox.style.backgroundColor = '#d32f2f'; // Red for errors
+            } else {
+                messageBox.style.backgroundColor = '#333'; // Default dark
+            }
+        }
+
+        function hideMessage() {
+            messageBox.classList.remove('show');
+        }
+
+        function showLoading() {
+            loadingSpinner.classList.add('show');
+        }
+
+        function hideLoading() {
+            loadingSpinner.classList.remove('show');
+        }
+
+        // --- Helper Function to get Contract Size / Multiplier for different assets ---
+        function getContractDetails(symbol) {
+            return { contractSize: 1, marginFactor: 1 };
+        }
+
+        // --- Helper Function to determine Asset Type ---
+        function getAssetType(symbol) {
+            if (symbol.length === 6 && !symbol.startsWith('X') && !['AAPL', 'TSLA', 'GOOGL', 'US30', 'SPX500', 'NAS100', 'UK100', 'BTCUSD', 'ETHUSD', 'XRPUSD'].includes(symbol)) {
+                return 'forex';
+            } else if (symbol.startsWith('XAU') || symbol.startsWith('XAG')) {
+                return 'metal';
+            } else if (['AAPL', 'TSLA', 'GOOGL'].includes(symbol)) {
+                return 'stock';
+            } else if (['US30', 'SPX500', 'NAS100', 'UK100'].includes(symbol)) {
+                return 'index';
+            } else if (['BTCUSD', 'ETHUSD', 'XRPUSD'].includes(symbol)) {
+                return 'crypto';
+            }
+            return 'unknown';
+        }
+
+        // --- Helper to parse Base and Quote Currencies from Symbol ---
+        function parseSymbol(symbol) {
+            if (symbol.startsWith('XAU') || symbol.startsWith('XAG')) {
+                return { base: symbol.substring(0, 3), quote: symbol.substring(3, 6) };
+            } else if (symbol.length === 6) {
+                return { base: symbol.substring(0, 3), quote: symbol.substring(3, 6) };
+            } else {
+                if (['AAPL', 'TSLA', 'GOOGL', 'BTCUSD', 'ETHUSD', 'XRPUSD'].includes(symbol)) {
+                    return { base: 'USD', quote: 'USD' };
+                } else if (symbol === 'UK100') {
+                    return { base: 'GBP', quote: 'USD' };
+                } else if (['US30', 'SPX500', 'NAS100'].includes(symbol)) {
+                    return { base: 'USD', quote: 'USD' };
+                }
+            }
+            return { base: '', quote: '' };
+        }
+
+        // --- Dynamic Trade Size Label Update ---
+        function updateTradeSizeLabel() {
+            const selectedSymbol = currencyPairSelect.value;
+            const assetType = getAssetType(selectedSymbol);
+            let labelText = "Trade Size (Units):";
+            let defaultValue = "1";
+
+            switch (assetType) {
+                case 'forex':
+                    labelText = "Trade Size (Base Currency Units):";
+                    defaultValue = "100000";
+                    break;
+                case 'metal':
+                    labelText = "Trade Size (Ounces):";
+                    defaultValue = "1";
+                    break;
+                case 'stock':
+                    labelText = "Trade Size (Shares):";
+                    defaultValue = "1";
+                    break;
+                case 'index':
+                    labelText = "Trade Size (Contracts/Units):";
+                    defaultValue = "1";
+                    break;
+                case 'crypto':
+                    labelText = "Trade Size (Coins):";
+                    defaultValue = "1";
+                    break;
+            }
+            tradeSizeLabel.textContent = labelText;
+            tradeSizeInput.value = defaultValue;
+            tradeSizeInput.placeholder = `e.g., ${defaultValue}`;
+        }
+
+        // --- Helper Function for Pip/Point Details ---
+        function getPipPointDetails(symbol) {
+            const assetType = getAssetType(symbol);
+            let pipSize = 0;
+            let valueLabel = 'N/A';
+            let isPipCalculable = false;
+
+            switch (assetType) {
+                case 'forex':
+                    isPipCalculable = true;
+                    valueLabel = 'Pip Value';
+                    if (symbol.includes('JPY')) {
+                        pipSize = 0.01;
+                    } else {
+                        pipSize = 0.0001;
+                    }
+                    break;
+                case 'metal':
+                    isPipCalculable = true;
+                    valueLabel = 'Point Value';
+                    pipSize = 1;
+                    break;
+                case 'stock':
+                case 'index':
+                case 'crypto':
+                    isPipCalculable = true;
+                    valueLabel = 'Point Value';
+                    pipSize = 1;
+                    break;
+            }
+            return { pipSize, valueLabel, isPipCalculable };
+        }
+
+
+        // --- Core Logic ---
+
+        async function fetchForexRate(symbol) {
+            hideMessage();
+            showLoading();
+            try {
+                const url = `${API_BASE_URL}?currency=${symbol}&api_key=${API_KEY}`;
+                
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (data.quotes && data.quotes.length > 0) {
+                    const quote = data.quotes[0];
+                    const rate = quote.bid;
+
+                    if (rate) {
+                        currentRateDisplay.textContent = rate.toFixed(5);
+                        return rate;
+                    } else {
+                        showMessage(`Could not find live rate for ${symbol}.`, 'error');
+                        currentRateDisplay.textContent = 'N/A';
+                        return null;
+                    }
+                } else if (data.error) {
+                    showMessage(`API Error for ${symbol}: ${data.error}`, 'error');
+                    currentRateDisplay.textContent = 'N/A';
+                    return null;
+                } else {
+                    showMessage(`No data received for ${symbol}. Check symbol or API key.`, 'error');
+                    currentRateDisplay.textContent = 'N/A';
+                    return null;
+                }
+            } catch (error) {
+                console.error("Error fetching rate for", symbol, ":", error);
+                showMessage(`Failed to fetch live rate for ${symbol}. Please check your internet connection or API key.`, 'error');
+                currentRateDisplay.textContent = 'Error';
+                return null;
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function fetchAndDisplayInitialRate() {
+            const selectedSymbol = currencyPairSelect.value;
+            ratePairDisplay.textContent = selectedSymbol.replace(/([A-Z]{3})(USD|EUR|GBP|JPY)/, '$1/$2');
+            await fetchForexRate(selectedSymbol);
+        }
+
+        async function calculateMargin() {
+            hideMessage();
+            showLoading();
+
+            const accountCurrency = accountCurrencySelect.value;
+            const leverage = parseFloat(leverageSelect.value);
+            const selectedSymbol = currencyPairSelect.value;
+            const tradeSizeUnits = parseFloat(tradeSizeInput.value);
+
+            console.log("--- Margin Calculation Debugging ---");
+            console.log("Selected Symbol:", selectedSymbol);
+            console.log("Account Currency:", accountCurrency);
+            console.log("Leverage:", leverage);
+            console.log("Trade Size (Units) Input:", tradeSizeUnits);
+
+
+            if (isNaN(tradeSizeUnits) || tradeSizeUnits <= 0) {
+                showMessage("Please enter a valid Trade Size (Units).", 'error');
+                hideLoading();
+                return;
+            }
+            if (leverage <= 0) {
+                showMessage("Invalid Leverage selected.", 'error');
+                hideLoading();
+                return;
+            }
+
+            const { contractSize } = getContractDetails(selectedSymbol);
+            const { base: baseCurrencyOfPair, quote: quoteCurrencyOfPair } = parseSymbol(selectedSymbol);
+
+            let currentPrice = await fetchForexRate(selectedSymbol);
+
+            console.log("Fetched Current Price:", currentPrice);
+
+            if (currentPrice === null) {
+                requiredMarginDisplay.textContent = 'N/A';
+                marginCurrencySymbol.textContent = accountCurrency;
+                pipValueDisplay.textContent = 'N/A';
+                pipValueCurrencySymbol.textContent = '';
+                return;
+            }
+
+            let marginRequiredInBaseCurrency = 0;
+            const assetType = getAssetType(selectedSymbol);
+
+            switch (assetType) {
+                case 'forex':
+                    marginRequiredInBaseCurrency = (currentPrice * tradeSizeUnits) / leverage;
+                    break;
+                case 'metal':
+                case 'stock':
+                case 'index':
+                case 'crypto':
+                    marginRequiredInBaseCurrency = (currentPrice * tradeSizeUnits) / leverage;
+                    break;
+                default:
+                    showMessage("Unsupported instrument type for margin calculation.", 'error');
+                    requiredMarginDisplay.textContent = 'N/A';
+                    marginCurrencySymbol.textContent = accountCurrency;
+                    pipValueDisplay.textContent = 'N/A';
+                    pipValueCurrencySymbol.textContent = '';
+                    hideLoading();
+                    return;
+            }
+
+            console.log("Margin Required in Base Currency (before conversion):", marginRequiredInBaseCurrency);
+
+
+            let finalMarginAmount = marginRequiredInBaseCurrency;
+
+            let marginBaseCurrency = quoteCurrencyOfPair;
+
+            if (selectedSymbol === 'UK100') {
+                marginBaseCurrency = 'GBP';
+            }
+
+            if (marginBaseCurrency !== accountCurrency) {
+                 const symbolToConvert = `${marginBaseCurrency}${accountCurrency}`;
+                 console.log("Attempting margin conversion using symbol:", symbolToConvert);
+                 let conversionRate = await fetchForexRate(symbolToConvert);
+                 
+                 if (conversionRate === null) {
+                     showMessage(`Could not fetch conversion rate for ${symbolToConvert}. Margin may be inaccurate. Showing in ${marginBaseCurrency}.`, 'error');
+                     requiredMarginDisplay.textContent = finalMarginAmount.toFixed(2);
+                     marginCurrencySymbol.textContent = marginBaseCurrency;
+                     hideLoading();
+                     return;
+                 }
+                 finalMarginAmount = finalMarginAmount * conversionRate;
+                 console.log("Margin Conversion Rate:", conversionRate);
+            } else {
+                 console.log("No margin currency conversion needed (marginBaseCurrency matches accountCurrency).");
+            }
+
+            console.log("Final Margin Amount:", finalMarginAmount);
+
+            requiredMarginDisplay.textContent = finalMarginAmount.toFixed(2);
+            marginCurrencySymbol.textContent = accountCurrency;
+
+            const { pipSize, valueLabel, isPipCalculable } = getPipPointDetails(selectedSymbol);
+            console.log("Pip/Point Details:", { pipSize, valueLabel, isPipCalculable });
+
+            if (isPipCalculable) {
+                let pipPointValue = 0;
+                let pipPointCurrencySymbol = accountCurrency;
+
+                if (assetType === 'forex') {
+                    pipPointValue = tradeSizeUnits * pipSize;
+                    
+                    if (quoteCurrencyOfPair !== accountCurrency) {
+                        const quoteToAccountSymbol = `${quoteCurrencyOfPair}${accountCurrency}`;
+                        console.log("Attempting pip value conversion using symbol:", quoteToAccountSymbol);
+                        const conversionRateForPip = await fetchForexRate(quoteToAccountSymbol);
+                        if (conversionRateForPip === null) {
+                            showMessage(`Could not fetch conversion rate for pip value (${quoteToAccountSymbol}).`, 'error');
+                            pipValueDisplay.textContent = 'N/A';
+                            pipValueCurrencySymbol.textContent = '';
+                            hideLoading();
+                            return;
+                        }
+                        pipPointValue = pipPointValue * conversionRateForPip;
+                        console.log("Pip Value Conversion Rate:", conversionRateForPip);
+                    }
+                }
+                else if (assetType === 'metal' || assetType === 'stock' || assetType === 'index' || assetType === 'crypto') {
+                    pipPointValue = tradeSizeUnits * pipSize;
+                    
+                    if (quoteCurrencyOfPair !== accountCurrency) {
+                           const quoteToAccountSymbol = `${quoteCurrencyOfPair}${accountCurrency}`;
+                           console.log("Attempting point value conversion using symbol:", quoteToAccountSymbol);
+                           const conversionRateForPip = await fetchForexRate(quoteToAccountSymbol);
+                           if (conversionRateForPip === null) {
+                               showMessage(`Could not fetch conversion rate for point value (${quoteToAccountSymbol}).`, 'error');
+                               pipValueDisplay.textContent = 'N/A';
+                               pipValueCurrencySymbol.textContent = '';
+                               hideLoading();
+                               return;
+                           }
+                           pipPointValue = pipPointValue * conversionRateForPip;
+                           console.log("Point Value Conversion Rate:", conversionRateForPip);
+                    }
+                }
+
+                pipValueDisplay.textContent = pipPointValue.toFixed(2);
+                pipValueCurrencySymbol.textContent = pipPointCurrencySymbol;
+                pipValueRow.style.display = 'flex';
+            } else {
+                pipValueDisplay.textContent = valueLabel;
+                pipValueCurrencySymbol.textContent = '';
+                pipValueRow.style.display = 'flex';
+            }
+
+            hideLoading();
+        }
+
+        document.addEventListener('DOMContentLoaded', updateTradeSizeLabel);
+
+    </script>
+</body>
+</html>
