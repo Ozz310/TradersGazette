@@ -3,7 +3,7 @@ body {
     font-family: 'Roboto', Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #FFFFFF; /* NEW: Changed body background to white */
+    background-color: #FFFFFF; /* Changed body background to white */
     color: #e0e0e0; /* Light text color (for footer mostly) */
     line-height: 1.6;
     display: flex; /* For centering the main dashboard */
@@ -13,7 +13,7 @@ body {
     position: relative; /* For body::before pattern */
 }
 
-/* NEW: Background pattern adjusted for white body */
+/* Background pattern adjusted for white body */
 body::before {
     content: '';
     position: absolute;
@@ -249,7 +249,21 @@ footer {
     font-size: 0.8rem;
     margin-top: auto;
     background-color: #1a1a1a; /* Remains dark background for consistency with wrapper */
+    display: flex; /* NEW: Use flexbox for layout */
+    flex-direction: column; /* NEW: Stack items vertically */
+    align-items: center; /* NEW: Center items horizontally */
+    gap: 10px; /* NEW: Space between footer elements */
 }
+
+/* NEW: Styling for the footer logo */
+.footer-logo {
+    max-width: 150px; /* Adjust as needed for smaller size */
+    height: auto;
+    margin-bottom: 5px; /* Space between logo and text */
+    border-radius: 8px; /* Optional: subtle rounded corners */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3); /* Optional: subtle shadow */
+}
+
 
 /* --- Skeleton Loader Styles --- */
 .skeleton-wrapper {
