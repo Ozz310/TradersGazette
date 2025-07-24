@@ -1,4 +1,4 @@
-const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRAJhMLSkrHlICOabG493SP5WSQ1kUbbCnoAIgJGdD3TUzhBY1Fyn5-PQ9LuVKzf5YO6LHAlqkW3Dos/pub?output=csv'; // CORRECTED URL
+const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRAJhMLSkrHlICOabG493SP5WSQ1kUbbCnoAIgJGdD3TUzhBY1Fyn5-PQ9LuVKzf5YO6LHAlQkW3Dos/pub?output=csv';
 let allNewsArticles = []; // To store all fetched news
 let autoRefreshIntervalId; // Used for setInterval
 const AUTO_REFRESH_INTERVAL_MS = 300000; // 5 minutes
@@ -89,7 +89,6 @@ async function fetchNews() {
         const csvText = await response.text();
 
         const newsData = parseCSV(csvText);
-        // Filter out articles with empty headlines (or other critical missing data if needed)
         allNewsArticles = newsData.filter(article => article.Headline && article.Headline.trim() !== '');
         displayNews(allNewsArticles);
 
@@ -133,7 +132,7 @@ function displayNews(articlesToDisplay) {
         return dateB - dateA;
     }).forEach((article, index) => {
         const headline = article.Headline || '';
-        const summary = article.Summary || ''; // CORRECTED: Changed back to article.Summary
+        const summary = article.Summary || '';
         let url = article.URL || '#';
         const publishedTime = article['Published Time'] || 'N/A';
         const tickers = article.Tickers || 'N/A';
@@ -156,7 +155,7 @@ function displayNews(articlesToDisplay) {
         articleDiv.classList.add('news-article');
 
         const summaryHtml = summary ? `<p>${summary.substring(0, 300)}...</p>` : '<p>No summary available.</p>';
-        // Add a class to the Read More link for specific button styling
+        // NEW: Add a class to the Read More link for specific button styling
         const readMoreHtml = summary.length > 300 && url !== '#' ? `<a href="${url}" target="_blank" rel="noopener noreferrer" class="read-more-button">Read More</a>` : '';
 
 
@@ -189,7 +188,6 @@ function stopAutoRefresh() { // This function is not called but remains for comp
         console.log('Auto-refresh stopped.');
     }
 }
-
 
 // --- Initial Load ---
 window.onload = () => {
