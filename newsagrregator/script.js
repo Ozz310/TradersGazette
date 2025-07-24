@@ -1,23 +1,31 @@
-const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRAJhMLSkrHlICOabG493SP5WSQ1kUbbCnoAIgJGdD3TUzhBY1Fyn5-PQ9LuVKzf5YO6LHAlQkW3Dos/pub?output=csv';
-let allNewsArticles = [];
-let autoRefreshIntervalId;
-const AUTO_REFRESH_INTERVAL_MS = 300000;
+const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRAJhMLSkrHlICOabG493SP5WSQ1kUbbCnoAIgJGdD3TUzhBY1Fyn5-PQ9LuVKzf5YO6LHAlQkW3Dos/pub?output=csv'; // Your correct Google Sheet URL
+let allNewsArticles = []; // To store all fetched news
+let autoRefreshIntervalId; // Used for setInterval
+const AUTO_REFRESH_INTERVAL_MS = 300000; // 5 minutes
 const MAX_SUMMARY_LENGTH = 500; // Define max summary length for display and to prevent overflow
 
 // --- Helper Functions ---
 
-// Robust CSV parser
+// Robust CSV parser (remains mostly same, relies on new parseCSVLine)
 function parseCSV(csv) {
     const lines = csv.split('\n');
     const nonEmptyLines = lines.filter(line => line.trim() !== '');
     if (nonEmptyLines.length === 0) return [];
 
-    const headersLine = nonEmptyLines[0];
-    const headers = parseCSVLine(headersLine).map(header => header.trim());
+    let headers = [];
+    try {
+        headers = parseCSVLine(nonEmptyLines[0]).map(header => header.trim());
+        if (headers.length === 0) {
+            console.error("DEBUG: Header line parsed to zero columns. Check CSV header format:", nonEmptyLines[0]);
+            return [];
+        }
+    } catch (headerParseError) {
+        console.error("DEBUG: Error parsing header line:", nonEmptyLines[0], "Error:", headerParseError);
+        return [];
+    }
 
     const data = [];
 
-    // DEBUG: Log raw header line and parsed headers for debugging
     console.log("DEBUG: Raw CSV Header Line:", nonEmptyLines[0]);
     console.log("DEBUG: Parsed Headers (from parseCSVLine):", headers);
 
@@ -28,7 +36,7 @@ function parseCSV(csv) {
             parsedRow = parseCSVLine(currentLine);
         } catch (rowParseError) {
             // DEBUG: Log parsing errors for specific rows
-            console.warn(`DEBUG: Error parsing row (RangeError likely): "${currentLine.substring(0, 100)}...". Skipping. Error: ${rowParseError.message}`);
+            console.warn(`DEBUG: Error parsing row (likely malformed): "${currentLine.substring(0, 100)}...". Skipping. Error: ${rowParseError.message}`);
             continue; // Skip this row if parsing itself throws an error
         }
 
@@ -45,48 +53,25 @@ function parseCSV(csv) {
     return data;
 }
 
-// Highly robust CSV line parser (Handles escaped quotes "" and commas within quotes)
+// NEW: Highly robust CSV line parser (Handles escaped quotes "" and commas within quotes)
 function parseCSVLine(line) {
     const results = [];
+    // Regex: Matches a quoted field (allowing "" for escaped quotes) OR an unquoted field (up to comma or end of line)
     const regex = /(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|([^,]*))(?:,|$)/g; 
     let match;
-    let lastIndex = 0; // Track progress to prevent infinite loops
-
-    const MAX_FIELD_LENGTH = 10000; // Safeguard: max chars for a single field
-    const MAX_FIELDS_PER_LINE = 100; // Safeguard: max fields to parse per line
-
-    let fieldCount = 0;
 
     // Trim the line before parsing to remove leading/trailing whitespace which might affect regex
     const trimmedLine = line.trim();
 
     while ((match = regex.exec(trimmedLine)) !== null) {
-        if (fieldCount >= MAX_FIELDS_PER_LINE) {
-            console.warn(`DEBUG: parseCSVLine exceeded MAX_FIELDS_PER_LINE for line: ${trimmedLine.substring(0, 100)}...`);
-            throw new Error("Too many fields detected in line."); // Prevent runaway parsing
-        }
-
         let value;
         if (match[1] !== undefined) { // Matched a quoted field
             value = match[1].replace(/\"\"/g, '"'); // Unescape double quotes within the field
-        } else { // Matched an unquoted field
+        } else { // If it matched an unquoted field
             value = match[2];
         }
 
-        // Safeguard: Truncate very long fields during parsing if they exceed expected size
-        if (value && value.length > MAX_FIELD_LENGTH) {
-            console.warn(`DEBUG: Field too long, truncating: ${value.substring(0, 50)}...`);
-            value = value.substring(0, MAX_FIELD_LENGTH);
-        }
-
         results.push(value); 
-        lastIndex = regex.lastIndex; 
-        fieldCount++;
-
-        // Safeguard against regex getting stuck (shouldn't happen with proper regex but good for very malformed data)
-        if (regex.lastIndex === startIndex) { // startIndex comes from outer scope or set to 0 initially
-            regex.lastIndex++; 
-        }
     }
 
     // Handle trailing empty fields (e.g., "a,b," should result in ["a", "b", ""])
