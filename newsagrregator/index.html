@@ -1,47 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Trader's Gazette</title>
-    <link rel="stylesheet" href="style.css?v=13"> 
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta name="description" content="The Trader's Gazette - Your daily digest of top financial, forex, and crypto headlines." />
+  <meta name="theme-color" content="#1a1a1a" />
+  <meta property="og:title" content="The Trader's Gazette" />
+  <meta property="og:image" content="https://raw.githubusercontent.com/Ozz310/TradersGazette/refs/heads/main/newsagrregator/WhatsApp%20Image%202025-06-18%20at%2011.37.16.jpeg" />
+
+  <title>The Trader's Gazette</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css?v=14" />
 </head>
+
 <body>
-    <div class="dashboard-wrapper">
-        <div class="dashboard-header-section">
-            <div class="header-masthead-group">
-                <img src="https://raw.githubusercontent.com/Ozz310/TradersGazette/refs/heads/main/newsagrregator/WhatsApp%20Image%202025-06-18%20at%2011.37.16.jpeg" alt="The Trader's Gazette Logo" class="header-logo-top">
-                <h1>The Trader’s Gazette</h1>
-            </div>
+  <div class="dashboard-wrapper">
+
+    <!-- Header Section -->
+    <header class="dashboard-header-section">
+      <div class="header-masthead-group">
+        <img
+          src="https://raw.githubusercontent.com/Ozz310/TradersGazette/refs/heads/main/newsagrregator/WhatsApp%20Image%202025-06-18%20at%2011.37.16.jpeg"
+          alt="The Trader's Gazette Logo"
+          class="header-logo-top"
+        />
+        <h1>The Trader’s Gazette</h1>
+        <p style="font-size: 0.9rem; color: #666;">Curated Financial & Trading News</p>
+      </div>
+    </header>
+
+    <!-- News Container -->
+    <main id="news-container">
+      <div id="news-columns" class="news-columns-container">
+        <!-- Skeleton placeholder -->
+        <div class="skeleton-wrapper">
+          <div class="skeleton-article">
+            <div class="skeleton-line short"></div>
+            <div class="skeleton-line medium"></div>
+            <div class="skeleton-line long"></div>
+          </div>
+          <div class="skeleton-article">
+            <div class="skeleton-line short"></div>
+            <div class="skeleton-line medium"></div>
+            <div class="skeleton-line long"></div>
+          </div>
+          <div class="skeleton-article">
+            <div class="skeleton-line short"></div>
+            <div class="skeleton-line medium"></div>
+            <div class="skeleton-line long"></div>
+          </div>
         </div>
-        <main id="news-container">
-            <div id="news-columns" class="news-columns-container">
-                <div class="skeleton-wrapper">
-                    <div class="skeleton-article">
-                        <div class="skeleton-line short"></div>
-                        <div class="skeleton-line medium"></div>
-                        <div class="skeleton-line long"></div>
-                    </div>
-                    <div class="skeleton-article">
-                        <div class="skeleton-line short"></div>
-                        <div class="skeleton-line medium"></div>
-                        <div class="skeleton-line long"></div>
-                    </div>
-                    <div class="skeleton-article">
-                        <div class="skeleton-line short"></div>
-                        <div class="skeleton-line medium"></div>
-                        <div class="skeleton-line long"></div>
-                    </div>
-                </div>
-            </div>
-        </main>
-        <footer>
-            <img src="https://raw.githubusercontent.com/Ozz310/TradersGazette/refs/heads/main/newsagrregator/WhatsApp%20Image%202025-06-18%20at%2011.37.15%20(1).jpeg" alt="The Traders Gazette Logo Footer" class="footer-logo">
-            <p>&copy; 2025 Trader's Gazette</p>
-            <p>Powered by Trader's Gazette</p>
-        </footer>
-    </div>
-    <script src="script.js"></script>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+      <img
+        src="https://raw.githubusercontent.com/Ozz310/TradersGazette/refs/heads/main/newsagrregator/WhatsApp%20Image%202025-06-18%20at%2011.37.15%20(1).jpeg"
+        alt="The Trader's Gazette Logo Footer"
+        class="footer-logo"
+      />
+      <p>&copy; 2025 The Trader's Gazette</p>
+      <p>Powered by Trader's Gazette</p>
+    </footer>
+  </div>
+
+  <!-- JavaScript -->
+  <script src="script.js"></script>
 </body>
 </html>
