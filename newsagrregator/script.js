@@ -133,7 +133,7 @@ function displayNews(articlesToDisplay) {
         return dateB - dateA;
     }).forEach((article, index) => {
         const headline = article.Headline || '';
-        const summary = article.Description || ''; // Changed from Summary to Description based on typical CSV header
+        const summary = article.Summary || ''; // CORRECTED: Changed back to article.Summary
         let url = article.URL || '#';
         const publishedTime = article['Published Time'] || 'N/A';
         const tickers = article.Tickers || 'N/A';
