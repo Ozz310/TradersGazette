@@ -1,7 +1,7 @@
-const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRAJhMLSkrHlICOabG493SP5WSQ1kUbbCnoAIgJGdD3TUzhBY1Fyn5-PQ9LuVKzf5YO6LHAlqkW3Dos/pub?output=csv'; // Your correct Google Sheet URL
-let allNewsArticles = []; // To store all fetched news
-let autoRefreshIntervalId; // Used for setInterval
-const AUTO_REFRESH_INTERVAL_MS = 300000; // 5 minutes
+const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRAJhMLSkrHlICOabG493SP5WSQ1kUbbCnoAIgJGdD3TUzhBY1Fyn5-PQ9LuVKzf5YO6LHAlQkW3Dos/pub?output=csv';
+let allNewsArticles = [];
+let autoRefreshIntervalId;
+const AUTO_REFRESH_INTERVAL_MS = 300000;
 const MAX_SUMMARY_LENGTH = 500; // Define max summary length for display and to prevent overflow
 
 // --- Helper Functions ---
