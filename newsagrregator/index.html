@@ -2,43 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Curated Financial & Trading News by The Trader’s Gazette" />
-  <meta name="theme-color" content="#000000" />
-  <title>The Trader’s Gazette</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Trader's Gazette - News Feed</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Logo & Title -->
-  <header>
-    <img 
-      src="https://raw.githubusercontent.com/Ozz310/TradersGazette/refs/heads/main/newsagrregator/WhatsApp%20Image%202025-06-18%20at%2011.37.16.jpeg" 
-      alt="The Trader’s Gazette Logo" 
-      id="logo" 
-    />
+  <div class="header">
     <h1>The Trader’s Gazette</h1>
-    <p class="subtitle">Curated Financial & Trading News</p>
-  </header>
-
-  <!-- News Container -->
-  <section id="news">
-    <!-- Cards will be injected here by script.js -->
-  </section>
-
-  <!-- Footer with correct logo -->
-  <div class="footer">
-    <img 
-      src="https://raw.githubusercontent.com/Ozz310/TradersGazette/refs/heads/main/newsagrregator/WhatsApp%20Image%202025-06-18%20at%2011.37.15%20(1).jpeg" 
-      alt="Logo" 
-      class="footer-logo" 
-    />
-    <div>© 2025 The Trader’s Gazette<br>Powered by Trader’s Gazette</div>
+    <p>Curated Financial & Trading News</p>
   </div>
 
-  <!-- Dark Mode Toggle -->
-  <button class="toggle-btn" onclick="toggleDarkMode()">🌓 Toggle Mode</button>
+  <div id="news-container" class="news-container">
+    <!-- News articles will be injected here by script.js -->
+  </div>
 
-  <!-- Scripts -->
+  <div class="footer">
+    <p>© 2025 The Trader’s Gazette<br>Powered by Trader’s Gazette</p>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
