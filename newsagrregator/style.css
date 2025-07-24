@@ -3,7 +3,7 @@ body {
     font-family: 'Roboto', Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #FFFFFF; /* Changed body background to white */
+    background-color: #FFFFFF; /* NEW: Changed body background to white */
     color: #e0e0e0; /* Light text color (for footer mostly) */
     line-height: 1.6;
     display: flex; /* For centering the main dashboard */
@@ -13,7 +13,7 @@ body {
     position: relative; /* For body::before pattern */
 }
 
-/* Background pattern adjusted for white body */
+/* NEW: Background pattern adjusted for white body */
 body::before {
     content: '';
     position: absolute;
