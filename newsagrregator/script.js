@@ -6,13 +6,15 @@ const AUTO_REFRESH_INTERVAL_MS = 300000; // 5 minutes
 
 // --- Helper Functions ---
 
-// Robust CSV parser
+// Reverted to older, working parseCSV
 function parseCSV(csv) {
     const lines = csv.split('\n');
     const nonEmptyLines = lines.filter(line => line.trim() !== '');
     if (nonEmptyLines.length === 0) return [];
 
-    const headers = parseCSVLine(nonEmptyLines[0]).map(header => header.trim());
+    const headersLine = nonEmptyLines[0];
+    const headers = parseCSVLine(headersLine).map(header => header.trim());
+
     const data = [];
 
     // NEW: Log raw header line and parsed headers for debugging
@@ -28,38 +30,30 @@ function parseCSV(csv) {
             }
             data.push(row);
         } else {
-            // NEW: Log malformed rows for debugging
             console.warn(`DEBUG: Skipping malformed CSV row (column mismatch): "${nonEmptyLines[i]}" - Expected ${headers.length} columns, got ${currentLine.length}`);
         }
     }
     return data;
 }
 
-// NEW: Highly robust CSV line parser using regex
+// Reverted to older, working parseCSVLine
 function parseCSVLine(line) {
-    const results = [];
-    // Regex: Matches a quoted field (allowing "" for escaped quotes) OR an unquoted field (up to comma or end of line)
-    const regex = /(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|([^,]*))(?:,|$)/g; 
-    let match;
-    let lastIndex = 0;
-
-    while ((match = regex.exec(line)) !== null) {
-        let value;
-        if (match[1] !== undefined) { // If it matched a quoted field
-            value = match[1].replace(/\"\"/g, '"'); // Unescape double quotes within the field
-        } else { // If it matched an unquoted field
-            value = match[2];
+    const result = [];
+    let inQuote = false;
+    let currentField = '';
+    for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        if (char === '"') {
+            inQuote = !inQuote;
+        } else if (char === ',' && !inQuote) {
+            result.push(currentField.trim());
+            currentField = '';
+        } else {
+            currentField += char;
         }
-        results.push(value.trim()); // Add the value, trimming whitespace
-        lastIndex = regex.lastIndex; // Keep track of progress in the line
     }
-
-    // Handle trailing empty fields (e.g., "a,b," should result in ["a", "b", ""])
-    if (lastIndex < line.length && line.charAt(lastIndex - 1) === ',') {
-        results.push('');
-    }
-
-    return results;
+    result.push(currentField.trim()); // Add the last field
+    return result;
 }
 
 // More robust Date Formatting Function (from previous iteration)
