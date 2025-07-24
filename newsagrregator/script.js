@@ -35,35 +35,34 @@ function parseCSV(csv) {
     return data;
 }
 
-// NEW: More robust CSV line parser to handle quoted commas correctly
+// NEW: Highly robust CSV line parser using regex
 function parseCSVLine(line) {
-    const result = [];
-    let current = '';
-    let inQuote = false;
-    let escapedQuote = false;
+    const results = [];
+    // Regex: Matches a quoted field (allowing "" for escaped quotes) OR an unquoted field (up to comma or end of line)
+    const regex = /(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|([^,]*))(?:,|$)/g; 
+    let match;
+    let lastIndex = 0;
 
-    for (let i = 0; i < line.length; i++) {
-        const char = line[i];
-
-        if (char === '"') {
-            if (inQuote && line[i + 1] === '"') { // Escaped quote inside a quoted field
-                current += char;
-                i++; // Skip the next quote as it's part of the escape
-            } else {
-                inQuote = !inQuote;
-            }
-        } else if (char === ',' && !inQuote) { // Comma outside of quotes indicates a new field
-            result.push(current.trim());
-            current = '';
-        } else {
-            current += char;
+    while ((match = regex.exec(line)) !== null) {
+        let value;
+        if (match[1] !== undefined) { // If it matched a quoted field
+            value = match[1].replace(/\"\"/g, '"'); // Unescape double quotes within the field
+        } else { // If it matched an unquoted field
+            value = match[2];
         }
+        results.push(value.trim()); // Add the value, trimming whitespace
+        lastIndex = regex.lastIndex; // Keep track of progress in the line
     }
-    result.push(current.trim()); // Add the last field
-    return result;
+
+    // Handle trailing empty fields (e.g., "a,b," should result in ["a", "b", ""])
+    if (lastIndex < line.length && line.charAt(lastIndex - 1) === ',') {
+        results.push('');
+    }
+
+    return results;
 }
 
-// NEW: More robust Date Formatting Function (from previous iteration)
+// More robust Date Formatting Function (from previous iteration)
 function formatNewspaperDateline(dateString) {
   if (!dateString || typeof dateString !== 'string') return 'N/A';
   try {
@@ -80,13 +79,11 @@ function formatNewspaperDateline(dateString) {
         cleanedDateString = cleanedDateString.substring(1, cleanedDateString.length - 1);
     }
 
-    // Attempt to create date object
-    let date = new Date(cleanedDateString); // Use 'let' here as it might be reassigned
+    let date = new Date(cleanedDateString); 
 
-    // Check if date is valid using getTime()
     if (isNaN(date.getTime())) {
         // Fallback for some specific formats if initial parse fails (e.g., if it has T and Z but no time)
-        const fallbackDate = new Date(dateString.replace('T', ' ').replace('Z', '')); // Try removing T and Z
+        const fallbackDate = new Date(dateString.replace('T', ' ').replace('Z', '')); 
         if (!isNaN(fallbackDate.getTime())) {
             date = fallbackDate;
         } else {
