@@ -29,38 +29,46 @@ function parseCSV(csv) {
             data.push(row);
         } else {
             // NEW: Log malformed rows for debugging
-            console.warn(`DEBUG: Skipping malformed CSV row: "${nonEmptyLines[i]}" - Expected ${headers.length} columns, got ${currentLine.length}`);
+            console.warn(`DEBUG: Skipping malformed CSV row (column mismatch): "${nonEmptyLines[i]}" - Expected ${headers.length} columns, got ${currentLine.length}`);
         }
     }
     return data;
 }
 
-// More robust CSV line parser to handle quoted commas
+// NEW: More robust CSV line parser to handle quoted commas correctly
 function parseCSVLine(line) {
     const result = [];
+    let current = '';
     let inQuote = false;
-    let currentField = '';
+    let escapedQuote = false;
+
     for (let i = 0; i < line.length; i++) {
         const char = line[i];
+
         if (char === '"') {
-            inQuote = !inQuote;
-        } else if (char === ',' && !inQuote) {
-            result.push(currentField.trim());
-            currentField = '';
+            if (inQuote && line[i + 1] === '"') { // Escaped quote inside a quoted field
+                current += char;
+                i++; // Skip the next quote as it's part of the escape
+            } else {
+                inQuote = !inQuote;
+            }
+        } else if (char === ',' && !inQuote) { // Comma outside of quotes indicates a new field
+            result.push(current.trim());
+            current = '';
         } else {
-            currentField += char;
+            current += char;
         }
     }
-    result.push(currentField.trim()); // Add the last field
+    result.push(current.trim()); // Add the last field
     return result;
 }
 
-// NEW: More robust Date Formatting Function
+// NEW: More robust Date Formatting Function (from previous iteration)
 function formatNewspaperDateline(dateString) {
   if (!dateString || typeof dateString !== 'string') return 'N/A';
   try {
     let cleanedDateString = dateString.trim();
-    // Remove known issues: trailing 'Z' and milliseconds if present
+    // Remove trailing 'Z' and milliseconds if present, as some older engines struggle with it
     if (cleanedDateString.endsWith('Z')) {
         cleanedDateString = cleanedDateString.substring(0, cleanedDateString.length - 1);
     }
@@ -73,11 +81,11 @@ function formatNewspaperDateline(dateString) {
     }
 
     // Attempt to create date object
-    const date = new Date(cleanedDateString);
+    let date = new Date(cleanedDateString); // Use 'let' here as it might be reassigned
 
     // Check if date is valid using getTime()
     if (isNaN(date.getTime())) {
-        // Fallback for some specific formats if initial parse fails
+        // Fallback for some specific formats if initial parse fails (e.g., if it has T and Z but no time)
         const fallbackDate = new Date(dateString.replace('T', ' ').replace('Z', '')); // Try removing T and Z
         if (!isNaN(fallbackDate.getTime())) {
             date = fallbackDate;
