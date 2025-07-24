@@ -249,13 +249,13 @@ footer {
     font-size: 0.8rem;
     margin-top: auto;
     background-color: #1a1a1a; /* Remains dark background for consistency with wrapper */
-    display: flex; /* NEW: Use flexbox for layout */
-    flex-direction: column; /* NEW: Stack items vertically */
-    align-items: center; /* NEW: Center items horizontally */
-    gap: 10px; /* NEW: Space between footer elements */
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
+    gap: 10px; /* Space between footer elements */
 }
 
-/* NEW: Styling for the footer logo */
+/* Styling for the footer logo */
 .footer-logo {
     max-width: 150px; /* Adjust as needed for smaller size */
     height: auto;
