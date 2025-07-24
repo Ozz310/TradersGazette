@@ -1,56 +1,48 @@
 const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRAJhMLSkrHlICOabG493SP5WSQ1kUbbCnoAIgJGdD3TUzhBY1Fyn5-PQ9LuVKzf5YO6LHAlQkW3Dos/pub?output=csv';
-let allNewsArticles = [];
-let autoRefreshIntervalId;
-const AUTO_REFRESH_INTERVAL_MS = 300000;
-const MAX_SUMMARY_LENGTH = 350;
+const AUTO_REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes
 
-// --- Robust CSV Parser Functions ---
-
-function parseCSV(csv) {
-    const lines = csv.split('\n');
-    const nonEmptyLines = lines.filter(line => line.trim() !== '');
-    if (nonEmptyLines.length === 0) return [];
-
-    const headers = parseCSVLine(nonEmptyLines[0]);
-    console.log("DEBUG: Raw CSV Header Line:", nonEmptyLines[0]);
-    console.log("DEBUG: Parsed Headers (from parseCSVLine):", headers);
+// === CSV PARSER ===
+function parseCSV(csvText) {
+    const lines = csvText.trim().split(/\r?\n/);
+    const headers = parseCSVLine(lines[0]);
+    console.debug("DEBUG: Raw CSV Header Line:", lines[0]);
+    console.debug("DEBUG: Parsed Headers (from parseCSVLine):", headers);
 
     const data = [];
-
-    for (let i = 1; i < nonEmptyLines.length; i++) {
-        const row = parseCSVLine(nonEmptyLines[i]);
-        if (row.length === headers.length) {
-            const obj = {};
-            for (let j = 0; j < headers.length; j++) {
-                obj[headers[j]] = row[j] || '';
-            }
-            data.push(obj);
-        } else {
-            console.warn(`DEBUG: Skipping malformed CSV row (column mismatch): "${nonEmptyLines[i]}" - Expected ${headers.length} columns, got ${row.length}`);
+    for (let i = 1; i < lines.length; i++) {
+        const row = parseCSVLine(lines[i]);
+        if (row.length !== headers.length) {
+            console.warn(`DEBUG: Skipping malformed CSV row (column mismatch): "${lines[i]}" - Expected ${headers.length} columns, got ${row.length}`);
+            continue;
         }
+
+        const entry = {};
+        headers.forEach((header, index) => {
+            entry[header.trim()] = row[index].trim();
+        });
+        data.push(entry);
     }
 
+    console.debug("DEBUG: Parsed News Data (first 3 articles):", data.slice(0, 3));
+    console.debug("DEBUG: Total Parsed Articles:", data.length);
     return data;
 }
 
-// ✅ State-machine based CSV line parser
 function parseCSVLine(line) {
-    const fields = [];
+    const result = [];
     let current = '';
     let insideQuotes = false;
-    let i = 0;
 
-    while (i < line.length) {
+    for (let i = 0; i < line.length; i++) {
         const char = line[i];
+        const nextChar = line[i + 1];
 
         if (insideQuotes) {
-            if (char === '"') {
-                if (line[i + 1] === '"') {
-                    current += '"';
-                    i++;
-                } else {
-                    insideQuotes = false;
-                }
+            if (char === '"' && nextChar === '"') {
+                current += '"';
+                i++; // Skip the escaped quote
+            } else if (char === '"') {
+                insideQuotes = false;
             } else {
                 current += char;
             }
@@ -58,131 +50,92 @@ function parseCSVLine(line) {
             if (char === '"') {
                 insideQuotes = true;
             } else if (char === ',') {
-                fields.push(current.trim());
+                result.push(current);
                 current = '';
             } else {
                 current += char;
             }
         }
-        i++;
     }
-
-    fields.push(current.trim());
-
-    return fields;
+    result.push(current); // Last field
+    return result;
 }
 
-function formatNewspaperDateline(dateString) {
-    if (!dateString || typeof dateString !== 'string') return 'N/A';
+// === DISPLAY LOGIC ===
+function displayNews(newsArray) {
+    const container = document.getElementById('news-columns');
+    container.innerHTML = ''; // Clear existing
+
+    newsArray.forEach((article, index) => {
+        if (!article.Headline || !article.URL || !article['Published Time']) return;
+
+        let dateStr = formatNewspaperDateline(article['Published Time']);
+        if (!dateStr) return;
+
+        console.debug(`DEBUG: Rendering Article #${index}: Headline="${article.Headline}", Tickers="${article.Tickers}"`);
+
+        const articleDiv = document.createElement('div');
+        articleDiv.className = 'news-article';
+
+        articleDiv.innerHTML = `
+            <img src="${article['Image URL']}" class="news-thumbnail" alt="News Image">
+            <div class="news-text">
+                <h2><a href="${article.URL}" target="_blank">${article.Headline}</a></h2>
+                <p>${article.Summary}</p>
+                <div class="news-meta">
+                    <span>${dateStr}</span>
+                    <span>${article.Tickers}</span>
+                </div>
+            </div>
+        `;
+
+        container.appendChild(articleDiv);
+    });
+}
+
+function formatNewspaperDateline(dateInput) {
     try {
-        let cleaned = dateString.trim().replace(/^"|"$/g, '');
-        if (cleaned.endsWith('Z')) cleaned = cleaned.slice(0, -1);
-        if (cleaned.includes('.')) cleaned = cleaned.split('.')[0];
-        let date = new Date(cleaned);
-        if (isNaN(date)) {
-            date = new Date(cleaned.replace('T', ' ').replace('Z', ''));
-            if (isNaN(date)) throw new Error('Invalid date after parsing attempt');
-        }
-        const options = { month: 'long', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true };
-        return date.toLocaleString('en-US', options);
+        const date = new Date(dateInput);
+        if (isNaN(date.getTime())) throw new Error("Invalid date");
+        return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
     } catch (e) {
-        console.error("DEBUG: Date format error for input:", dateString, "Error:", e);
-        return 'Invalid Date';
+        console.debug("DEBUG: Date format error for input:", dateInput, "Error:", e);
+        return null;
     }
 }
 
-// --- Main Fetch & Display Logic ---
-
+// === FETCH LOGIC ===
 async function fetchNews() {
-    const newsContainer = document.getElementById('news-columns');
-    const skeletonWrapper = document.querySelector('.skeleton-wrapper');
-
-    if (!newsContainer) return;
-
-    if (skeletonWrapper) skeletonWrapper.style.display = 'block';
-    newsContainer.innerHTML = '';
-
     try {
         const response = await fetch(GOOGLE_SHEET_URL);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const csvText = await response.text();
 
-        console.log("DEBUG: Fetched CSV Text (first 500 chars):", csvText.substring(0, 500));
+        console.debug("DEBUG: Fetched CSV Text (first 500 chars):", csvText.slice(0, 500));
 
-        const newsData = parseCSV(csvText);
-        console.log("DEBUG: Parsed News Count:", newsData.length);
+        const articles = parseCSV(csvText);
+        const filtered = articles.filter(article => article.Headline && article.Headline.trim() !== '');
 
-        allNewsArticles = newsData.filter(article => article.Headline && article.Headline.trim() !== '');
-        console.log("DEBUG: Filtered Articles (passing Headline check):", allNewsArticles.length);
+        console.debug("DEBUG: Filtered Articles (passing Headline check):", filtered.length);
 
-        displayNews(allNewsArticles);
+        displayNews(filtered);
     } catch (error) {
-        console.error('Error fetching news:', error);
-        newsContainer.innerHTML = '<p>Failed to retrieve news. Please try refreshing.</p>';
-        if (skeletonWrapper) skeletonWrapper.style.display = 'none';
+        console.error("Error fetching news:", error);
     }
 }
 
-function displayNews(articlesToDisplay) {
-    const newsContainer = document.getElementById('news-columns');
-    const skeletonWrapper = document.querySelector('.skeleton-wrapper');
-
-    if (!newsContainer) return;
-    newsContainer.innerHTML = '';
-    if (skeletonWrapper) skeletonWrapper.style.display = 'none';
-
-    if (articlesToDisplay.length === 0) {
-        newsContainer.innerHTML = '<p>No news articles found.</p>';
-        return;
-    }
-
-    articlesToDisplay.sort((a, b) => new Date(b['Published Time']) - new Date(a['Published Time']))
-        .forEach((article, index) => {
-            const headline = article.Headline || '';
-            const summary = article.Summary || '';
-            let url = article.URL || '#';
-            const publishedTime = article['Published Time'] || 'N/A';
-            const tickers = article.Tickers || 'N/A';
-
-            if (url !== '#') {
-                url = url.replace(/^"|"$/g, '').trim();
-                if (!url.startsWith('http')) url = 'https://' + url;
-                try { new URL(url); } catch { url = '#'; }
-            }
-
-            const isBreaking = index === 0;
-            const breakingHtml = isBreaking ? '<span class="breaking-ribbon">BREAKING</span>' : '';
-            const articleDiv = document.createElement('div');
-            articleDiv.classList.add('news-article');
-
-            const summaryHtml = summary
-                ? `<p>${summary.substring(0, MAX_SUMMARY_LENGTH)}${summary.length > MAX_SUMMARY_LENGTH ? '...' : ''}</p>`
-                : '<p>No summary available.</p>';
-
-            const readMoreHtml = summary.length > MAX_SUMMARY_LENGTH && url !== '#' 
-                ? `<a href="${url}" target="_blank" rel="noopener noreferrer" class="read-more-button">Read More</a>` 
-                : '';
-
-            articleDiv.innerHTML = `
-                ${breakingHtml}
-                <h2><a href="${url}" target="_blank" rel="noopener noreferrer">${headline}</a></h2>
-                <span class="article-dateline">${formatNewspaperDateline(publishedTime)}</span>
-                ${summaryHtml}
-                ${readMoreHtml}
-                ${tickers !== 'N/A' && tickers.trim() !== '' ? `<div class="news-meta"><span>Tickers: ${tickers}</span></div>` : ''}
-            `;
-
-            newsContainer.appendChild(articleDiv);
-        });
-}
-
-// --- Auto Refresh ---
 function startAutoRefresh() {
-    if (autoRefreshIntervalId) clearInterval(autoRefreshIntervalId);
-    autoRefreshIntervalId = setInterval(fetchNews, AUTO_REFRESH_INTERVAL_MS);
-    console.log(`Auto-refresh started (every ${AUTO_REFRESH_INTERVAL_MS / 60000} minutes).`);
+    setInterval(fetchNews, AUTO_REFRESH_INTERVAL);
+    console.log("Auto-refresh started (every 5 minutes).");
 }
 
-// --- Initial Load ---
+// === INIT ===
 window.onload = () => {
     fetchNews();
     startAutoRefresh();
