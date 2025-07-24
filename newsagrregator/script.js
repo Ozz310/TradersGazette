@@ -1,8 +1,7 @@
-const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRAJhMLSkrHlICOabG493SP5WSQ1kUbbCnoAIgJGdD3TUzhBY1Fyn5-PQ9LuVKzf5YO6LHAlQkW3Dos/pub?output=csv';
-let allNewsArticles = [];
-let autoRefreshIntervalId;
+const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRAJhMLSkrHlICOabG493SP5WSQ1kUbbCnoAIgJGdD3TUzhBY1Fyn5-PQ9LuVKzf5YO6LHAlQkW3Dos/pub?output=csv'; // Your correct Google Sheet URL
+let allNewsArticles = []; // To store all fetched news
+let autoRefreshIntervalId; // Used for setInterval
 const AUTO_REFRESH_INTERVAL_MS = 300000; // 5 minutes
-const MAX_SUMMARY_LENGTH = 500; // Define max summary length to prevent overflow
 
 // --- Helper Functions ---
 
@@ -12,7 +11,9 @@ function parseCSV(csv) {
     const nonEmptyLines = lines.filter(line => line.trim() !== '');
     if (nonEmptyLines.length === 0) return [];
 
-    const headers = parseCSVLine(nonEmptyLines[0]).map(header => header.trim());
+    const headersLine = nonEmptyLines[0];
+    const headers = parseCSVLine(headersLine).map(header => header.trim());
+
     const data = [];
 
     // DEBUG: Log raw header line and parsed headers for debugging
@@ -177,8 +178,7 @@ function displayNews(articlesToDisplay) {
         return dateB - dateA;
     }).forEach((article, index) => {
         const headline = article.Headline || '';
-        // CORRECTED: Use MAX_SUMMARY_LENGTH constant here
-        const summary = article.Summary ? article.Summary.substring(0, MAX_SUMMARY_LENGTH) + (article.Summary.length > MAX_SUMMARY_LENGTH ? '...' : '') : 'No summary available.'; 
+        const summary = article.Summary || ''; // Corrected to article.Summary
         let url = article.URL || '#';
         const publishedTime = article['Published Time'] || 'N/A';
         const tickers = article.Tickers || 'N/A';
@@ -203,9 +203,9 @@ function displayNews(articlesToDisplay) {
         const articleDiv = document.createElement('div');
         articleDiv.classList.add('news-article');
 
-        const summaryHtml = summary ? `<p>${summary}</p>` : '<p>No summary available.</p>'; // Use truncated summary
+        const summaryHtml = summary ? `<p>${summary.substring(0, MAX_SUMMARY_LENGTH) + (summary.length > MAX_SUMMARY_LENGTH ? '...' : '')}</p>` : '<p>No summary available.</p>';
         // Add a class to the Read More link for specific button styling
-        const readMoreHtml = article.Summary && article.Summary.length > MAX_SUMMARY_LENGTH && url !== '#' ? `<a href="${url}" target="_blank" rel="noopener noreferrer" class="read-more-button">Read More</a>` : '';
+        const readMoreHtml = summary.length > MAX_SUMMARY_LENGTH && url !== '#' ? `<a href="${url}" target="_blank" rel="noopener noreferrer" class="read-more-button">Read More</a>` : '';
 
 
         // Build the HTML for a single news article
