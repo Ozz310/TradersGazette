@@ -5,6 +5,7 @@ const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbwNqMDDOqcVdlh
 let allNewsArticles = []; // To store all fetched news
 let autoRefreshIntervalId; // Used for setInterval
 const AUTO_REFRESH_INTERVAL_MS = 300000; // 5 minutes
+const MIN_SKELETON_DISPLAY_TIME_MS = 1500; // NEW: Minimum time to show skeleton (1.5 seconds)
 
 // --- No more parseCSV or parseCSVLine needed! ---
 
@@ -34,17 +35,30 @@ async function fetchNews() {
         return;
     }
 
+    // Show skeleton loader immediately
     if (skeletonWrapper) {
         skeletonWrapper.style.display = 'block';
     }
     newsContainer.innerHTML = ''; // Clear previous content
+
+    const fetchStartTime = Date.now(); // Record start time for animation delay
 
     try {
         const response = await fetch(GOOGLE_SHEET_URL);
         const newsData = await response.json(); 
 
         allNewsArticles = newsData.filter(article => article.Headline && article.Headline.trim() !== '');
-        displayNews(allNewsArticles);
+        
+        // Calculate remaining time for minimum skeleton display
+        const timeElapsed = Date.now() - fetchStartTime;
+        const delay = Math.max(0, MIN_SKELETON_DISPLAY_TIME_MS - timeElapsed);
+
+        setTimeout(() => {
+            if (skeletonWrapper) {
+                skeletonWrapper.style.display = 'none'; // Hide skeleton
+            }
+            displayNews(allNewsArticles); // Display news after delay
+        }, delay);
 
     } catch (error) {
         console.error('Error fetching news:', error);
@@ -57,18 +71,9 @@ async function fetchNews() {
 
 function displayNews(articlesToDisplay) {
     const newsContainer = document.getElementById('news-columns');
-    const skeletonWrapper = document.querySelector('.skeleton-wrapper');
-
-    if (!newsContainer) {
-        console.error("Error: #news-columns element not found in displayNews.");
-        return;
-    }
-
-    newsContainer.innerHTML = ''; // Clear everything, including skeleton if present
-
-    if (skeletonWrapper) {
-        skeletonWrapper.style.display = 'none';
-    }
+    
+    // Clear everything, including skeleton if present (already hidden by fetchNews)
+    newsContainer.innerHTML = ''; 
 
     if (articlesToDisplay.length === 0) {
         newsContainer.innerHTML = '<p>No news articles found.</p>';
@@ -85,16 +90,16 @@ function displayNews(articlesToDisplay) {
         return dateB - dateA;
     }).forEach((article, index) => {
         const headline = article.Headline || '';
-        const summary = article.Summary || ''; // <-- Note: Changed from article.description to article.Summary as per sheet header
+        const summary = article.Summary || ''; 
         let url = article.URL || '#';
         const publishedTime = article['Published Time'] || 'N/A';
         const tickers = article.Tickers || 'N/A';
         const imageUrl = article['Image URL'] || '';
 
-        // NEW: Log summary for debugging
+        // Log summary for debugging
         if (!summary || summary.trim() === '') {
             console.warn(`Summary missing for article: "${headline}"`);
-            console.log("Full article data:", article); // Log full article if summary is missing
+            console.log("Full article data:", article); 
         }
 
         // URL Validation
@@ -112,6 +117,10 @@ function displayNews(articlesToDisplay) {
 
         const articleDiv = document.createElement('div');
         articleDiv.classList.add('news-article');
+        // Add loaded class after a slight delay for staggered animation
+        setTimeout(() => {
+            articleDiv.classList.add('loaded');
+        }, index * 100); // Stagger animation by 100ms per article
 
         const summaryHtml = summary ? `<p>${summary.substring(0, 300)}...</p>` : '<p>No summary available.</p>';
         const readMoreHtml = summary.length > 300 && url !== '#' ? `<a href="${url}" target="_blank" rel="noopener noreferrer" class="read-more-button">Read More</a>` : '';
