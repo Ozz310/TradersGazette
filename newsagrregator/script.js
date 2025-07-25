@@ -1,11 +1,13 @@
-const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRAJhMLSkrHlICOabG493SP5WSQ1kUbbCnoAIgJGdD3TUzhBY1Fyn5-PQ9LuVKzf5YO6LHAlQkW3Dos/pub?output=csv';
+// script.js
+const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbylYi9QCz7vd8PU-9VjeRQ7h4LiAE9Y3_LX10D0faduCtwIfFLU9d1-ep48JLsGJl4L/exec'; // <--- THIS IS THE NEW, CORRECT URL
+
 let allNewsArticles = []; // To store all fetched news
 let autoRefreshIntervalId; // Used for setInterval
 const AUTO_REFRESH_INTERVAL_MS = 300000; // 5 minutes
 
 // --- Helper Functions ---
 
-// Robust CSV parser
+// Robust CSV parser (keep this as is, it's good!)
 function parseCSV(csv) {
     const lines = csv.split('\n');
     const nonEmptyLines = lines.filter(line => line.trim() !== '');
@@ -32,7 +34,7 @@ function parseCSV(csv) {
     return data;
 }
 
-// More robust CSV line parser to handle quoted commas
+// More robust CSV line parser to handle quoted commas (keep this as is, it's good!)
 function parseCSVLine(line) {
     const result = [];
     let inQuote = false;
@@ -52,7 +54,7 @@ function parseCSVLine(line) {
     return result;
 }
 
-// Format date for display
+// Format date for display (keep this as is)
 function formatNewspaperDateline(dateString) {
     if (!dateString) return 'N/A';
     try {
@@ -67,18 +69,17 @@ function formatNewspaperDateline(dateString) {
     }
 }
 
-// --- Main Fetch & Display Functions ---
+// --- Main Fetch & Display Functions (keep as is) ---
 
 async function fetchNews() {
     const newsContainer = document.getElementById('news-columns');
-    const skeletonWrapper = document.querySelector('.skeleton-wrapper'); // Get skeleton wrapper
+    const skeletonWrapper = document.querySelector('.skeleton-wrapper');
 
     if (!newsContainer) {
         console.error("Error: #news-columns element not found. Cannot load news.");
         return;
     }
 
-    // Show skeleton loader
     if (skeletonWrapper) {
         skeletonWrapper.style.display = 'block';
     }
@@ -95,7 +96,7 @@ async function fetchNews() {
     } catch (error) {
         console.error('Error fetching news:', error);
         newsContainer.innerHTML = '<p>Failed to retrieve news. Please try refreshing.</p>';
-        if (skeletonWrapper) { // Hide skeleton if error
+        if (skeletonWrapper) {
             skeletonWrapper.style.display = 'none';
         }
     }
@@ -103,7 +104,7 @@ async function fetchNews() {
 
 function displayNews(articlesToDisplay) {
     const newsContainer = document.getElementById('news-columns');
-    const skeletonWrapper = document.querySelector('.skeleton-wrapper'); // Get skeleton wrapper
+    const skeletonWrapper = document.querySelector('.skeleton-wrapper');
 
     if (!newsContainer) {
         console.error("Error: #news-columns element not found in displayNews.");
@@ -112,7 +113,6 @@ function displayNews(articlesToDisplay) {
 
     newsContainer.innerHTML = ''; // Clear everything, including skeleton if present
 
-    // Hide skeleton after news is loaded
     if (skeletonWrapper) {
         skeletonWrapper.style.display = 'none';
     }
@@ -136,7 +136,7 @@ function displayNews(articlesToDisplay) {
         let url = article.URL || '#';
         const publishedTime = article['Published Time'] || 'N/A';
         const tickers = article.Tickers || 'N/A';
-        const imageUrl = article['Image URL'] || ''; // Still extract, but not used for display
+        const imageUrl = article['Image URL'] || '';
 
         // URL Validation
         if (url !== '') {
@@ -155,11 +155,8 @@ function displayNews(articlesToDisplay) {
         articleDiv.classList.add('news-article');
 
         const summaryHtml = summary ? `<p>${summary.substring(0, 300)}...</p>` : '<p>No summary available.</p>';
-        // NEW: Add a class to the Read More link for specific button styling
         const readMoreHtml = summary.length > 300 && url !== '#' ? `<a href="${url}" target="_blank" rel="noopener noreferrer" class="read-more-button">Read More</a>` : '';
 
-
-        // Build the HTML for a single news article
         articleDiv.innerHTML = `
             ${breakingRibbonHtml}
             <h2><a href="${url}" target="_blank" rel="noopener noreferrer">${headline}</a></h2>
@@ -172,7 +169,7 @@ function displayNews(articlesToDisplay) {
     });
 }
 
-// --- Functionality & Event Listeners (Simplified for removed elements) ---
+// --- Functionality & Event Listeners ---
 
 // Auto-Refresh: STARTING BY DEFAULT
 function startAutoRefresh() {
