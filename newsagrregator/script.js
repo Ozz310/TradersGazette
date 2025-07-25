@@ -87,7 +87,7 @@ function displayNews(articlesToDisplay) {
         return dateB - dateA;
     }).forEach((article, index) => {
         const headline = article.Headline || '';
-        const summary = article.Summary || '';
+        const summary = article.description || ''; // Make sure to use 'description' if that's the API field name or sheet column
         let url = article.URL || '#';
         const publishedTime = article['Published Time'] || 'N/A';
         const tickers = article.Tickers || 'N/A';
