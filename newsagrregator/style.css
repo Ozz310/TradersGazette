@@ -39,13 +39,12 @@ body::before {
     background-color: #2a2a2a; /* Remains Darker background for content box */
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
     border-radius: 8px;
-    /* NEW: Scrollbar Fix for Notion Embeds */
-    max-height: calc(100vh - 60px); /* Limit overall height to prevent Notion's outer scrollbar */
-    overflow: hidden; /* Hide any internal scrollbar of the wrapper itself */
+    /* NEW SCROLLBAR FIX: Limits overall widget height, hides any wrapper overflow */
+    max-height: calc(100vh - 60px); /* Adjust based on desired widget height relative to viewport */
+    overflow: hidden; /* Crucial to prevent Notion's scrollbar */
     
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
+    display: flex; /* Enables flexbox for internal layout */
+    flex-direction: column; /* Stacks header, main, footer vertically */
 }
 
 /* Dashboard Header Section - Contains logo, title (remains dark) */
@@ -58,6 +57,7 @@ body::before {
     align-items: center;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     border-bottom: 2px solid #F0D788;
+    flex-shrink: 0; /* Prevents header from shrinking */
 }
 
 .header-masthead-group {
@@ -91,27 +91,26 @@ body::before {
     text-shadow: 0 0 5px rgba(240, 215, 136, 0.5);
 }
 
-/* Main Content Area (for news articles) - SCROLLABLE */
+/* Main Content Area (for news articles) */
 main {
     padding: 20px;
-    flex-grow: 1; /* Allow main to take up available vertical space */
-    /* max-height: 70vh; REMOVED as dashboard-wrapper now has max-height */
-    -webkit-overflow-scrolling: touch;
-    display: flex; /* Allow news-columns to fill flex space */
-    flex-direction: column;
+    flex-grow: 1; /* Allows main to take up all available vertical space */
+    overflow: hidden; /* Hides any direct overflow of main itself */
+    display: flex; /* Enables flexbox for news-columns inside */
+    flex-direction: column; /* Stacks news-columns vertically (though only one child here) */
 }
 
 /* News Columns Container - This is the actual scrollable element */
 #news-columns {
-    flex-grow: 1; /* Allows it to expand vertically */
+    flex-grow: 1; /* Allows news-columns to expand vertically within main */
     overflow-y: scroll; /* ONLY THIS ELEMENT SHOULD SCROLL */
     -webkit-overflow-scrolling: touch;
     touch-action: pan-y;
 
     scrollbar-width: none; /* Hide scrollbar for Firefox */
     -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
-    width: auto;
-    padding-right: 0;
+    width: auto; /* Ensures it takes full width */
+    padding-right: 0; /* Adjust if a visual scrollbar would appear here */
     box-sizing: border-box;
 }
 
@@ -141,18 +140,13 @@ main {
     border: 1px solid #444;
     transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     position: relative;
-    border-bottom: 1px solid rgba(240, 215, 136, 0.15);
-    /* NEW: Animation for loading */
-    opacity: 0; /* Start hidden for animation */
-    transform: translateY(20px); /* Start slightly below for slide-up */
-    transition: opacity 0.5s ease-out, transform 0.5s ease-out; /* Smooth transition */
+    /* Animation properties removed for now */
+    /* opacity: 0; */
+    /* transform: translateY(20px); */
+    /* transition: opacity 0.5s ease-out, transform 0.5s ease-out; */
 }
 
-/* Class added by script.js when news is loaded */
-.news-article.loaded {
-    opacity: 1;
-    transform: translateY(0);
-}
+/* .news-article.loaded { Animation class removed } */
 
 .news-article:hover {
     transform: translateY(-3px);
@@ -260,35 +254,36 @@ main {
 /* Styles for the internal bottom section of the widget */
 .widget-bottom-section {
     text-align: center;
-    padding: 10px 20px; /* MODIFIED: Decreased vertical padding */
+    padding: 10px 20px; /* Decreased vertical padding */
     background-color: #2a2a2a; /* MODIFIED: Matched background color with widget wrapper */
     border-top: 2px solid #F0D788;
     color: #a0a0a0; /* Slightly lighter text color for this section */
     font-size: 0.85rem;
+    flex-shrink: 0; /* Prevents bottom section from shrinking */
 }
 
 .widget-internal-image {
-    max-width: 80%; /* MODIFIED: Slightly reduced max-width for better fit */
+    max-width: 80%; /* Slightly reduced max-width for better fit */
     height: auto; /* Maintains aspect ratio */
-    max-height: 150px; /* MODIFIED: Sets a lower maximum height for the image */
+    max-height: 150px; /* Sets a lower maximum height for the image */
     object-fit: contain; /* Ensures the entire image is visible within the bounds without cropping */
     margin-bottom: 8px; /* Space between image and footer text */
     border-radius: 8px; /* Slightly rounded corners for the image */
-    box-shadow: 0 0 5px rgba(240, 215, 136, 0.4); /* NEW: Subtle default gold shadow */
-    transition: box-shadow 0.3s ease; /* NEW: Transition for hover effect */
+    box-shadow: 0 0 5px rgba(240, 215, 136, 0.4); /* Subtle default gold shadow */
+    transition: box-shadow 0.3s ease; /* Transition for hover effect */
 }
 
 .widget-internal-image:hover {
-    box-shadow: 0 0 15px rgba(240, 215, 136, 0.8), 0 0 5px rgba(240, 215, 136, 0.6); /* NEW: Enhanced Gold glow on hover */
+    box-shadow: 0 0 15px rgba(240, 215, 136, 0.8), 0 0 5px rgba(240, 215, 136, 0.6); /* Enhanced Gold glow on hover */
 }
 
 
 .widget-internal-footer {
     margin: 0; /* Remove default paragraph margins */
-    color: #F0D788; /* MODIFIED: Radiant Gold for the footer text */
-    font-size: 0.8rem; /* MODIFIED: Slightly larger font size */
-    font-weight: 500; /* MODIFIED: Slightly bolder */
-    text-shadow: 0 0 5px rgba(240, 215, 136, 0.4); /* NEW: Soft gold text shadow */
+    color: #F0D788; /* Radiant Gold for the footer text */
+    font-size: 0.8rem; /* Slightly larger font size */
+    font-weight: 500; /* Slightly bolder */
+    text-shadow: 0 0 5px rgba(240, 215, 136, 0.4); /* Soft gold text shadow */
 }
 
 
@@ -352,7 +347,6 @@ main {
     }
     main {
         padding: 15px;
-        /* max-height: 75vh; Removed as dashboard-wrapper handles height */
     }
     #news-columns {
         width: auto;
@@ -383,10 +377,10 @@ main {
         font-size: 0.85rem;
     }
     .widget-bottom-section {
-        padding: 8px 15px; /* MODIFIED: Further decreased for mobile */
+        padding: 8px 15px; /* Further decreased for mobile */
     }
     .widget-internal-image {
-        max-height: 100px; /* MODIFIED: Adjusted for smaller screens */
+        max-height: 100px; /* Adjusted for smaller screens */
         margin-bottom: 6px;
     }
     .widget-internal-footer {
