@@ -39,8 +39,8 @@ body::before {
     background-color: #2a2a2a; /* Remains Darker background for content box */
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
     border-radius: 8px;
-    /* NEW SCROLLBAR FIX: Limits overall widget height, hides any wrapper overflow */
-    max-height: calc(100vh - 60px); /* Adjust based on desired widget height relative to viewport */
+    /* Limits overall widget height, hides any wrapper overflow */
+    max-height: calc(100vh - 60px); 
     overflow: hidden; /* Crucial to prevent Notion's scrollbar */
     
     display: flex; /* Enables flexbox for internal layout */
@@ -49,7 +49,7 @@ body::before {
 
 /* Dashboard Header Section - Contains logo, title (remains dark) */
 .dashboard-header-section {
-    background-color: #0a0a0a; /* MODIFIED: Velvet black header */
+    background-color: #0a0a0a; /* Velvet black header */
     color: #fff;
     padding: 1.5rem 2rem 1.2rem;
     display: flex;
@@ -95,23 +95,24 @@ body::before {
 main {
     padding: 20px;
     flex-grow: 1; /* Allows main to take up all available vertical space */
-    overflow: hidden; /* Hides any direct overflow of main itself */
+    overflow: visible; /* MODIFIED: Allow internal content to overflow for #news-columns to scroll */
     display: flex; /* Enables flexbox for news-columns inside */
-    flex-direction: column; /* Stacks news-columns vertically (though only one child here) */
+    flex-direction: column; /* Stacks news-columns vertically */
 }
 
 /* News Columns Container - This is the actual scrollable element */
 #news-columns {
     flex-grow: 1; /* Allows news-columns to expand vertically within main */
     overflow-y: scroll; /* ONLY THIS ELEMENT SHOULD SCROLL */
-    -webkit-overflow-scrolling: touch;
-    touch-action: pan-y;
+    -webkit-overflow-scrolling: touch; /* Ensures smooth scrolling on iOS */
+    touch-action: pan-y; /* For touch devices */
 
     scrollbar-width: none; /* Hide scrollbar for Firefox */
     -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
     width: auto; /* Ensures it takes full width */
     padding-right: 0; /* Adjust if a visual scrollbar would appear here */
     box-sizing: border-box;
+    height: 100%; /* NEW: Ensures it explicitly fills parent's height */
 }
 
 /* WebKit-specific scrollbar hiding for #news-columns */
@@ -140,13 +141,7 @@ main {
     border: 1px solid #444;
     transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     position: relative;
-    /* Animation properties removed for now */
-    /* opacity: 0; */
-    /* transform: translateY(20px); */
-    /* transition: opacity 0.5s ease-out, transform 0.5s ease-out; */
 }
-
-/* .news-article.loaded { Animation class removed } */
 
 .news-article:hover {
     transform: translateY(-3px);
@@ -255,7 +250,7 @@ main {
 .widget-bottom-section {
     text-align: center;
     padding: 10px 20px; /* Decreased vertical padding */
-    background-color: #2a2a2a; /* MODIFIED: Matched background color with widget wrapper */
+    background-color: #2a2a2a; /* Matched background color with widget wrapper */
     border-top: 2px solid #F0D788;
     color: #a0a0a0; /* Slightly lighter text color for this section */
     font-size: 0.85rem;
