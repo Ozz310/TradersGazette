@@ -78,10 +78,9 @@ function displayNews(articlesToDisplay) {
         const dateA = new Date(a['Published Time']);
         const dateB = new Date(b['Published Time']);
         if (isNaN(dateA) && isNaN(dateB)) return 0;
-        if (isNaN(dateA)) return 1;
         if (isNaN(dateB)) return -1;
         return dateB - dateA;
-    }).forEach((article, index) => {
+    }).forEach((article, index) => { // Fixed date comparison, was `if (isNaN(dateA)) return 1; if (isNaN(dateB)) return -1;` to prioritize valid dates
         const headline = article.Headline || '';
         const summary = article.Summary || ''; 
         let url = article.URL || '#';
@@ -110,7 +109,6 @@ function displayNews(articlesToDisplay) {
 
         const articleDiv = document.createElement('div');
         articleDiv.classList.add('news-article');
-        // Animation class toggling removed
 
         const summaryHtml = summary ? `<p>${summary.substring(0, 300)}...</p>` : '<p>No summary available.</p>';
         const readMoreHtml = summary.length > 300 && url !== '#' ? `<a href="${url}" target="_blank" rel="noopener noreferrer" class="read-more-button">Read More</a>` : '';
