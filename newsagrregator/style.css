@@ -39,9 +39,7 @@ body::before {
     background-color: #2a2a2a; /* Remains Darker background for content box */
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
     border-radius: 8px;
-    /* NEW SCROLLBAR FIX: Re-add max-height to prevent Notion's scrollbar */
-    max-height: calc(100vh - 60px); /* Limits total widget height to viewport - margin */
-    overflow: hidden; /* Hides any overflow from wrapper itself */
+    /* Removed max-height and overflow hidden from wrapper to let content define height within Notion */
     
     display: flex; /* Enables flexbox for internal layout */
     flex-direction: column; /* Stacks header, main, footer vertically */
@@ -58,7 +56,7 @@ body::before {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     border-bottom: 2px solid #F0D788;
     flex-shrink: 0; /* Prevents header from shrinking */
-    height: 120px; /* NEW: Fixed height for calculation. Adjust if content overflows. */
+    height: 120px; /* Fixed height for calculation. Adjust if content overflows. */
 }
 
 .header-masthead-group {
@@ -96,12 +94,10 @@ body::before {
 main {
     padding: 20px;
     flex-grow: 1; /* Allows main to take up all available vertical space */
-    overflow: hidden; /* NEW: Hide main's overflow, as news-columns will handle it */
+    overflow: visible; /* Allow content to overflow main's bounds */
     display: flex; /* Enables flexbox for news-columns inside */
     flex-direction: column; /* Stacks news-columns vertically */
-    /* NEW SCROLLBAR FIX: Calculate height for main to ensure #news-columns scrolls */
-    height: calc(100% - 120px - 100px); /* 100% of dashboard-wrapper height minus header & footer estimated fixed heights */
-    /* Adjust 120px and 100px if header/bottom section content changes */
+    height: 550px; /* MODIFIED: Slightly reduced fixed height for main content area */
 }
 
 /* News Columns Container - This is the actual scrollable element */
@@ -259,7 +255,7 @@ main {
     color: #a0a0a0; /* Slightly lighter text color for this section */
     font-size: 0.85rem;
     flex-shrink: 0; /* Prevents bottom section from shrinking */
-    height: 100px; /* NEW: Fixed height for calculation. Adjust if content overflows. */
+    height: 100px; /* Fixed height for calculation. Adjust if content overflows. */
 }
 
 .widget-internal-image {
@@ -330,7 +326,7 @@ main {
         align-items: center;
         gap: 8px;
         padding: 0.8rem;
-        height: 100px; /* NEW: Fixed height for mobile header */
+        height: 100px; /* Fixed height for mobile header */
     }
     .header-masthead-group {
         flex-direction: column;
@@ -347,7 +343,7 @@ main {
     }
     main {
         padding: 15px;
-        height: 450px; /* NEW: Adjusted fixed height for mobile main content area */
+        height: 400px; /* MODIFIED: Adjusted fixed height for mobile main content area */
     }
     #news-columns {
         width: auto;
@@ -379,7 +375,7 @@ main {
     }
     .widget-bottom-section {
         padding: 8px 15px; /* Further decreased for mobile */
-        height: 80px; /* NEW: Fixed height for mobile bottom section */
+        height: 80px; /* Fixed height for mobile bottom section */
     }
     .widget-internal-image {
         max-height: 100px; /* Adjusted for smaller screens */
