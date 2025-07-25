@@ -3,17 +3,17 @@ body {
     font-family: 'Roboto', Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #FFFFFF; /* NEW: Changed body background to white */
-    color: #e0e0e0; /* Light text color (for footer mostly) */
+    background-color: #FFFFFF; /* Ensures the outside body is white */
+    color: #e0e0e0; /* Light text color (for some elements, but primary text is dark-theme appropriate) */
     line-height: 1.6;
     display: flex; /* For centering the main dashboard */
     flex-direction: column;
-    min-height: 100vh; /* Ensure footer stays at bottom */
+    min-height: 100vh; /* Ensure content pushes footer down */
     overflow-x: hidden; /* Prevent horizontal scroll on small screens */
     position: relative; /* For body::before pattern */
 }
 
-/* NEW: Background pattern adjusted for white body */
+/* Background pattern adjusted for white body (ensure it's subtle) */
 body::before {
     content: '';
     position: absolute;
@@ -127,7 +127,7 @@ main {
 
 /* News Article Styling (Card-based in this theme) */
 .news-article {
-    background-color: #333; /* Remains Slightly lighter dark background for the card */
+    background-color: #333; /* Slightly lighter dark background for the card */
     margin-bottom: 15px;
     padding: 15px;
     border-radius: 8px;
@@ -241,15 +241,30 @@ main {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
 }
 
-/* Footer */
-footer {
+/* NEW: Styles for the internal bottom section of the widget */
+.widget-bottom-section {
     text-align: center;
-    padding: 1rem 0;
-    color: #888;
-    font-size: 0.8rem;
-    margin-top: auto;
-    background-color: #1a1a1a; /* Remains dark background for consistency with wrapper */
+    padding: 15px 20px;
+    background-color: #000; /* Black background to match header/blend with wrapper */
+    border-top: 2px solid #F0D788;
+    color: #a0a0a0; /* Slightly lighter text color for this section */
+    font-size: 0.85rem;
 }
+
+.widget-internal-image {
+    max-width: 100%; /* Ensure image fits within its container */
+    height: auto; /* Maintain aspect ratio */
+    margin-bottom: 10px; /* Space between image and footer text */
+    border-radius: 8px; /* Slightly rounded corners for the image */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
+}
+
+.widget-internal-footer {
+    margin: 0; /* Remove default paragraph margins */
+    color: #888; /* Slightly darker grey for the footer text */
+    font-size: 0.75rem;
+}
+
 
 /* --- Skeleton Loader Styles --- */
 .skeleton-wrapper {
@@ -339,5 +354,14 @@ footer {
     .news-article a.read-more-button {
         padding: 6px 12px;
         font-size: 0.85rem;
+    }
+    .widget-bottom-section {
+        padding: 10px 15px;
+    }
+    .widget-internal-image {
+        margin-bottom: 8px;
+    }
+    .widget-internal-footer {
+        font-size: 0.7rem;
     }
 }
