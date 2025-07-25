@@ -1,6 +1,6 @@
 // script.js
 // MAKE SURE THIS IS THE LATEST APPS SCRIPT WEB APP URL THAT RETURNS JSON
-const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbzzyYtZRvj1VntxAjhmuFrKnjZq8D7EijHKiDGir1m7yisRW7aVuUNnaUNP5Dia6eTo/exec'; 
+const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbwNqMDDOqcVdlh3u2KiIRoM6Wdqzb2Bf35sHZnjIN_dLozG1n8AN9FdtlskqgRyAzHt/exec'; 
 
 let allNewsArticles = []; // To store all fetched news
 let autoRefreshIntervalId; // Used for setInterval
