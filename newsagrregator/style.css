@@ -39,9 +39,8 @@ body::before {
     background-color: #2a2a2a; /* Remains Darker background for content box */
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
     border-radius: 8px;
-    /* Limits overall widget height, hides any wrapper overflow */
-    max-height: calc(100vh - 60px); 
-    overflow: hidden; /* Crucial to prevent Notion's scrollbar */
+    /* NEW SCROLLBAR FIX: Removed max-height and overflow hidden from wrapper */
+    /* Let the content define wrapper height */
     
     display: flex; /* Enables flexbox for internal layout */
     flex-direction: column; /* Stacks header, main, footer vertically */
@@ -95,9 +94,10 @@ body::before {
 main {
     padding: 20px;
     flex-grow: 1; /* Allows main to take up all available vertical space */
-    overflow: visible; /* MODIFIED: Allow internal content to overflow for #news-columns to scroll */
+    overflow: hidden; /* NEW: Hide main's overflow to ensure #news-columns is the only scrollable area */
     display: flex; /* Enables flexbox for news-columns inside */
     flex-direction: column; /* Stacks news-columns vertically */
+    height: 600px; /* NEW SCROLLBAR FIX: Fixed height for the main content area */
 }
 
 /* News Columns Container - This is the actual scrollable element */
@@ -112,7 +112,7 @@ main {
     width: auto; /* Ensures it takes full width */
     padding-right: 0; /* Adjust if a visual scrollbar would appear here */
     box-sizing: border-box;
-    height: 100%; /* NEW: Ensures it explicitly fills parent's height */
+    height: 100%; /* Ensures it explicitly fills parent's height */
 }
 
 /* WebKit-specific scrollbar hiding for #news-columns */
@@ -319,7 +319,7 @@ main {
     .dashboard-wrapper {
         margin: 15px auto;
         border-radius: 0;
-        max-height: calc(100vh - 30px); /* Adjusted for mobile margins */
+        /* max-height: calc(100vh - 30px); REMOVED: Adjust for fixed height approach */
     }
     .dashboard-header-section {
         flex-direction: column;
@@ -342,6 +342,7 @@ main {
     }
     main {
         padding: 15px;
+        height: 500px; /* NEW: Adjust for mobile fixed height */
     }
     #news-columns {
         width: auto;
