@@ -1,6 +1,6 @@
 // script.js
 // MAKE SURE THIS IS THE LATEST APPS SCRIPT WEB APP URL THAT RETURNS JSON
-const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbz72lGWWIEfFqfeB-2EPlpT3hhBUaQX6nOJMoMD8_JnuUepKAB8FL99EY1fXXBqAq26/exec'; 
+const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbzzyYtZRvj1VntxAjhmuFrKnjZq8D7EijHKiDGir1m7yisRW7aVuUNnaUNP5Dia6eTo/exec'; 
 
 let allNewsArticles = []; // To store all fetched news
 let autoRefreshIntervalId; // Used for setInterval
@@ -41,10 +41,8 @@ async function fetchNews() {
 
     try {
         const response = await fetch(GOOGLE_SHEET_URL);
-        // CHANGED: Expect JSON instead of text/CSV
         const newsData = await response.json(); 
 
-        // Filter out articles with empty Headlines, as before
         allNewsArticles = newsData.filter(article => article.Headline && article.Headline.trim() !== '');
         displayNews(allNewsArticles);
 
@@ -87,11 +85,17 @@ function displayNews(articlesToDisplay) {
         return dateB - dateA;
     }).forEach((article, index) => {
         const headline = article.Headline || '';
-        const summary = article.description || ''; // Make sure to use 'description' if that's the API field name or sheet column
+        const summary = article.Summary || ''; // <-- Note: Changed from article.description to article.Summary as per sheet header
         let url = article.URL || '#';
         const publishedTime = article['Published Time'] || 'N/A';
         const tickers = article.Tickers || 'N/A';
         const imageUrl = article['Image URL'] || '';
+
+        // NEW: Log summary for debugging
+        if (!summary || summary.trim() === '') {
+            console.warn(`Summary missing for article: "${headline}"`);
+            console.log("Full article data:", article); // Log full article if summary is missing
+        }
 
         // URL Validation
         if (url !== '') {
