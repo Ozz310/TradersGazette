@@ -241,7 +241,7 @@ main {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
 }
 
-/* NEW: Styles for the internal bottom section of the widget */
+/* Styles for the internal bottom section of the widget */
 .widget-bottom-section {
     text-align: center;
     padding: 15px 20px;
@@ -252,8 +252,10 @@ main {
 }
 
 .widget-internal-image {
-    max-width: 100%; /* Ensure image fits within its container */
-    height: auto; /* Maintain aspect ratio */
+    max-width: 100%; /* Ensures image fits within its container width */
+    height: auto; /* Maintains aspect ratio */
+    max-height: 200px; /* NEW: Sets a maximum height for the image */
+    object-fit: contain; /* NEW: Ensures the entire image is visible within the bounds without cropping */
     margin-bottom: 10px; /* Space between image and footer text */
     border-radius: 8px; /* Slightly rounded corners for the image */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
@@ -359,6 +361,7 @@ main {
         padding: 10px 15px;
     }
     .widget-internal-image {
+        max-height: 150px; /* Adjusted for smaller screens */
         margin-bottom: 8px;
     }
     .widget-internal-footer {
