@@ -39,8 +39,7 @@ body::before {
     background-color: #2a2a2a; /* Remains Darker background for content box */
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
     border-radius: 8px;
-    /* NEW SCROLLBAR FIX: Removed max-height and overflow hidden from wrapper */
-    /* Let the content define wrapper height */
+    /* Removed max-height and overflow hidden from wrapper to let content define height within Notion */
     
     display: flex; /* Enables flexbox for internal layout */
     flex-direction: column; /* Stacks header, main, footer vertically */
@@ -94,10 +93,10 @@ body::before {
 main {
     padding: 20px;
     flex-grow: 1; /* Allows main to take up all available vertical space */
-    overflow: hidden; /* NEW: Hide main's overflow to ensure #news-columns is the only scrollable area */
+    overflow: visible; /* CRITICAL FIX: Allow content to overflow main's bounds */
     display: flex; /* Enables flexbox for news-columns inside */
     flex-direction: column; /* Stacks news-columns vertically */
-    height: 600px; /* NEW SCROLLBAR FIX: Fixed height for the main content area */
+    height: 600px; /* Fixed height for the main content area for consistent scrolling */
 }
 
 /* News Columns Container - This is the actual scrollable element */
@@ -319,7 +318,7 @@ main {
     .dashboard-wrapper {
         margin: 15px auto;
         border-radius: 0;
-        /* max-height: calc(100vh - 30px); REMOVED: Adjust for fixed height approach */
+        /* max-height removed */
     }
     .dashboard-header-section {
         flex-direction: column;
@@ -342,7 +341,7 @@ main {
     }
     main {
         padding: 15px;
-        height: 500px; /* NEW: Adjust for mobile fixed height */
+        height: 500px; /* Fixed height for mobile main content area */
     }
     #news-columns {
         width: auto;
