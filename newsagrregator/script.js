@@ -1,6 +1,6 @@
 // script.js
 // MAKE SURE THIS IS THE LATEST APPS SCRIPT WEB APP URL THAT RETURNS JSON
-const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbwNqMDDOqcVdlh3u2KiIRoM6Wdqzb2Bf35sHZnjIN_dLozG1n8AN9FdtlskqgRyAzHt/exec'; 
+const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbzIpig_oQ3eEbYOow209uyJMPdqfA7ByGXT6W-9kB--DmVPmYqmYsdHEIM_svNvmt-r/exec'; // <--- UPDATED TO YOUR NEW DEPLOYMENT ID
 
 let allNewsArticles = []; // To store all fetched news
 let autoRefreshIntervalId; // Used for setInterval
@@ -42,12 +42,12 @@ async function fetchNews() {
 
     try {
         const response = await fetch(GOOGLE_SHEET_URL);
-        const newsData = await response.json(); 
+        const newsData = await response.json();    
 
         allNewsArticles = newsData.filter(article => article.Headline && article.Headline.trim() !== '');
         
         // Direct call to displayNews - animation delay removed
-        displayNews(allNewsArticles); 
+        displayNews(allNewsArticles);    
 
     } catch (error) {
         console.error('Error fetching news:', error);
@@ -63,7 +63,7 @@ function displayNews(articlesToDisplay) {
     const skeletonWrapper = document.querySelector('.skeleton-wrapper'); // Get skeleton wrapper
 
     // Clear everything and hide skeleton right before displaying news
-    newsContainer.innerHTML = ''; 
+    newsContainer.innerHTML = '';    
     if (skeletonWrapper) { // Hide skeleton after news is loaded
         skeletonWrapper.style.display = 'none';
     }
@@ -78,20 +78,21 @@ function displayNews(articlesToDisplay) {
         const dateA = new Date(a['Published Time']);
         const dateB = new Date(b['Published Time']);
         if (isNaN(dateA) && isNaN(dateB)) return 0;
-        if (isNaN(dateB)) return -1;
+        if (isNaN(dateB)) return -1; // Keep b if valid and a is not
+        if (isNaN(dateA)) return 1;  // Keep a if valid and b is not
         return dateB - dateA;
-    }).forEach((article, index) => { // Fixed date comparison, was `if (isNaN(dateA)) return 1; if (isNaN(dateB)) return -1;` to prioritize valid dates
+    }).forEach((article, index) => {
         const headline = article.Headline || '';
-        const summary = article.Summary || ''; 
+        const summary = article.Summary || '';    
         let url = article.URL || '#';
         const publishedTime = article['Published Time'] || 'N/A';
         const tickers = article.Tickers || 'N/A';
-        const imageUrl = article['Image URL'] || '';
+        // const imageUrl = article['Image URL'] || ''; // No longer used for display
 
         // Log summary for debugging (kept for your reference)
         if (!summary || summary.trim() === '') {
             console.warn(`Summary missing for article: "${headline}"`);
-            console.log("Full article data:", article); 
+            console.log("Full article data:", article);    
         }
 
         // URL Validation
@@ -110,8 +111,11 @@ function displayNews(articlesToDisplay) {
         const articleDiv = document.createElement('div');
         articleDiv.classList.add('news-article');
 
-        const summaryHtml = summary ? `<p>${summary.substring(0, 300)}...</p>` : '<p>No summary available.</p>';
-        const readMoreHtml = summary.length > 300 && url !== '#' ? `<a href="${url}" target="_blank" rel="noopener noreferrer" class="read-more-button">Read More</a>` : '';
+        // Adjusted summary display to ensure max 300 chars always
+        const displaySummary = summary ? summary.substring(0, 300) : '';
+        const summaryHtml = displaySummary ? `<p>${displaySummary}${summary.length > 300 ? '...' : ''}</p>` : '<p>No summary available.</p>';
+        const readMoreHtml = url !== '#' ? `<a href="${url}" target="_blank" rel="noopener noreferrer" class="read-more-button">Read More</a>` : '';
+
 
         articleDiv.innerHTML = `
             ${breakingRibbonHtml}
