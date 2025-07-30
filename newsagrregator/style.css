@@ -6,8 +6,6 @@ body {
     background-color: #FFFFFF; /* Ensures the outside body is white */
     color: #e0e0e0; /* Light text color (for some elements, but primary text is dark-theme appropriate) */
     line-height: 1.6;
-    /* display: flex; REMOVED: No longer needed for centering dashboard-wrapper this way */
-    /* flex-direction: column; REMOVED */
     min-height: 100vh; /* Ensure content pushes footer down */
     overflow-x: hidden; /* Prevent horizontal scroll on small screens */
     position: relative; /* For body::before pattern */
@@ -38,13 +36,8 @@ body::before {
     background-color: #2a2a2a; /* Remains Darker background for content box */
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
     border-radius: 8px;
-    /* This max-height combined with overflow:hidden is crucial for Notion embedding */
     max-height: calc(100vh - 60px); 
     overflow: hidden; /* Ensure nothing inside overflows the wrapper boundaries */
-    
-    /* REMOVED: flexbox properties here for simpler height management */
-    /* display: flex; */
-    /* flex-direction: column; */
 }
 
 /* Dashboard Header Section */
@@ -57,8 +50,7 @@ body::before {
     align-items: center;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     border-bottom: 2px solid #F0D788;
-    /* flex-shrink: 0; REMOVED: No longer in flex container */
-    height: 120px; /* Keeping fixed height here for now */
+    height: 120px; 
     box-sizing: border-box; /* Include padding in height calculation */
 }
 
@@ -90,37 +82,31 @@ body::before {
     font-family: 'Merriweather', serif;
     color: #F0D788;
     letter-spacing: 0.08em;
-    white-space: nowrap; /* Keep on one line for desktop */
+    white-space: nowrap; 
     text-shadow: 0 0 5px rgba(240, 215, 136, 0.5);
 }
 
 /* Main Content Area (for news articles) */
 main {
     padding: 20px;
-    /* flex-grow: 1; REMOVED */
-    overflow: hidden; /* Hide main's overflow, as news-columns will handle it */
-    /* display: flex; REMOVED */
-    /* flex-direction: column; REMOVED */
-    box-sizing: border-box; /* Include padding in height calculation */
+    overflow: hidden; 
+    box-sizing: border-box; 
     
-    /* NEW FIXED HEIGHT CALCULATION for main content area */
-    /* Total wrapper height minus header height and footer height */
-    height: calc(100vh - 60px - 120px - 100px); /* Total widget height - top/bottom body margins - header height - footer height */
-    /* The 100px for footer is estimate, will verify and adjust if needed */
+    /* NEW FIXED HEIGHT CALCULATION for main content area - Adjusted for new footer height */
+    height: calc(100vh - 60px - 120px - 155px); /* Total widget height - top/bottom body margins (30+30) - header height (120) - footer height (155) */
 }
 
 /* News Columns Container - This is the actual scrollable element */
 #news-columns {
-    /* flex-grow: 1; REMOVED */
-    overflow-y: scroll; /* ONLY THIS ELEMENT SHOULD SCROLL */
-    -webkit-overflow-scrolling: touch; /* Ensures smooth scrolling on iOS */
-    touch-action: pan-y; /* For touch devices */
+    overflow-y: scroll; 
+    -webkit-overflow-scrolling: touch; 
+    touch-action: pan-y; 
 
-    scrollbar-width: none; /* Hide scrollbar for Firefox */
-    -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
-    width: 100%; /* Ensure it takes full width */
-    height: 100%; /* Make it fill the main element's height for scrolling */
-    padding-right: 0; /* Adjust if a visual scrollbar would appear here */
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
+    width: 100%; 
+    height: 100%; 
+    padding-right: 0; 
     box-sizing: border-box;
 }
 
@@ -142,7 +128,7 @@ main {
 
 /* News Article Styling (Card-based in this theme) */
 .news-article {
-    background-color: #333; /* Slightly lighter dark background for the card */
+    background-color: #333; 
     margin-bottom: 15px;
     padding: 15px;
     border-radius: 8px;
@@ -258,37 +244,29 @@ main {
 /* Styles for the internal bottom section of the widget */
 .widget-bottom-section {
     text-align: center;
-    padding: 10px 20px;
-    background-color: #2a2a2a;
+    /* Adjusted padding to distribute space */
+    padding: 15px 20px; /* NEW: Adjusted top/bottom padding */
+    background-color: #2a2a2a; 
     border-top: 2px solid #F0D788;
     color: #a0a0a0;
     font-size: 0.85rem;
-    /* flex-shrink: 0; REMOVED */
-    /* REMOVED: flexbox props for centering to simplify */
-    /* display: flex; */
-    /* flex-direction: column; */
-    /* justify-content: center; */
-    /* align-items: center; */
-    /* min-height: 100px; REMOVED */
-    height: 100px; /* <--- KEPT FIXED HEIGHT TO SIMPLIFY HEIGHT CALCS FOR 'main' */
-    box-sizing: border-box; /* Include padding in height calculation */
-    
-    /* NEW: Add padding-top to shift content down slightly within the fixed height */
-    padding-top: 20px; 
+    /* Increased fixed height to accommodate content */
+    height: 155px; /* NEW: Increased height for desktop */
+    box-sizing: border-box; 
+    /* Removed padding-top as padding now handles it */
 }
 
 .widget-internal-image {
-    max-width: 100px; /* <--- Increased size slightly, but still constrained */
+    max-width: 100px; 
     height: auto;
     object-fit: contain;
     margin-bottom: 5px; 
     border-radius: 8px; 
     box-shadow: 0 0 5px rgba(240, 215, 136, 0.4);
     transition: box-shadow 0.3s ease;
-    /* flex-shrink: 0; REMOVED */
-    display: block; /* Ensure it takes its own line for text-align: center */
-    margin-left: auto; /* Center image horizontally */
-    margin-right: auto; /* Center image horizontally */
+    display: block; 
+    margin-left: auto; 
+    margin-right: auto; 
 }
 
 .widget-internal-image:hover {
@@ -296,17 +274,45 @@ main {
 }
 
 .widget-internal-footer {
-    margin: 0;
+    margin: 0; /* Remove default paragraph margins */
     color: #F0D788;
-    font-size: 0.8rem;
+    font-size: 0.8rem; 
     font-weight: 500;
     text-shadow: 0 0 5px rgba(240, 215, 136, 0.4);
-    /* flex-shrink: 0; REMOVED */
+    line-height: 1.2; /* Tighten line height to ensure fit if multiple lines */
 }
 
 
 /* --- Skeleton Loader Styles --- */
-/* ... (No changes here) ... */
+.skeleton-wrapper {
+    display: none; 
+    padding: 20px;
+}
+.skeleton-article {
+    background-color: #333;
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    animation: pulse 1.5s infinite ease-in-out;
+}
+.skeleton-line {
+    height: 1em;
+    background-color: #444;
+    margin-bottom: 0.7em;
+    border-radius: 4px;
+}
+.skeleton-line.short { width: 60%; }
+.skeleton-line.medium { width: 80%; }
+.skeleton-line.long { width: 100%; }
+.skeleton-line:last-child { margin-bottom: 0; }
+
+
+@keyframes pulse {
+    0% { opacity: 0.7; }
+    50% { opacity: 1; }
+    100% { opacity: 0.7; }
+}
 
 
 /* --- Responsive Adjustments --- */
@@ -321,7 +327,7 @@ main {
         gap: 8px;
         padding: 0.8rem;
         height: 100px; 
-        box-sizing: border-box; /* Include padding in height calculation */
+        box-sizing: border-box; 
     }
     .header-masthead-group {
         flex-direction: column;
@@ -338,8 +344,8 @@ main {
     }
     main {
         padding: 15px;
-        /* NEW FIXED HEIGHT CALCULATION for mobile main content area */
-        height: calc(100vh - 30px - 100px - 80px); /* Total widget height - top/bottom body margins - header height - footer height */
+        /* NEW FIXED HEIGHT CALCULATION for mobile main content area - Adjusted for new footer height */
+        height: calc(100vh - 30px - 100px - 120px); /* Total widget height - top/bottom body margins (15+15) - header height (100) - footer height (120) */
     }
     #news-columns {
         width: auto;
@@ -370,16 +376,17 @@ main {
         font-size: 0.85rem;
     }
     .widget-bottom-section {
-        padding: 8px 15px; 
-        height: 80px; /* <--- KEPT FIXED HEIGHT FOR MOBILE FOOTER */
-        box-sizing: border-box; /* Include padding in height calculation */
-        padding-top: 15px; /* <--- Adjusted for mobile */
+        padding: 10px 15px; /* NEW: Adjusted padding for mobile */
+        height: 120px; /* NEW: Increased height for mobile */
+        box-sizing: border-box; 
+        /* Removed padding-top here as padding handles it */
     }
     .widget-internal-image {
-        max-width: 80px; /* <--- Adjusted for mobile */
+        max-width: 80px; 
         margin-bottom: 4px;
     }
     .widget-internal-footer {
         font-size: 0.65rem;
+        line-height: 1.2; /* Ensure compact line height for mobile */
     }
 }
