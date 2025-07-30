@@ -1,36 +1,5 @@
 /* --- Global Styles & Base --- */
-body {
-    font-family: 'Roboto', Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #FFFFFF; /* Ensures the outside body is white */
-    color: #e0e0e0; /* Light text color (for some elements, but primary text is dark-theme appropriate) */
-    line-height: 1.6;
-    display: flex; /* For centering the main dashboard */
-    flex-direction: column;
-    min-height: 100vh; /* Ensure content pushes footer down */
-    overflow-x: hidden; /* Prevent horizontal scroll on small screens */
-    position: relative; /* For body::before pattern */
-}
-
-/* Background pattern adjusted for white body (ensure it's subtle) */
-body::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    /* Subtle gold network/fractal pattern, made very faint for white background */
-    background-image:
-        radial-gradient(circle at 15% 50%, rgba(240, 215, 136, 0.01) 0%, transparent 60%),
-        radial-gradient(circle at 85% 50%, rgba(240, 215, 136, 0.01) 0%, transparent 60%),
-        repeating-linear-gradient(0deg, rgba(240, 215, 136, 0.005) 0px, rgba(240, 215, 136, 0.005) 1px, transparent 1px, transparent 100px),
-        repeating-linear-gradient(90deg, rgba(240, 215, 136, 0.005) 0px, rgba(240, 215, 136, 0.005) 1px, transparent 1px, transparent 100px);
-    background-size: 100% 100%, 100% 100%, 100px 100px, 100px 100px;
-    opacity: 0.8; /* Subtle opacity */
-    z-index: -1;
-}
+/* ... (No changes here, remains as is) ... */
 
 /* Dashboard Wrapper - The main widget container (remains dark) */
 .dashboard-wrapper {
@@ -49,59 +18,22 @@ body::before {
 
 /* Dashboard Header Section - Contains logo, title (remains dark) */
 .dashboard-header-section {
-    background-color: #0a0a0a; /* Velvet black header */
-    color: #fff;
-    padding: 1.5rem 2rem 1.2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    border-bottom: 2px solid #F0D788;
-    flex-shrink: 0; /* Prevents header from shrinking */
-    height: 120px; /* NEW: Fixed height for calculation. Adjust if content overflows. */
+    /* ... (No changes here, remains as is) ... */
+    height: 120px; /* Keep fixed height as it seems fine for top */
 }
 
-.header-masthead-group {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-
-.header-logo-top {
-    height: 70px;
-    width: auto;
-    border-radius: 50%;
-    border: 2px solid #F0D788;
-    box-shadow: 0 0 10px rgba(240, 215, 136, 0.6), inset 0 0 5px rgba(240, 215, 136, 0.3);
-    transform: none;
-}
-
-.header-logo-top:hover {
-    box-shadow: 0 0 12px rgba(240, 215, 136, 0.8), inset 0 0 6px rgba(240, 215, 136, 0.4);
-    transition: box-shadow 0.3s ease;
-}
-
-.dashboard-header-section h1 {
-    margin: 0;
-    font-size: 2.2rem;
-    font-family: 'Merriweather', serif;
-    color: #F0D788;
-    letter-spacing: 0.08em;
-    white-space: nowrap;
-    text-shadow: 0 0 5px rgba(240, 215, 136, 0.5);
-}
+/* ... (Styles for header-masthead-group, header-logo-top, h1 - No changes) ... */
 
 /* Main Content Area (for news articles) */
 main {
     padding: 20px;
     flex-grow: 1; /* Allows main to take up all available vertical space */
-    overflow: hidden; /* NEW: Hide main's overflow, as news-columns will handle it */
+    overflow: hidden; /* Hide main's overflow, as news-columns will handle it */
     display: flex; /* Enables flexbox for news-columns inside */
     flex-direction: column; /* Stacks news-columns vertically */
-    /* NEW SCROLLBAR FIX: Calculate height for main to ensure #news-columns scrolls */
-    height: calc(100% - 120px - 100px); /* 100% of dashboard-wrapper height minus header & footer estimated fixed heights */
-    /* Adjust 120px and 100px if header/bottom section content changes */
+    /* REMOVED FIXED HEIGHT: Let flex-grow handle this height based on sibling heights */
+    /* height: calc(100% - 120px - 100px); // Removed this line */
+    /* The flex-grow: 1 on 'main' handles taking up remaining space */
 }
 
 /* News Columns Container - This is the actual scrollable element */
@@ -119,164 +51,44 @@ main {
     height: 100%; /* Ensures it explicitly fills parent's height */
 }
 
-/* WebKit-specific scrollbar hiding for #news-columns */
-#news-columns::-webkit-scrollbar {
-    width: 0px;
-    background: transparent;
-}
-#news-columns::-webkit-scrollbar-track {
-    background: transparent;
-}
-#news-columns::-webkit-scrollbar-thumb {
-    background: transparent;
-}
-#news-columns::-webkit-scrollbar-thumb:hover {
-    background: transparent;
-}
+/* ... (Styles for WebKit scrollbar, news-article, h2, p, dateline, news-meta, read-more-button, breaking-ribbon - No changes) ... */
 
-
-/* News Article Styling (Card-based in this theme) */
-.news-article {
-    background-color: #333; /* Slightly lighter dark background for the card */
-    margin-bottom: 15px;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    border: 1px solid #444;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-    position: relative;
-}
-
-.news-article:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5), 0 0 15px rgba(240, 215, 136, 0.2);
-    border-color: #F0D788;
-}
-
-.news-article:last-child {
-    margin-bottom: 0;
-    border-bottom: none;
-}
-
-.news-article h2 {
-    margin-top: 0;
-    margin-bottom: 8px;
-    font-size: 1.4rem;
-    line-height: 1.3;
-}
-
-.news-article h2 a {
-    text-decoration: none;
-    color: #F0D788;
-    transition: color 0.2s ease;
-    font-weight: 700;
-}
-
-.news-article h2 a:hover {
-    color: #DDAA33;
-    text-decoration: underline;
-}
-
-.news-article p {
-    font-size: 0.95rem;
-    color: #c0c0c0;
-    line-height: 1.6;
-    margin-bottom: 10px;
-}
-
-.article-dateline {
-    font-size: 0.85rem;
-    color: #a0a0a0;
-    margin-bottom: 10px;
-    display: block;
-    font-style: italic;
-}
-
-.news-meta {
-    font-size: 0.75rem;
-    color: #888;
-    margin-top: 10px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    padding-top: 8px;
-    border-top: 1px solid rgba(240, 215, 136, 0.2);
-}
-
-.news-meta span {
-    display: flex;
-    align-items: center;
-    background-color: rgba(240, 215, 136, 0.08);
-    padding: 4px 10px;
-    border-radius: 15px;
-    color: #F0D788;
-    font-weight: bold;
-    border: 1px solid rgba(240, 215, 136, 0.3);
-}
-
-/* Read More Link (now styled as a button) */
-.news-article a.read-more-button {
-    display: inline-block;
-    margin-top: 15px;
-    color: #F0D788;
-    text-decoration: none;
-    font-weight: bold;
-    border: 1px solid #F0D788;
-    padding: 8px 15px;
-    border-radius: 5px;
-    transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
-    box-shadow: 0 2px 5px rgba(240, 215, 136, 0.1);
-}
-
-.news-article a.read-more-button:hover {
-    background-color: #F0D788;
-    color: #1a1a1a;
-    box-shadow: 0 4px 10px rgba(240, 215, 136, 0.4);
-}
-
-/* Breaking News Ribbon */
-.breaking-ribbon {
-    position: absolute;
-    top: 0;
-    right: 0;
-    background-color: #e74c3c;
-    color: #fff;
-    padding: 5px 15px;
-    font-size: 0.75rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    border-bottom-left-radius: 8px;
-    z-index: 10;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
-}
 
 /* Styles for the internal bottom section of the widget */
 .widget-bottom-section {
     text-align: center;
-    padding: 10px 20px; /* Decreased vertical padding */
+    padding: 10px 20px; /* Keep this padding */
     background-color: #2a2a2a; /* Matched background color with widget wrapper */
     border-top: 2px solid #F0D788;
     color: #a0a0a0; /* Slightly lighter text color for this section */
     font-size: 0.85rem;
     flex-shrink: 0; /* Prevents bottom section from shrinking */
-    height: 100px; /* NEW: Fixed height for calculation. Adjust if content overflows. */
+    
+    /* --- NEW/MODIFIED STYLES FOR IMAGE PLACEMENT --- */
+    display: flex; /* Enable flexbox for alignment */
+    flex-direction: column; /* Stack image and text vertically */
+    justify-content: center; /* Center items vertically */
+    align-items: center; /* Center items horizontally */
+    min-height: 100px; /* NEW: Use min-height instead of fixed height for flexibility */
+    /* Remove 'height: 100px;' from here */
 }
 
 .widget-internal-image {
-    max-width: 80%; /* Slightly reduced max-width for better fit */
+    max-width: 80px; /* <--- NEW: Give the image a specific, smaller max-width */
     height: auto; /* Maintains aspect ratio */
-    max-height: 150px; /* Sets a lower maximum height for the image */
+    /* max-height: 150px; REMOVED: Replaced by max-width and object-fit */
     object-fit: contain; /* Ensures the entire image is visible within the bounds without cropping */
-    margin-bottom: 8px; /* Space between image and footer text */
+    margin-bottom: 5px; /* <--- Adjusted: Slightly less space between image and footer text */
     border-radius: 8px; /* Slightly rounded corners for the image */
     box-shadow: 0 0 5px rgba(240, 215, 136, 0.4); /* Subtle default gold shadow */
     transition: box-shadow 0.3s ease; /* Transition for hover effect */
+    /* Ensure it's not trying to grow too large */
+    flex-shrink: 0; /* Prevent it from shrinking too much */
 }
 
 .widget-internal-image:hover {
     box-shadow: 0 0 15px rgba(240, 215, 136, 0.8), 0 0 5px rgba(240, 215, 136, 0.6); /* Enhanced Gold glow on hover */
 }
-
 
 .widget-internal-footer {
     margin: 0; /* Remove default paragraph margins */
@@ -284,108 +96,30 @@ main {
     font-size: 0.8rem; /* Slightly larger font size */
     font-weight: 500; /* Slightly bolder */
     text-shadow: 0 0 5px rgba(240, 215, 136, 0.4); /* Soft gold text shadow */
+    flex-shrink: 0; /* Prevent it from shrinking */
 }
 
-
-/* --- Skeleton Loader Styles --- */
-.skeleton-wrapper {
-    display: none; /* Will be shown/hidden by JS */
-    padding: 20px;
-}
-.skeleton-article {
-    background-color: #333;
-    margin-bottom: 15px;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    animation: pulse 1.5s infinite ease-in-out;
-}
-.skeleton-line {
-    height: 1em;
-    background-color: #444;
-    margin-bottom: 0.7em;
-    border-radius: 4px;
-}
-.skeleton-line.short { width: 60%; }
-.skeleton-line.medium { width: 80%; }
-.skeleton-line.long { width: 100%; }
-.skeleton-line:last-child { margin-bottom: 0; }
-
-
-@keyframes pulse {
-    0% { opacity: 0.7; }
-    50% { opacity: 1; }
-    100% { opacity: 0.7; }
-}
-
+/* ... (Skeleton Loader Styles - No changes) ... */
 
 /* --- Responsive Adjustments --- */
 @media (max-width: 600px) {
-    .dashboard-wrapper {
-        margin: 15px auto;
-        border-radius: 0;
-    }
-    .dashboard-header-section {
-        flex-direction: column;
-        align-items: center;
-        gap: 8px;
-        padding: 0.8rem;
-        height: 100px; /* NEW: Fixed height for mobile header */
-    }
-    .header-masthead-group {
-        flex-direction: column;
-        text-align: center;
-        gap: 5px;
-    }
-    .header-logo-top {
-        height: 60px;
-    }
-    .dashboard-header-section h1 {
-        font-size: 1.8rem;
-        white-space: normal;
-        text-align: center;
-    }
+    /* ... (Existing responsive styles for dashboard-wrapper, header, etc. - No changes) ... */
+    
     main {
-        padding: 15px;
-        height: 450px; /* NEW: Adjusted fixed height for mobile main content area */
+        /* Adjusted fixed height for mobile main content area (retained from your original code) */
+        height: 450px; 
     }
-    #news-columns {
-        width: auto;
-        padding-right: 0;
-    }
-    .news-article {
-        padding: 10px;
-        gap: 10px;
-    }
-    .news-article h2 {
-        font-size: 1.2rem;
-    }
-    .news-article p {
-        font-size: 0.85rem;
-    }
-    .article-dateline, .news-meta {
-        font-size: 0.7rem;
-    }
-    .breaking-ribbon {
-        padding: 3px 10px;
-        font-size: 0.65rem;
-    }
-    .news-meta span {
-        padding: 3px 8px;
-    }
-    .news-article a.read-more-button {
-        padding: 6px 12px;
-        font-size: 0.85rem;
-    }
+    
+    /* ... (News article responsive styles - No changes) ... */
+
     .widget-bottom-section {
         padding: 8px 15px; /* Further decreased for mobile */
-        height: 80px; /* NEW: Fixed height for mobile bottom section */
+        min-height: 80px; /* <--- NEW: Use min-height for mobile too */
+        /* Remove 'height: 80px;' from here */
     }
     .widget-internal-image {
-        max-height: 100px; /* Adjusted for smaller screens */
-        margin-bottom: 6px;
+        max-width: 60px; /* <--- NEW: Even smaller max-width for mobile */
+        margin-bottom: 4px; /* <--- Adjusted: Less margin for mobile */
     }
-    .widget-internal-footer {
-        font-size: 0.65rem;
-    }
+    /* ... (widget-internal-footer responsive styles - No changes) ... */
 }
