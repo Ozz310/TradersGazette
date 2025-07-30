@@ -9,10 +9,6 @@ body {
     min-height: 100vh; /* Make body at least viewport height */
     overflow-x: hidden; 
     position: relative; 
-    
-    /* REMOVED: Negative margins on body that caused top cutoff */
-    /* margin-top: -15px; */ 
-    /* margin-bottom: -15px; */
 }
 
 /* Background pattern adjusted for white body (ensure it's subtle) */
@@ -36,17 +32,15 @@ body::before {
 /* Dashboard Wrapper - The main widget container (Flex container for its children) */
 .dashboard-wrapper {
     max-width: 900px; 
-    margin: 20px auto; /* NEW: Balanced top/bottom margin for the whole wrapper */
+    margin: 20px auto; 
     background-color: #2a2a2a; 
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
     border-radius: 8px;
-    /* NEW: Use flexbox for vertical distribution */
     display: flex; 
     flex-direction: column;
-    /* NEW: Let it take up most of the viewport height (adjusted for its margins) */
-    min-height: calc(100vh - 40px); /* 100vh - (20px top + 20px bottom margin) */
-    max-height: calc(100vh - 40px); /* Ensures it doesn't overflow Notion iframe */
-    overflow: hidden; /* Crucial: Hides any overflow from wrapper itself */
+    min-height: calc(100vh - 40px); 
+    max-height: calc(100vh - 40px); 
+    overflow: hidden; 
 }
 
 /* Dashboard Header Section */
@@ -59,9 +53,9 @@ body::before {
     align-items: center;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     border-bottom: 2px solid #F0D788;
-    height: 120px; /* Fixed height for header */
-    box-sizing: border-box; /* Include padding in height calculation */
-    flex-shrink: 0; /* Prevent header from shrinking */
+    height: 120px; 
+    box-sizing: border-box; 
+    flex-shrink: 0; 
 }
 
 .header-masthead-group {
@@ -99,16 +93,16 @@ body::before {
 /* Main Content Area (for news articles) */
 main {
     padding: 20px;
-    flex-grow: 1; /* NEW: Allows main to take up all available vertical space */
-    overflow: hidden; /* Hide main's overflow, as news-columns will handle it */
+    flex-grow: 1; 
+    overflow: hidden; 
     box-sizing: border-box; 
-    /* REMOVED: Fixed height calculation, let flex-grow handle it */
-    /* height: calc(100vh - ...); */
+    /* NEW: Essential for scrollable flex children to work correctly */
+    height: 0; /* Ensures flex item 'main' has a base height for scroll overflow to kick in */
 }
 
 /* News Columns Container - This is the actual scrollable element */
 #news-columns {
-    flex-grow: 1; /* NEW: Allows news-columns to expand vertically within main */
+    flex-grow: 1; 
     overflow-y: scroll; /* ONLY THIS ELEMENT SHOULD SCROLL */
     -webkit-overflow-scrolling: touch; 
     touch-action: pan-y; 
@@ -258,11 +252,11 @@ main {
     padding: 15px 20px; 
     background-color: #2a2a2a; 
     border-top: 2px solid #F0D788;
-    color: #a0a0a0;
+    color: #a0e0e0; /* Light text color for this section */
     font-size: 0.85rem;
     height: 155px; /* Fixed height for footer */
     box-sizing: border-box; 
-    flex-shrink: 0; /* Prevent footer from shrinking */
+    flex-shrink: 0; 
 }
 
 .widget-internal-image {
@@ -327,9 +321,9 @@ main {
 /* --- Responsive Adjustments --- */
 @media (max-width: 600px) {
     .dashboard-wrapper {
-        margin: 10px auto; /* Adjusted for mobile */
+        margin: 10px auto; 
         border-radius: 0;
-        min-height: calc(100vh - 20px); /* 100vh - (10px top + 10px bottom margin) */
+        min-height: calc(100vh - 20px); 
         max-height: calc(100vh - 20px); 
     }
     .dashboard-header-section {
@@ -348,10 +342,6 @@ main {
         white-space: normal;
         text-align: center;
     }
-    main {
-        padding: 15px;
-        /* flex-grow handles height, no fixed height needed */
-    }
     .widget-bottom-section {
         padding: 10px 15px; 
         height: 120px; 
@@ -364,5 +354,9 @@ main {
     .widget-internal-footer {
         font-size: 0.65rem;
         line-height: 1.2; 
+    }
+    /* NEW: Essential for scrollable flex children in mobile too */
+    main {
+        height: 0; 
     }
 }
