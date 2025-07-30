@@ -1,125 +1,385 @@
 /* --- Global Styles & Base --- */
-/* ... (No changes here, remains as is) ... */
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #FFFFFF; /* Ensures the outside body is white */
+    color: #e0e0e0; /* Light text color (for some elements, but primary text is dark-theme appropriate) */
+    line-height: 1.6;
+    /* display: flex; REMOVED: No longer needed for centering dashboard-wrapper this way */
+    /* flex-direction: column; REMOVED */
+    min-height: 100vh; /* Ensure content pushes footer down */
+    overflow-x: hidden; /* Prevent horizontal scroll on small screens */
+    position: relative; /* For body::before pattern */
+}
 
-/* Dashboard Wrapper - The main widget container (remains dark) */
+/* Background pattern adjusted for white body (ensure it's subtle) */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        radial-gradient(circle at 15% 50%, rgba(240, 215, 136, 0.01) 0%, transparent 60%),
+        radial-gradient(circle at 85% 50%, rgba(240, 215, 136, 0.01) 0%, transparent 60%),
+        repeating-linear-gradient(0deg, rgba(240, 215, 136, 0.005) 0px, rgba(240, 215, 136, 0.005) 1px, transparent 1px, transparent 100px),
+        repeating-linear-gradient(90deg, rgba(240, 215, 136, 0.005) 0px, rgba(240, 215, 136, 0.005) 1px, transparent 1px, transparent 100px);
+    background-size: 100% 100%, 100% 100%, 100px 100px, 100px 100px;
+    opacity: 0.8; /* Subtle opacity */
+    z-index: -1;
+}
+
+/* Dashboard Wrapper - The main widget container */
 .dashboard-wrapper {
     max-width: 900px; /* Width of the entire widget */
     margin: 30px auto; /* Center it horizontally with top/bottom margin */
     background-color: #2a2a2a; /* Remains Darker background for content box */
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
     border-radius: 8px;
-    /* NEW SCROLLBAR FIX: Re-add max-height to prevent Notion's scrollbar */
-    max-height: calc(100vh - 60px); /* Limits total widget height to viewport - margin */
-    overflow: hidden; /* Hides any overflow from wrapper itself */
+    /* This max-height combined with overflow:hidden is crucial for Notion embedding */
+    max-height: calc(100vh - 60px); 
+    overflow: hidden; /* Ensure nothing inside overflows the wrapper boundaries */
     
-    display: flex; /* Enables flexbox for internal layout */
-    flex-direction: column; /* Stacks header, main, footer vertically */
+    /* REMOVED: flexbox properties here for simpler height management */
+    /* display: flex; */
+    /* flex-direction: column; */
 }
 
-/* Dashboard Header Section - Contains logo, title (remains dark) */
+/* Dashboard Header Section */
 .dashboard-header-section {
-    /* ... (No changes here, remains as is) ... */
-    height: 120px; /* Keep fixed height as it seems fine for top */
+    background-color: #0a0a0a; /* Velvet black header */
+    color: #fff;
+    padding: 1.5rem 2rem 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    border-bottom: 2px solid #F0D788;
+    /* flex-shrink: 0; REMOVED: No longer in flex container */
+    height: 120px; /* Keeping fixed height here for now */
+    box-sizing: border-box; /* Include padding in height calculation */
 }
 
-/* ... (Styles for header-masthead-group, header-logo-top, h1 - No changes) ... */
+.header-masthead-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-logo-top {
+    height: 70px;
+    width: auto; /* Ensure aspect ratio */
+    max-width: 100%; /* Prevent overflow if somehow parent is small */
+    border-radius: 50%;
+    border: 2px solid #F0D788;
+    box-shadow: 0 0 10px rgba(240, 215, 136, 0.6), inset 0 0 5px rgba(240, 215, 136, 0.3);
+    transform: none;
+}
+
+.header-logo-top:hover {
+    box-shadow: 0 0 12px rgba(240, 215, 136, 0.8), inset 0 0 6px rgba(240, 215, 136, 0.4);
+    transition: box-shadow 0.3s ease;
+}
+
+.dashboard-header-section h1 {
+    margin: 0;
+    font-size: 2.2rem;
+    font-family: 'Merriweather', serif;
+    color: #F0D788;
+    letter-spacing: 0.08em;
+    white-space: nowrap; /* Keep on one line for desktop */
+    text-shadow: 0 0 5px rgba(240, 215, 136, 0.5);
+}
 
 /* Main Content Area (for news articles) */
 main {
     padding: 20px;
-    flex-grow: 1; /* Allows main to take up all available vertical space */
+    /* flex-grow: 1; REMOVED */
     overflow: hidden; /* Hide main's overflow, as news-columns will handle it */
-    display: flex; /* Enables flexbox for news-columns inside */
-    flex-direction: column; /* Stacks news-columns vertically */
-    /* REMOVED FIXED HEIGHT: Let flex-grow handle this height based on sibling heights */
-    /* height: calc(100% - 120px - 100px); // Removed this line */
-    /* The flex-grow: 1 on 'main' handles taking up remaining space */
+    /* display: flex; REMOVED */
+    /* flex-direction: column; REMOVED */
+    box-sizing: border-box; /* Include padding in height calculation */
+    
+    /* NEW FIXED HEIGHT CALCULATION for main content area */
+    /* Total wrapper height minus header height and footer height */
+    height: calc(100vh - 60px - 120px - 100px); /* Total widget height - top/bottom body margins - header height - footer height */
+    /* The 100px for footer is estimate, will verify and adjust if needed */
 }
 
 /* News Columns Container - This is the actual scrollable element */
 #news-columns {
-    flex-grow: 1; /* Allows news-columns to expand vertically within main */
+    /* flex-grow: 1; REMOVED */
     overflow-y: scroll; /* ONLY THIS ELEMENT SHOULD SCROLL */
     -webkit-overflow-scrolling: touch; /* Ensures smooth scrolling on iOS */
     touch-action: pan-y; /* For touch devices */
 
     scrollbar-width: none; /* Hide scrollbar for Firefox */
     -ms-overflow-style: none; /* Hide scrollbar for IE/Edge */
-    width: auto; /* Ensures it takes full width */
+    width: 100%; /* Ensure it takes full width */
+    height: 100%; /* Make it fill the main element's height for scrolling */
     padding-right: 0; /* Adjust if a visual scrollbar would appear here */
     box-sizing: border-box;
-    height: 100%; /* Ensures it explicitly fills parent's height */
 }
 
-/* ... (Styles for WebKit scrollbar, news-article, h2, p, dateline, news-meta, read-more-button, breaking-ribbon - No changes) ... */
+/* WebKit-specific scrollbar hiding for #news-columns */
+#news-columns::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+#news-columns::-webkit-scrollbar-track {
+    background: transparent;
+}
+#news-columns::-webkit-scrollbar-thumb {
+    background: transparent;
+}
+#news-columns::-webkit-scrollbar-thumb:hover {
+    background: transparent;
+}
 
+
+/* News Article Styling (Card-based in this theme) */
+.news-article {
+    background-color: #333; /* Slightly lighter dark background for the card */
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    border: 1px solid #444;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    position: relative;
+}
+
+.news-article:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5), 0 0 15px rgba(240, 215, 136, 0.2);
+    border-color: #F0D788;
+}
+
+.news-article:last-child {
+    margin-bottom: 0;
+    border-bottom: none;
+}
+
+.news-article h2 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 1.4rem;
+    line-height: 1.3;
+}
+
+.news-article h2 a {
+    text-decoration: none;
+    color: #F0D788;
+    transition: color 0.2s ease;
+    font-weight: 700;
+}
+
+.news-article h2 a:hover {
+    color: #DDAA33;
+    text-decoration: underline;
+}
+
+.news-article p {
+    font-size: 0.95rem;
+    color: #c0c0c0;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.article-dateline {
+    font-size: 0.85rem;
+    color: #a0a0a0;
+    margin-bottom: 10px;
+    display: block;
+    font-style: italic;
+}
+
+.news-meta {
+    font-size: 0.75rem;
+    color: #888;
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(240, 215, 136, 0.2);
+}
+
+.news-meta span {
+    display: flex;
+    align-items: center;
+    background-color: rgba(240, 215, 136, 0.08);
+    padding: 4px 10px;
+    border-radius: 15px;
+    color: #F0D788;
+    font-weight: bold;
+    border: 1px solid rgba(240, 215, 136, 0.3);
+}
+
+/* Read More Link (now styled as a button) */
+.news-article a.read-more-button {
+    display: inline-block;
+    margin-top: 15px;
+    color: #F0D788;
+    text-decoration: none;
+    font-weight: bold;
+    border: 1px solid #F0D788;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 5px rgba(240, 215, 136, 0.1);
+}
+
+.news-article a.read-more-button:hover {
+    background-color: #F0D788;
+    color: #1a1a1a;
+    box-shadow: 0 4px 10px rgba(240, 215, 136, 0.4);
+}
+
+/* Breaking News Ribbon */
+.breaking-ribbon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #e74c3c;
+    color: #fff;
+    padding: 5px 15px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-bottom-left-radius: 8px;
+    z-index: 10;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+}
 
 /* Styles for the internal bottom section of the widget */
 .widget-bottom-section {
     text-align: center;
-    padding: 10px 20px; /* Keep this padding */
-    background-color: #2a2a2a; /* Matched background color with widget wrapper */
+    padding: 10px 20px;
+    background-color: #2a2a2a;
     border-top: 2px solid #F0D788;
-    color: #a0a0a0; /* Slightly lighter text color for this section */
+    color: #a0a0a0;
     font-size: 0.85rem;
-    flex-shrink: 0; /* Prevents bottom section from shrinking */
+    /* flex-shrink: 0; REMOVED */
+    /* REMOVED: flexbox props for centering to simplify */
+    /* display: flex; */
+    /* flex-direction: column; */
+    /* justify-content: center; */
+    /* align-items: center; */
+    /* min-height: 100px; REMOVED */
+    height: 100px; /* <--- KEPT FIXED HEIGHT TO SIMPLIFY HEIGHT CALCS FOR 'main' */
+    box-sizing: border-box; /* Include padding in height calculation */
     
-    /* --- NEW/MODIFIED STYLES FOR IMAGE PLACEMENT --- */
-    display: flex; /* Enable flexbox for alignment */
-    flex-direction: column; /* Stack image and text vertically */
-    justify-content: center; /* Center items vertically */
-    align-items: center; /* Center items horizontally */
-    min-height: 100px; /* NEW: Use min-height instead of fixed height for flexibility */
-    /* Remove 'height: 100px;' from here */
+    /* NEW: Add padding-top to shift content down slightly within the fixed height */
+    padding-top: 20px; 
 }
 
 .widget-internal-image {
-    max-width: 80px; /* <--- NEW: Give the image a specific, smaller max-width */
-    height: auto; /* Maintains aspect ratio */
-    /* max-height: 150px; REMOVED: Replaced by max-width and object-fit */
-    object-fit: contain; /* Ensures the entire image is visible within the bounds without cropping */
-    margin-bottom: 5px; /* <--- Adjusted: Slightly less space between image and footer text */
-    border-radius: 8px; /* Slightly rounded corners for the image */
-    box-shadow: 0 0 5px rgba(240, 215, 136, 0.4); /* Subtle default gold shadow */
-    transition: box-shadow 0.3s ease; /* Transition for hover effect */
-    /* Ensure it's not trying to grow too large */
-    flex-shrink: 0; /* Prevent it from shrinking too much */
+    max-width: 100px; /* <--- Increased size slightly, but still constrained */
+    height: auto;
+    object-fit: contain;
+    margin-bottom: 5px; 
+    border-radius: 8px; 
+    box-shadow: 0 0 5px rgba(240, 215, 136, 0.4);
+    transition: box-shadow 0.3s ease;
+    /* flex-shrink: 0; REMOVED */
+    display: block; /* Ensure it takes its own line for text-align: center */
+    margin-left: auto; /* Center image horizontally */
+    margin-right: auto; /* Center image horizontally */
 }
 
 .widget-internal-image:hover {
-    box-shadow: 0 0 15px rgba(240, 215, 136, 0.8), 0 0 5px rgba(240, 215, 136, 0.6); /* Enhanced Gold glow on hover */
+    box-shadow: 0 0 15px rgba(240, 215, 136, 0.8), 0 0 5px rgba(240, 215, 136, 0.6);
 }
 
 .widget-internal-footer {
-    margin: 0; /* Remove default paragraph margins */
-    color: #F0D788; /* Radiant Gold for the footer text */
-    font-size: 0.8rem; /* Slightly larger font size */
-    font-weight: 500; /* Slightly bolder */
-    text-shadow: 0 0 5px rgba(240, 215, 136, 0.4); /* Soft gold text shadow */
-    flex-shrink: 0; /* Prevent it from shrinking */
+    margin: 0;
+    color: #F0D788;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-shadow: 0 0 5px rgba(240, 215, 136, 0.4);
+    /* flex-shrink: 0; REMOVED */
 }
 
-/* ... (Skeleton Loader Styles - No changes) ... */
+
+/* --- Skeleton Loader Styles --- */
+/* ... (No changes here) ... */
+
 
 /* --- Responsive Adjustments --- */
 @media (max-width: 600px) {
-    /* ... (Existing responsive styles for dashboard-wrapper, header, etc. - No changes) ... */
-    
-    main {
-        /* Adjusted fixed height for mobile main content area (retained from your original code) */
-        height: 450px; 
+    .dashboard-wrapper {
+        margin: 15px auto;
+        border-radius: 0;
     }
-    
-    /* ... (News article responsive styles - No changes) ... */
-
+    .dashboard-header-section {
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        padding: 0.8rem;
+        height: 100px; 
+        box-sizing: border-box; /* Include padding in height calculation */
+    }
+    .header-masthead-group {
+        flex-direction: column;
+        text-align: center;
+        gap: 5px;
+    }
+    .header-logo-top {
+        height: 60px;
+    }
+    .dashboard-header-section h1 {
+        font-size: 1.8rem;
+        white-space: normal;
+        text-align: center;
+    }
+    main {
+        padding: 15px;
+        /* NEW FIXED HEIGHT CALCULATION for mobile main content area */
+        height: calc(100vh - 30px - 100px - 80px); /* Total widget height - top/bottom body margins - header height - footer height */
+    }
+    #news-columns {
+        width: auto;
+        padding-right: 0;
+    }
+    .news-article {
+        padding: 10px;
+        gap: 10px;
+    }
+    .news-article h2 {
+        font-size: 1.2rem;
+    }
+    .news-article p {
+        font-size: 0.85rem;
+    }
+    .article-dateline, .news-meta {
+        font-size: 0.7rem;
+    }
+    .breaking-ribbon {
+        padding: 3px 10px;
+        font-size: 0.65rem;
+    }
+    .news-meta span {
+        padding: 3px 8px;
+    }
+    .news-article a.read-more-button {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+    }
     .widget-bottom-section {
-        padding: 8px 15px; /* Further decreased for mobile */
-        min-height: 80px; /* <--- NEW: Use min-height for mobile too */
-        /* Remove 'height: 80px;' from here */
+        padding: 8px 15px; 
+        height: 80px; /* <--- KEPT FIXED HEIGHT FOR MOBILE FOOTER */
+        box-sizing: border-box; /* Include padding in height calculation */
+        padding-top: 15px; /* <--- Adjusted for mobile */
     }
     .widget-internal-image {
-        max-width: 60px; /* <--- NEW: Even smaller max-width for mobile */
-        margin-bottom: 4px; /* <--- Adjusted: Less margin for mobile */
+        max-width: 80px; /* <--- Adjusted for mobile */
+        margin-bottom: 4px;
     }
-    /* ... (widget-internal-footer responsive styles - No changes) ... */
+    .widget-internal-footer {
+        font-size: 0.65rem;
+    }
 }
